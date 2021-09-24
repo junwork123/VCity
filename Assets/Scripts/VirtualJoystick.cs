@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField]
     RectTransform lever;
     RectTransform rectTransform;
+    Vector2 sizeOffset;
+
 
     [SerializeField, Range(10f, 150f)]
     private float leverRange;
@@ -18,25 +20,19 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     private void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        rectTransform = GetComponent<RectTransform>();
+        print(rectTransform);
+        sizeOffset = new Vector2(rectTransform.sizeDelta.x * 0.5f, rectTransform.sizeDelta.y * 0.5f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        print(inputVector);
-    }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        ControlJoystickLever(eventData);
-        isInput = true;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -44,19 +40,25 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         ControlJoystickLever(eventData);
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        OnDrag(eventData);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
     {
         lever.anchoredPosition = Vector2.zero;
-        isInput = false;
     }
 
     public void ControlJoystickLever(PointerEventData eventData)
     {
-        Vector2 inputDir = eventData.position - rectTransform.anchoredPosition;
-        Vector2 clampedDir = (inputDir.magnitude < leverRange) ?
-            inputDir : inputDir.normalized * leverRange;
-        lever.anchoredPosition = clampedDir;
+        inputVector = (eventData.position - (rectTransform.anchoredPosition + sizeOffset));
 
-        inputVector = clampedDir / leverRange;
+        Vector2 clampedVector = (inputVector.magnitude < leverRange) ?
+            inputVector : inputVector.normalized * leverRange;
+
+        lever.anchoredPosition = clampedVector;
+
+        inputVector = clampedVector / leverRange;
     }
 }
