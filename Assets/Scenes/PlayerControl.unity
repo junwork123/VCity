@@ -657,6 +657,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lever: {fileID: 854230828}
   leverRange: 60
+  player: {fileID: 1119858611}
+  playerController: {fileID: 1119858612}
 --- !u!1 &1629533807
 GameObject:
   m_ObjectHideFlags: 0

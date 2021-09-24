@@ -19,12 +19,19 @@ public class PlayerController : MonoBehaviour
         // Move
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-        Vector3 dir = new Vector3(h, 0, v);
+        Vector3 moveVector = new Vector3(h, 0, v);
 
-        bool isMove = dir.magnitude != 0;
+        bool isMove = moveVector.magnitude != 0;
 
         if (isMove == true)
-            movementBehavior.Move(dir);
+        {
+            moveVector.Normalize();
+            movementBehavior.Move(moveVector);
+        }
     }
 
+    public void Move(Vector3 moveVector)
+    {
+        movementBehavior.Move(moveVector);
+    }
 }

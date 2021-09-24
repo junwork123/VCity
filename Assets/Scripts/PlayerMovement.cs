@@ -15,10 +15,9 @@ public class PlayerMovement : MonoBehaviour
     Quaternion lookDir;
 
 
-    private void Awake()
+    private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
@@ -33,12 +32,13 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rigidbody.MovePosition(rigidbody.position + velocity * Time.deltaTime);
+        velocity = Vector3.zero;
     }
 
     public void Move(Vector3 dir)
     {
         velocity = dir * moveForce;
 
-        lookDir = Quaternion.LookRotation(velocity);
+        lookDir = Quaternion.LookRotation(dir);
     }
 }
