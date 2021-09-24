@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class LookAtPlayer : MonoBehaviour
 {
-    bool isLook;
     Quaternion lookDir;
     public float rotateSpeed = 2f;
 
@@ -24,7 +23,6 @@ public class LookAtPlayer : MonoBehaviour
         {
             Vector3 lookPosition = other.transform.position;
             lookPosition.y = 0;
-            isLook = true;
             lookDir = Quaternion.LookRotation(lookPosition - transform.position);
         }
     }
@@ -33,7 +31,6 @@ public class LookAtPlayer : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            isLook = false;
             lookDir = Quaternion.LookRotation(Vector3.back);
         }
     }
