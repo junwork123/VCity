@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour
 
         if (isMove == true)
         {
-            moveVector.Normalize();
             movementBehavior.Move(moveVector);
         }
     }
