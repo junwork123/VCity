@@ -8,8 +8,11 @@ public class LookAtPlayer : MonoBehaviour
     Quaternion lookDir;
     public float rotateSpeed = 2f;
 
-    private void Start() {
-        transform.localRotation = Quaternion.LookRotation(Vector3.back);
+    public Quaternion defaultDir;
+
+    private void Start()
+    {
+        defaultDir = gameObject.GetComponentInParent<Transform>().rotation;
     }
 
     private void Update()
@@ -31,9 +34,7 @@ public class LookAtPlayer : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            lookDir = Quaternion.LookRotation(Vector3.back);
+            lookDir = defaultDir;
         }
     }
-
-
 }

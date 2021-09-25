@@ -20,11 +20,13 @@ public class TrackObject : MonoBehaviour
     private void LateUpdate()
     {
         // 카메라 위치
-        transform.position = new Vector3(target.position.x, height, target.position.z - distance);
+        // transform.position = new Vector3(target.position.x, height, target.position.z - distance);
+        Vector3 targetPosition = new Vector3(target.position.x, height, target.position.z - distance);
+        transform.position = Vector3.Lerp(this.transform.position, targetPosition, trackingSpeed * Time.deltaTime);
 
-        // target 방향으로 각도 회전
-        Vector3 dir = target.transform.position - transform.position;
-        dir.Normalize();
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), trackingSpeed * Time.deltaTime);
+        // // target 방향으로 각도 회전
+        // Vector3 dir = target.transform.position - transform.position;
+        // dir.Normalize();
+        // transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), trackingSpeed * Time.deltaTime);
     }
 }
