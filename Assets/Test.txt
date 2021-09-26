@@ -1,0 +1,9 @@
+{
+    "userId": "Bob",
+    "dialogs": [
+        {
+            "channelName": "Resion",
+            "chatContents": "1234"
+        }
+    ]
+}

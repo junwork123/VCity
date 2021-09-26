@@ -7,5 +7,5 @@ using UnityEngine.UI;
 public class Dialog
 {
     public string channelName;
-    public Text chatContents;
+    public string chatContents;
 }

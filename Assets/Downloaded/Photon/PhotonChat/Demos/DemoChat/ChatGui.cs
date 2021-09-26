@@ -80,6 +80,7 @@ namespace Photon.Chat.Demo
         public Text StateText; // set in inspector
         public Text UserIdText; // set in inspector
 
+
         // private static string WelcomeText = "Welcome to chat. Type \\help to list commands.";
         private static string HelpText = "\n    -- HELP --\n" +
             "To subscribe to channel(s) (channelnames are case sensitive) :  \n" +
@@ -206,8 +207,8 @@ namespace Photon.Chat.Demo
         {
             if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
             {
-                string nowtime = DateTime.Now.ToString(("yyyy-MM-dd HH:mm"));
-                this.SendChatMessage("[" + nowtime + "]" + this.InputFieldChat.text);
+                string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
+                this.SendChatMessage(nowtime + this.InputFieldChat.text);
                 this.InputFieldChat.text = "";
             }
         }
@@ -216,8 +217,8 @@ namespace Photon.Chat.Demo
         {
             if (this.InputFieldChat != null)
             {
-                string nowtime = DateTime.Now.ToString(("yyyy-MM-dd HH:mm"));
-                this.SendChatMessage("[" + nowtime + "]" + this.InputFieldChat.text);
+                string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
+                this.SendChatMessage(nowtime + this.InputFieldChat.text);
                 this.InputFieldChat.text = "";
             }
         }
@@ -424,7 +425,8 @@ namespace Photon.Chat.Demo
             // in this demo, we simply send a message into each channel. This is NOT a must have!
             foreach (string channel in channels)
             {
-                this.chatClient.PublishMessage(channel, "says 'hi'."); // you don't HAVE to send a msg on join but you could.
+                string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
+                this.chatClient.PublishMessage(channel, nowtime + "login success."); // you don't HAVE to send a msg on join but you could.
 
                 if (this.ChannelToggleToInstantiate != null)
                 {
@@ -633,7 +635,26 @@ namespace Photon.Chat.Demo
             }
 
             this.selectedChannelName = channelName;
-            this.CurrentChannelText.text = channel.ToStringMessages();
+            string frontMsg = "";
+            string rearMsg = "";
+            string dialog = "";
+            string datetime = "[yyyy-MM-dd HH:mm]";
+            for (int i = 0; i < channel.Senders.Count; i++)
+            {
+                string msg = channel.Messages[i].ToString();
+                if (msg.Length >= datetime.Length)
+                {
+                    frontMsg = msg.Substring(0, datetime.Length);
+                    rearMsg = msg.Substring(datetime.Length);
+                    dialog = dialog + frontMsg + " " + channel.Senders[i] + " : " + rearMsg + "\n";
+                }
+                else
+                    dialog = channel.Messages[i] + "\n";
+            }
+            this.CurrentChannelText.text = dialog;
+            //this.CurrentChannelText.text = channel.ToStringMessages();
+
+
             Debug.Log("ShowChannel: " + this.selectedChannelName);
 
             foreach (KeyValuePair<string, Toggle> pair in this.channelToggles)

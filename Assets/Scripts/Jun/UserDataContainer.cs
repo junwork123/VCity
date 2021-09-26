@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DataContainer
+public class UserDataContainer
 {
 
     public string userId;
