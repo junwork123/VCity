@@ -5,21 +5,30 @@ using UnityEngine.UI;
 
 public class Interactionable : MonoBehaviour, IInteraction
 {
-    bool isPlayerEnter = false;
     Collider collider;
 
-    public GameObject interactionUI;
+
 
     [SerializeField]
-    public InteractionType _interType;
-    public InteractionType InterType { get { return _interType; } }
+    GameObject interactionUI;
 
-    public bool enable { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    [SerializeField]
+    InteractionType _interType;
+    public InteractionType InterType { get => _interType; }
+    
+    public Outline interOutline;
+
+    bool _enable;
+    public bool enable { get => _enable; }
+
 
     // Start is called before the first frame update
     void Start()
     {
         collider = GetComponent<Collider>();
+        
+        interOutline.OutlineColor = Color.yellow;
+        interOutline.OutlineWidth = 5f;
     }
 
     // Update is called once per frame
@@ -32,7 +41,6 @@ public class Interactionable : MonoBehaviour, IInteraction
     {
         if (other.tag == "Player")
         {
-            isPlayerEnter = true;
             ShowInter();
         }
     }
@@ -41,13 +49,13 @@ public class Interactionable : MonoBehaviour, IInteraction
     {
         // if input action key
         // ActionKey();
+
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
-            isPlayerEnter = false;
             EndInter();
             NonShowInter();
         }
@@ -56,18 +64,32 @@ public class Interactionable : MonoBehaviour, IInteraction
     public void ShowInter()
     {
         interactionUI.SetActive(true);
+        SetOutline();
+    }
+
+    void SetOutline()
+    {
+        interOutline.OutlineMode = Outline.Mode.OutlineAll;
     }
 
     public void ActionKey()
     {
+        print(gameObject.name + " Action");
     }
 
     public void EndInter()
     {
         interactionUI.SetActive(false);
+        UnsetOutline();
+    }
+
+    void UnsetOutline()
+    {
+        interOutline.OutlineMode = Outline.Mode.SilhouetteOnly;
     }
 
     public void NonShowInter()
     {
+        
     }
 }

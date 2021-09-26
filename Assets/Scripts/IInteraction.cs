@@ -20,9 +20,10 @@ public interface IInteraction
     /// <summary>
     /// 플레이어가 이 인터랙션을 사용할 수 있는지 여부.
     /// </summary>
-    bool enable { get; set; }
+    bool enable { get; }
     // string InterString { get; set; }
     // string sInterPlayerAni { get; }
+
 
     /// <summary>
     /// 인터랙션할 수 있는 오브젝트임을 출력하는 동작.

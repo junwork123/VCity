@@ -16,8 +16,7 @@ public class VirtualJoystick : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     Vector2 inputVector;
     bool isInput;
-
-    public Transform player;
+    
     public PlayerController playerController;
 
 

@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class LookAtPlayer : MonoBehaviour
 {
-    Quaternion lookDir;
     public float rotateSpeed = 2f;
 
-    public Quaternion defaultDir;
+    Quaternion defaultDir;
+    Quaternion lookDir;
+
 
     private void Start()
     {
