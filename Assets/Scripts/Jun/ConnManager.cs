@@ -123,6 +123,7 @@ public class ConnManager : MonoBehaviourPunCallbacks, IOnEventCallback
         else
         {
             SceneManager.LoadScene("NetworkTest");
+            
             Debug.Log("룸에 입장!");
         }
     }

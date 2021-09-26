@@ -7,7 +7,8 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Pun;
+using TMPro;
 
 namespace Photon.Chat.Demo
 {
@@ -18,7 +19,7 @@ namespace Photon.Chat.Demo
 
         public ChatGui chatNewComponent;
 
-        public InputField idInput;
+        public TMP_InputField idInput;
 
         public void Start()
         {
@@ -45,7 +46,8 @@ namespace Photon.Chat.Demo
         public void StartChat()
         {
             ChatGui chatNewComponent = FindObjectOfType<ChatGui>();
-            chatNewComponent.UserName = this.idInput.text.Trim();
+            //chatNewComponent.UserName = this.idInput.text.Trim();
+            chatNewComponent.UserName = idInput.text;
             chatNewComponent.Connect();
             this.enabled = false;
 
