@@ -68,8 +68,7 @@ public class ConnManager : MonoBehaviourPunCallbacks, IOnEventCallback
             return;//ID, PW가 빈값이면 로그인 불가
         }
 
-        // @NeedFix
-        // 여기에 로그인 값을 인증하는 코드 삽입하기
+        // @TODO : 여기에 로그인 값을 인증하는 코드 삽입하기
 
 
         // 로그인 성공 시

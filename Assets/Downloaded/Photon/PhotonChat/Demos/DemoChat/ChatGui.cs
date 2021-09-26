@@ -159,7 +159,6 @@ namespace Photon.Chat.Demo
 
             this.ChannelToggleToInstantiate.gameObject.SetActive(false);
             Debug.Log("Connecting as: " + this.UserName);
-
             this.ConnectingLabel.SetActive(true);
         }
 
@@ -184,6 +183,7 @@ namespace Photon.Chat.Demo
         public void Update()
         {
             // 메인 메뉴에서 채팅 호출 불가, 탭키로 호출
+            // @TODO : 안드로이드에서 호출 시 호출방법 변경 필요
             if (SceneManager.GetActiveScene().name != ("MainMenu") && Input.GetKeyDown(KeyCode.Tab))
                 chatPanel.SetActive(!chatPanel.activeSelf);
 
@@ -344,6 +344,7 @@ namespace Photon.Chat.Demo
                 else
                 {
                     this.chatClient.PublishMessage(this.selectedChannelName, inputLine);
+                    DataManager.instance.appendDialog(this.selectedChannelName, inputLine);
                 }
             }
         }
@@ -637,7 +638,7 @@ namespace Photon.Chat.Demo
             this.selectedChannelName = channelName;
             string frontMsg = "";
             string rearMsg = "";
-            string dialog = "";
+            string fulltext = "";
             string datetime = "[yyyy-MM-dd HH:mm]";
             for (int i = 0; i < channel.Senders.Count; i++)
             {
@@ -646,12 +647,12 @@ namespace Photon.Chat.Demo
                 {
                     frontMsg = msg.Substring(0, datetime.Length);
                     rearMsg = msg.Substring(datetime.Length);
-                    dialog = dialog + frontMsg + " " + channel.Senders[i] + " : " + rearMsg + "\n";
+                    fulltext = fulltext + frontMsg + " " + channel.Senders[i] + " : " + rearMsg + "\n";
                 }
                 else
-                    dialog = channel.Messages[i] + "\n";
+                    fulltext = channel.Messages[i] + "\n";
             }
-            this.CurrentChannelText.text = dialog;
+            this.CurrentChannelText.text = fulltext;
             //this.CurrentChannelText.text = channel.ToStringMessages();
 
 

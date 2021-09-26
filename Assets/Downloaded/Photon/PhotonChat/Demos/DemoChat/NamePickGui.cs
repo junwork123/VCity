@@ -15,7 +15,7 @@ namespace Photon.Chat.Demo
     [RequireComponent(typeof(ChatGui))]
     public class NamePickGui : MonoBehaviour
     {
-        private const string UserNamePlayerPref = "NamePickUserName";
+        private const string UserNamePlayerPref = "1234";
 
         public ChatGui chatNewComponent;
 
@@ -47,11 +47,13 @@ namespace Photon.Chat.Demo
         {
             ChatGui chatNewComponent = FindObjectOfType<ChatGui>();
             //chatNewComponent.UserName = this.idInput.text.Trim();
-            chatNewComponent.UserName = idInput.text;
+            // 유저 데이터를 여기서 불러옴
+            UserDataContainer udc = DataManager.instance.LoadDataWithId(idInput.text);
+            chatNewComponent.UserName = udc.userName;
             chatNewComponent.Connect();
             this.enabled = false;
 
-            PlayerPrefs.SetString(UserNamePlayerPref, chatNewComponent.UserName);
+            PlayerPrefs.SetString(UserNamePlayerPref, udc.userId);
         }
     }
 }

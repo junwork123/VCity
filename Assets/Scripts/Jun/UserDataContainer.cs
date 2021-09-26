@@ -7,6 +7,7 @@ public class UserDataContainer
 {
 
     public string userId;
+    public string userName;
     //public string userPw;
     public List<Dialog> dialogs;
 }

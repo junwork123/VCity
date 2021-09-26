@@ -1,5 +1,6 @@
 {
-    "userId": "Bob",
+    "userId": "1234",
+    "userName": "Bob",
     "dialogs": [
         {
             "channelName": "Resion",
