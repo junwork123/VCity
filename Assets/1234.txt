@@ -3,8 +3,7 @@
     "userName": "Bob",
     "dialogs": [
         {
-            "channelName": "Resion",
-            "chatContents": "1234"
+            "channelName": "Region"
         }
     ]
 }

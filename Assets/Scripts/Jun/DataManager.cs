@@ -25,8 +25,9 @@ public class DataManager : MonoBehaviour, IChatClientListener
         udc.dialogs = new List<Dialog>();
 
         Dialog temp = new Dialog();
-        temp.channelName = "Resion";
-        temp.chatContents = "1234";
+        temp.channelName = "Region";
+        temp.chatContents = new List<CustomMsg>();
+        temp.chatContents.Add(new CustomMsg("Joe", "[yyyy-MM-dd HH:mm]", "Hello world!"));
 
         udc.dialogs.Add(temp);
         DataSaveText(udc, "1234");
@@ -46,27 +47,31 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     public void UpdateDialog(string _channelName, string _chatContents)
     {
-        foreach (var dialog in udc.dialogs)
-        {
-            if (dialog.channelName == _channelName)
-            {
-                dialog.chatContents = _chatContents;
-            }
-            DataSaveText(udc, udc.userId);
-            break;
-        }
+        // foreach (var dialog in udc.dialogs)
+        // {
+        //     if (dialog.channelName == _channelName)
+        //     {
+        //         dialog.chatContents = _chatContents + '\n';
+        //     }
+        //     Debug.Log("append Dialog and Sava Data to File as JSON");
+        //     DataSaveText(udc, udc.userId);
+        //     break;
+        // }
     }
-    public void appendDialog(string _channelName, string _chatContents)
+    public void appendDialog(string _channelName, CustomMsg _msg)
     {
         foreach (var dialog in udc.dialogs)
         {
             if (dialog.channelName == _channelName)
             {
-                dialog.chatContents += _chatContents;
+                dialog.chatContents.Add(_msg);
             }
+            Debug.Log("append Dialog and Sava Data to File as JSON");
             DataSaveText(udc, udc.userId);
-            break;
+            return;
         }
+        // TODO : 같은 이름의 채널이 없을 때 
+        Debug.Log("New Channel is Open");
     }
     public void DataSaveText<T>(T data, string userId)
     {
@@ -147,31 +152,27 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
-        foreach (var dialog in udc.dialogs)
+        string time = "";
+        string text = "";
+        string timeFormat = "[yyyy-MM-dd HH:mm]";
+        for (int i = 0; i < senders.Length; i++)
         {
-            if (dialog.channelName == channelName)
+            string msg = messages[i].ToString();
+            if (msg.Length >= timeFormat.Length)
             {
-                string frontMsg = "";
-                string rearMsg = "";
-                string fulltext = "";
-                string datetime = "[yyyy-MM-dd HH:mm]";
-                for (int i = 0; i < senders.Length; i++)
-                {
-                    string msg = messages[i].ToString();
-                    if (msg.Length >= datetime.Length)
-                    {
-                        frontMsg = msg.Substring(0, datetime.Length);
-                        rearMsg = msg.Substring(datetime.Length);
-                        fulltext = fulltext + frontMsg + " " + senders[i] + " : " + rearMsg + "\n";
-                    }
-                    else
-                        fulltext = messages[i] + "\n";
-                }
-                dialog.chatContents += fulltext;
+                time = msg.Substring(0, timeFormat.Length);
+                text = msg.Substring(timeFormat.Length);
+
             }
-            DataSaveText(udc, udc.userId);
-            break;
+            else
+            {
+                Debug.Log("Can't Find timeFormat in received text");
+                time = timeFormat;
+                text = msg;
+            }
+            appendDialog(channelName, new CustomMsg(senders[i], time, text));
         }
+
         throw new System.NotImplementedException();
     }
 
@@ -194,7 +195,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 }
                 else
                     fulltext = message + "\n";
-                dialog.chatContents += fulltext;
+                //dialog.chatContents += fulltext;
             }
             DataSaveText(udc, udc.userId);
             break;
