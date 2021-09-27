@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Outline))]
 public class Interactionable : MonoBehaviour, IInteraction
 {
     Collider collider;
-
-
 
     [SerializeField]
     GameObject interactionUI;
@@ -15,7 +14,8 @@ public class Interactionable : MonoBehaviour, IInteraction
     [SerializeField]
     InteractionType _interType;
     public InteractionType InterType { get => _interType; }
-    
+    public KeyCode InteractionKeyCode = KeyCode.X;
+
     public Outline interOutline;
 
     bool _enable;
@@ -26,17 +26,17 @@ public class Interactionable : MonoBehaviour, IInteraction
     void Start()
     {
         collider = GetComponent<Collider>();
-        
-        interOutline.OutlineColor = Color.yellow;
-        interOutline.OutlineWidth = 5f;
+
+        InitOutline();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        ActionKey();
     }
 
+    #region Trigger Event
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -47,8 +47,6 @@ public class Interactionable : MonoBehaviour, IInteraction
 
     private void OnTriggerStay(Collider other)
     {
-        // if input action key
-        // ActionKey();
 
     }
 
@@ -60,36 +58,59 @@ public class Interactionable : MonoBehaviour, IInteraction
             NonShowInter();
         }
     }
+    #endregion
 
+    #region Interaciton
     public void ShowInter()
     {
         interactionUI.SetActive(true);
         SetOutline();
-    }
 
-    void SetOutline()
-    {
-        interOutline.OutlineMode = Outline.Mode.OutlineAll;
+        _enable = true;
     }
 
     public void ActionKey()
     {
-        print(gameObject.name + " Action");
+        if (enable == true && (Input.GetKeyDown(InteractionKeyCode) || ButtonEvent.instance.activeActionButton == true))
+        {
+            EndInter();
+
+            ButtonEvent.instance.activeActionButton = false;
+
+            // TODO Action
+            print("Action : " + gameObject.name);
+        }
     }
 
     public void EndInter()
     {
         interactionUI.SetActive(false);
         UnsetOutline();
-    }
 
-    void UnsetOutline()
-    {
-        interOutline.OutlineMode = Outline.Mode.SilhouetteOnly;
+        _enable = false;
     }
 
     public void NonShowInter()
     {
-        
+
     }
+    #endregion
+
+    #region Outline
+    void InitOutline()
+    {
+        interOutline.OutlineMode = Outline.Mode.OutlineVisible;
+        interOutline.OutlineColor = Color.yellow;
+    }
+
+    void SetOutline()
+    {
+        interOutline.OutlineWidth = 5f;
+    }
+
+    void UnsetOutline()
+    {
+        interOutline.OutlineWidth = 0f;
+    }
+    #endregion
 }

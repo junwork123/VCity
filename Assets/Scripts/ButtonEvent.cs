@@ -4,16 +4,33 @@ using UnityEngine;
 
 public class ButtonEvent : MonoBehaviour
 {
+    public static ButtonEvent instance;
+
+
     public PlayerController playerController;
 
+    public bool activeActionButton;
 
-    public void OnClickButtonX()
+    private void Awake()
     {
-        playerController.Interaction();
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
     }
 
-    public void OnClickButtonY()
+    public void OnClickActionButton()
     {
-        print("Click Y");
+        activeActionButton = true;
+    }
+
+    public void OnClickChatButton()
+    {
+        print("Click ChatButton");
+    }
+
+    public void OnClickMapButton()
+    {
+
     }
 }

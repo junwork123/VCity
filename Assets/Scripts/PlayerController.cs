@@ -30,10 +30,10 @@ public class PlayerController : MonoBehaviour
             movementBehavior.Move(moveVector);
         }
 
-        if(Input.GetKeyDown(interactionKey))
-        {
-            Interaction();
-        }
+        // if(Input.GetKeyDown(interactionKey))
+        // {
+        //     Interaction();
+        // }
     }
 
     public void Move(Vector3 moveVector)
@@ -43,6 +43,6 @@ public class PlayerController : MonoBehaviour
 
     public void Interaction()
     {
-        print("Call Interaction");
+
     }
 }
