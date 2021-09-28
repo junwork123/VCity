@@ -6,7 +6,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Outline))]
 public class Interactionable : MonoBehaviour, IInteraction
 {
-    Collider collider;
 
     [SerializeField]
     GameObject interactionUI;
@@ -15,8 +14,10 @@ public class Interactionable : MonoBehaviour, IInteraction
     InteractionType _interType;
     public InteractionType InterType { get => _interType; }
     public KeyCode InteractionKeyCode = KeyCode.X;
+    public float interactionRadius = 3f;
 
-    public Outline interOutline;
+    SphereCollider collider;
+    Outline outline;
 
     bool _enable;
     public bool enable { get => _enable; }
@@ -25,7 +26,10 @@ public class Interactionable : MonoBehaviour, IInteraction
     // Start is called before the first frame update
     void Start()
     {
-        collider = GetComponent<Collider>();
+        collider = GetComponent<SphereCollider>();
+        collider.radius = interactionRadius;
+
+        outline = GetComponent<Outline>();
 
         InitOutline();
     }
@@ -33,7 +37,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     // Update is called once per frame
     void Update()
     {
-        ActionKey();
+        Action();
     }
 
     #region Trigger Event
@@ -69,16 +73,21 @@ public class Interactionable : MonoBehaviour, IInteraction
         _enable = true;
     }
 
-    public void ActionKey()
+    public void Action()
     {
-        if (enable == true && (Input.GetKeyDown(InteractionKeyCode) || ButtonEvent.instance.activeActionButton == true))
-        {
-            EndInter();
+        if (_enable == false)
+            return;
 
+        if ((Input.GetKeyDown(InteractionKeyCode) || ButtonEvent.instance.activeActionButton == true))
+        {
             ButtonEvent.instance.activeActionButton = false;
 
             // TODO Action
             print("Action : " + gameObject.name);
+            #region Action
+            
+
+            #endregion
         }
     }
 
@@ -99,18 +108,28 @@ public class Interactionable : MonoBehaviour, IInteraction
     #region Outline
     void InitOutline()
     {
-        interOutline.OutlineMode = Outline.Mode.OutlineVisible;
-        interOutline.OutlineColor = Color.yellow;
+        outline.OutlineMode = Outline.Mode.OutlineVisible;
+        outline.OutlineColor = Color.yellow;
     }
 
     void SetOutline()
     {
-        interOutline.OutlineWidth = 5f;
+        outline.OutlineWidth = 5f;
     }
 
     void UnsetOutline()
     {
-        interOutline.OutlineWidth = 0f;
+        outline.OutlineWidth = 0f;
+    }
+    #endregion
+
+    #region Debug
+    private void OnDrawGizmos()
+    {
+        Color color = Color.cyan;
+        color.a = 0.25f;
+        Gizmos.color = color;
+        Gizmos.DrawSphere(transform.position, interactionRadius);
     }
     #endregion
 }

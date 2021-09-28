@@ -33,7 +33,7 @@ public interface IInteraction
     /// <summary>
     /// ShowInter 상태에서 enable이 true이고 Action 키를 입력 실행했을 때 동작.
     /// </summary>
-    void ActionKey();
+    void Action();
     /// <summary>
     /// 인터랙션이 끝난 후 동작.
     /// </summary> 

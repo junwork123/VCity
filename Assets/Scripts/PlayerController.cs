@@ -29,11 +29,6 @@ public class PlayerController : MonoBehaviour
         {
             movementBehavior.Move(moveVector);
         }
-
-        // if(Input.GetKeyDown(interactionKey))
-        // {
-        //     Interaction();
-        // }
     }
 
     public void Move(Vector3 moveVector)

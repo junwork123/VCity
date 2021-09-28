@@ -10,10 +10,17 @@ public class LookAtPlayer : MonoBehaviour
     Quaternion defaultDir;
     Quaternion lookDir;
 
+    #region debug
+    SphereCollider collider;
+    public float lookRange = 4f;
+    #endregion
 
     private void Start()
     {
         defaultDir = gameObject.GetComponentInParent<Transform>().rotation;
+
+        collider = GetComponent<SphereCollider>();
+        collider.radius = lookRange;
     }
 
     private void Update()
@@ -38,4 +45,14 @@ public class LookAtPlayer : MonoBehaviour
             lookDir = defaultDir;
         }
     }
+
+    #region Debug
+    private void OnDrawGizmos()
+    {
+        Color color = Color.green;
+        color.a = 0.1f;
+        Gizmos.color = color;
+        Gizmos.DrawSphere(transform.position, lookRange);
+    }
+    #endregion
 }

@@ -19,18 +19,26 @@ public class ButtonEvent : MonoBehaviour
             Destroy(gameObject);
     }
 
+    public void OnClickMenuButton()
+    {
+        AndroidToast.instance.ShowToast("Menu Button");
+    }
+
     public void OnClickActionButton()
     {
+        AndroidToast.instance.ShowToast("Action Button");
+
         activeActionButton = true;
     }
 
-    public void OnClickChatButton()
+    public void OnClickSettingButton()
     {
-        print("Click ChatButton");
+        AndroidToast.instance.ShowToast("Setting Button");
     }
 
     public void OnClickMapButton()
     {
+        AndroidToast.instance.ShowToast("Map Button");
 
     }
 }
