@@ -7,18 +7,19 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-
+using Photon.Pun;
+using TMPro;
 
 namespace Photon.Chat.Demo
 {
     [RequireComponent(typeof(ChatGui))]
     public class NamePickGui : MonoBehaviour
     {
-        private const string UserNamePlayerPref = "NamePickUserName";
+        private const string UserNamePlayerPref = "1234";
 
         public ChatGui chatNewComponent;
 
-        public InputField idInput;
+        public TMP_InputField idInput;
 
         public void Start()
         {
@@ -45,11 +46,14 @@ namespace Photon.Chat.Demo
         public void StartChat()
         {
             ChatGui chatNewComponent = FindObjectOfType<ChatGui>();
-            chatNewComponent.UserName = this.idInput.text.Trim();
+            //chatNewComponent.UserName = this.idInput.text.Trim();
+            // 유저 데이터를 여기서 불러옴
+            UserDataContainer udc = DataManager.instance.LoadDataWithId(idInput.text);
+            chatNewComponent.UserName = udc.userName;
             chatNewComponent.Connect();
             this.enabled = false;
 
-            PlayerPrefs.SetString(UserNamePlayerPref, chatNewComponent.UserName);
+            PlayerPrefs.SetString(UserNamePlayerPref, udc.userId);
         }
     }
 }
