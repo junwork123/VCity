@@ -24,10 +24,16 @@ public class PlayerController : MonoBehaviour
         Vector3 moveVector = new Vector3(h, 0, v);
 
         bool isMove = moveVector.magnitude != 0;
-
         if (isMove == true)
         {
             movementBehavior.Move(moveVector);
+        }
+        
+
+        bool isAction = Input.GetKeyDown(interactionKey);
+        if (isAction == true)
+        {
+            Interaction();
         }
     }
 
@@ -38,6 +44,6 @@ public class PlayerController : MonoBehaviour
 
     public void Interaction()
     {
-
+        ButtonEventManager.instance.activeActionButton = true;
     }
 }

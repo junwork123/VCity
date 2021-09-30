@@ -1,26 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(Outline))]
 public class Interactionable : MonoBehaviour, IInteraction
 {
+    [SerializeField]
+    InteractionType _interactionType;
+    public InteractionType interactionType { get => _interactionType; set => _interactionType = value; }
+    public bool enable { get; set; }
 
     [SerializeField]
     GameObject interactionTextUI;
 
-    [SerializeField]
-    InteractionType _interType;
-    public InteractionType InterType { get => _interType; }
     public KeyCode InteractionKeyCode = KeyCode.X;
     public float interactionRadius = 3f;
-
-    SphereCollider collider;
+    new SphereCollider collider;
     Outline outline;
-
-    bool _enable;
-    public bool enable { get => _enable; }
 
 
     // Start is called before the first frame update
@@ -38,6 +32,8 @@ public class Interactionable : MonoBehaviour, IInteraction
     void Update()
     {
         Action();
+
+        NonShowInter();
     }
 
     #region Trigger Event
@@ -70,40 +66,73 @@ public class Interactionable : MonoBehaviour, IInteraction
         interactionTextUI.SetActive(true);
         SetOutline();
 
-        _enable = true;
-    }
-
-    public void Action()
-    {
-        if (_enable == false)
-            return;
-
-        if ((Input.GetKeyDown(InteractionKeyCode) || ButtonEventManager.instance.activeActionButton == true))
-        {
-            ButtonEventManager.instance.activeActionButton = false;
-
-            // TODO Action
-            print("Action : " + gameObject.name);
-            #region Action
-
-
-            #endregion
-        }
+        enable = true;
     }
 
     public void EndInter()
     {
         interactionTextUI.SetActive(false);
         UnsetOutline();
+        HideInteractionMenu();
 
-        _enable = false;
+        enable = false;
     }
 
     public void NonShowInter()
     {
+        if (enable == true)
+            return;
+    }
 
+    public void Action()
+    {
+        if (enable == false)
+            return;
+
+        if (ButtonEventManager.instance.activeActionButton == true)
+        {
+            ButtonEventManager.instance.activeActionButton = false;
+
+            // TODO Action
+            #region Action
+            EndInter();
+            ShowInteractionMenu();
+
+            // switch (interactionType)
+            // {
+            //     case InteractionType.NPC:
+
+            //         break;
+            //     case InteractionType.UNMANNED:
+
+            //         break;
+            //     default:
+            //         break;
+            // }
+            #endregion
+
+            // EndAction();
+        }
+    }
+
+    public void EndAction()
+    {
+        ShowInter();
     }
     #endregion
+
+    /// <summary>
+    /// 오브젝트가 지원하는 기능을 표시
+    /// </summary>
+    public void ShowInteractionMenu()
+    {
+
+    }
+
+    public void HideInteractionMenu()
+    {
+
+    }
 
     #region Outline
     void InitOutline()

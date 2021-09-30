@@ -5,9 +5,20 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
+
+    public string playerName;
+
+
     // 취소버튼 대기시간
     public float waitTimeQuitApp = 2f;
     bool isQuitWait;
+
+
+    private void Awake() {
+        
+    }
 
     void Update()
     {
@@ -29,6 +40,11 @@ public class GameManager : MonoBehaviour
                 }
             }
 #endif
+    }
+
+    public void SetPlayerName(string name)
+    {
+        playerName = name;
     }
 
     IEnumerator CheckQuitApplication()

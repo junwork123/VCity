@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionTextUI: {fileID: 7386810111796826011}
-  _interType: 1
+  _interactionType: 0
   InteractionKeyCode: 120
   interactionRadius: 3
 --- !u!114 &2850184789758511346

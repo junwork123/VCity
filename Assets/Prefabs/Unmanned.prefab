@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 7599095812110010788}
   - component: {fileID: 92906826586889807}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Unmanned
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,7 +210,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7599095812110010777}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -1.37, y: 0.5, z: 4.94}
+  m_LocalPosition: {x: -1.37, y: 0, z: 4.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7599095813161192897}
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12cb05b173e33941b570fe0e12b95a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactionType: 1
   interactionTextUI: {fileID: 7599095811892062251}
-  _interType: 0
   InteractionKeyCode: 120
   interactionRadius: 3
 --- !u!114 &92906826586889807
@@ -318,7 +318,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7599095813161192901}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7599095812110010779}

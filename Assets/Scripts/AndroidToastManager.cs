@@ -5,6 +5,7 @@ using UnityEngine;
 
 /// <summary>
 /// Android 기기에서 실행했을 때 Toast 메시지 출력
+/// <list>AndroidToastManager.instance.ShowToast(string message)</list>
 /// </summary>
 public class AndroidToastManager : MonoBehaviour
 {
@@ -46,7 +47,6 @@ public class AndroidToastManager : MonoBehaviour
 #if UNITY_ANDROID
         CancelToast();
 
-        print(message);
         if (Application.platform == RuntimePlatform.Android)
         {
             if (context == null)
@@ -67,8 +67,6 @@ public class AndroidToastManager : MonoBehaviour
     public void CancelToast()
     {
 #if UNITY_ANDROID
-        print("Cancel Toast");
-
         if (Application.platform == RuntimePlatform.Android)
         {
             if (context == null)
