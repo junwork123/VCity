@@ -5,12 +5,22 @@ using UnityEngine;
 
 public class LookAtPlayer : MonoBehaviour
 {
-    bool isLook;
-    Quaternion lookDir;
     public float rotateSpeed = 2f;
 
-    private void Start() {
-        transform.localRotation = Quaternion.LookRotation(Vector3.back);
+    Quaternion defaultDir;
+    Quaternion lookDir;
+
+    #region debug
+    SphereCollider collider;
+    public float lookRange = 4f;
+    #endregion
+
+    private void Start()
+    {
+        defaultDir = gameObject.GetComponentInParent<Transform>().rotation;
+
+        collider = GetComponent<SphereCollider>();
+        collider.radius = lookRange;
     }
 
     private void Update()
@@ -24,7 +34,6 @@ public class LookAtPlayer : MonoBehaviour
         {
             Vector3 lookPosition = other.transform.position;
             lookPosition.y = 0;
-            isLook = true;
             lookDir = Quaternion.LookRotation(lookPosition - transform.position);
         }
     }
@@ -33,10 +42,17 @@ public class LookAtPlayer : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            isLook = false;
-            lookDir = Quaternion.LookRotation(Vector3.back);
+            lookDir = defaultDir;
         }
     }
 
-
+    #region Debug
+    private void OnDrawGizmos()
+    {
+        Color color = new Color(255/255,127/255, 80/255);
+        color.a = 0.1f;
+        Gizmos.color = color;
+        Gizmos.DrawSphere(transform.position, lookRange);
+    }
+    #endregion
 }

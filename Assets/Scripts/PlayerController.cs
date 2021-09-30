@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerMovement movementBehavior;
 
+    public KeyCode interactionKey = KeyCode.X;
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,5 +34,10 @@ public class PlayerController : MonoBehaviour
     public void Move(Vector3 moveVector)
     {
         movementBehavior.Move(moveVector);
+    }
+
+    public void Interaction()
+    {
+
     }
 }
