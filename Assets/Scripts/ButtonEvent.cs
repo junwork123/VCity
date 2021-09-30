@@ -35,10 +35,4 @@ public class ButtonEvent : MonoBehaviour
     {
         AndroidToast.instance.ShowToast("Setting Button");
     }
-
-    public void OnClickMapButton()
-    {
-        AndroidToast.instance.ShowToast("Map Button");
-
-    }
 }

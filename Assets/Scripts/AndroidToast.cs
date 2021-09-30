@@ -25,14 +25,14 @@ public class AndroidToast : MonoBehaviour
             Destroy(gameObject);
 
 #if UNITY_ANDROID
-        unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        if (unityPlayer != null)
+        if (Application.platform == RuntimePlatform.Android)
         {
-            print(unityPlayer);
-            currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            if (unityPlayer != null)
+                currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            if (currentActivity != null)
+                context = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
         }
-        if (currentActivity != null)
-            context = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
 #endif
 
         DontDestroyOnLoad(this.gameObject);
@@ -45,7 +45,11 @@ public class AndroidToast : MonoBehaviour
         CancelToast();
 
         print(message);
-        if (context != null)
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (context == null)
+                return;
+
             currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
             {
                 AndroidJavaClass Toast = new AndroidJavaClass("android.widget.Toast");
@@ -54,18 +58,28 @@ public class AndroidToast : MonoBehaviour
                 toast = Toast.CallStatic<AndroidJavaObject>("makeText", context, javaString, Toast.GetStatic<int>("LENGTH_SHORT"));
                 toast.Call("show");
             }));
+        }
 #endif
     }
 
     public void CancelToast()
     {
 #if UNITY_ANDROID
-        if (context != null)
+        print("Cancel Toast");
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (context == null)
+                return;
+
+            if (toast == null)
+                return;
+
             currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
             {
-                if (toast != null)
-                    toast.Call("cancel");
+                toast.Call("cancel");
             }));
+        }
 #endif
     }
 }
