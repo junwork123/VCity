@@ -944,7 +944,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 27381707}
         m_TargetAssemblyTypeName: ButtonEvent, Assembly-CSharp
-        m_MethodName: OnClickChatButton
+        m_MethodName: OnClickSettingButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

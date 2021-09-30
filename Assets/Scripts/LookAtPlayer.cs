@@ -49,7 +49,7 @@ public class LookAtPlayer : MonoBehaviour
     #region Debug
     private void OnDrawGizmos()
     {
-        Color color = Color.green;
+        Color color = new Color(255/255,127/255, 80/255);
         color.a = 0.1f;
         Gizmos.color = color;
         Gizmos.DrawSphere(transform.position, lookRange);
