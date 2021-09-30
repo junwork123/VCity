@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class CustomMsg
 {
-    string sender;
-    string time;
-    string text;
+    public string sender { get; set; }
+    public string time { get; set; }
 
+    public string text { get; set; }
+
+    public CustomMsg(){ sender = ""; time = ""; text = "";}
     public CustomMsg(string _sender, string _datetime, string _text)
     {
         sender = _sender;

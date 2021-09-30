@@ -1,8 +1,8 @@
-using System.Collections;
+using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using System.IO;
+using Newtonsoft.Json;
 using Photon.Chat;
 using ExitGames.Client.Photon;
 
@@ -15,21 +15,16 @@ public class DataManager : MonoBehaviour, IChatClientListener
     {
         if (instance == null) instance = new DataManager();
         else Destroy(gameObject);
-        udc = new UserDataContainer();
+
     }
     void Start()
     {
+        udc = new UserDataContainer();
         #region @Test 테스트용 코드(추후 삭제)
+
         udc.userId = "1234";
         udc.userName = "Bob";
-        udc.dialogs = new List<Dialog>();
-
-        Dialog temp = new Dialog();
-        temp.channelName = "Region";
-        temp.chatContents = new List<CustomMsg>();
-        temp.chatContents.Add(new CustomMsg("Joe", "[yyyy-MM-dd HH:mm]", "Hello world!"));
-
-        udc.dialogs.Add(temp);
+        udc.channels["Region"].Add(new CustomMsg("Joe", "[yyyy-MM-dd HH:mm]", "Hello world!"));
         DataSaveText(udc, "1234");
         #endregion
     }
@@ -41,11 +36,18 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     public UserDataContainer LoadDataWithId(string _id)
     {
-        // @TODO : 아이디 없을 때 새로 생성하는 예외처리 필요함
         udc = DataLoadText<UserDataContainer>(_id);
+        // 처음 접속하는 유저일 경우 빈 UDC가 반환되므로
+        // 이름을 다시 설정해준다
+        if (udc == null)
+        {
+            udc = new UserDataContainer(_id);
+            DataSaveText<UserDataContainer>(udc, udc.userId);
+        }
+
         return udc;
     }
-    public void UpdateDialog(string _channelName, string _chatContents)
+    public void UpdateMsg(string _channelName, string _chatContents)
     {
         // foreach (var dialog in udc.dialogs)
         // {
@@ -58,36 +60,33 @@ public class DataManager : MonoBehaviour, IChatClientListener
         //     break;
         // }
     }
-    public void appendDialog(string _channelName, CustomMsg _msg)
+    public void appendMsg(string _channelName, CustomMsg _msg)
     {
-        foreach (var dialog in udc.dialogs)
-        {
-            if (dialog.channelName == _channelName)
-            {
-                dialog.chatContents.Add(_msg);
-            }
-            Debug.Log("append Dialog and Sava Data to File as JSON");
-            DataSaveText(udc, udc.userId);
-            return;
-        }
-        // TODO : 같은 이름의 채널이 없을 때 
-        Debug.Log("New Channel is Open");
+        udc.channels[_channelName].Add(_msg);
+        DataSaveText(udc, udc.userId);
+        Debug.Log("append received Messages");
+        return;
     }
     public void DataSaveText<T>(T data, string userId)
     {
+        string path = Application.dataPath + "/UserJson";
+
         try
         {
-            string json = JsonUtility.ToJson(data, true);
+            FileStream fileStream = new FileStream(string.Format("{0}/{1}.json", path, userId), FileMode.Create);
+            //string jsonData = JsonUtility.ToJson(data, true);
+            string jsonData = ObjectToJson(data);
+            byte[] jsonbytes = Encoding.UTF8.GetBytes(jsonData);
+            fileStream.Write(jsonbytes, 0, jsonbytes.Length);
+            fileStream.Close();
 
-            if (json.Equals("{}"))
+
+            if (jsonData.Equals("{}"))
             {
                 Debug.Log("json null");
                 return;
             }
-            string path = Application.dataPath + "/" + userId + ".txt";
-            File.WriteAllText(path, json);
-
-            Debug.Log(json);
+            Debug.Log(jsonData);
         }
         catch (FileNotFoundException e)
         {
@@ -104,20 +103,38 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     public T DataLoadText<T>(string userId)
     {
+        string path = Application.dataPath + "/UserJson";
+
         try
         {
-            string path = Application.dataPath + "/" + userId + ".txt";
-            if (File.Exists(path))
+            FileStream fileStream = new FileStream(string.Format("{0}/{1}.json", path, userId), FileMode.OpenOrCreate);
+
+            byte[] jsonbytes = new byte[fileStream.Length];
+            fileStream.Read(jsonbytes, 0, jsonbytes.Length);
+            fileStream.Close();
+            string jsonData = Encoding.UTF8.GetString(jsonbytes);
+
+            if (jsonData.Equals("{}"))
             {
-                string json = File.ReadAllText(path);
-                Debug.Log(json);
-                T t = JsonUtility.FromJson<T>(json);
-                return t;
+                Debug.Log("json null");
+                return default(T);
             }
+            Debug.Log(jsonData);
+
+            T t = JsonToOject<T>(jsonData);
+            return t;
         }
+        // 처음 접속하는 아이디일 경우
         catch (FileNotFoundException e)
         {
-            Debug.Log("The file was not found:" + e.Message);
+            // FileStream fileStream = new FileStream(string.Format("{0}/{1}.json", path, userId), FileMode.Create);
+            // string jsonData = "";
+            // byte[] jsonbytes = Encoding.UTF8.GetBytes(jsonData);
+            // fileStream.Write(jsonbytes, 0, jsonbytes.Length);
+            // fileStream.Close();
+            // T t = JsonToOject<T>(jsonData);
+            Debug.Log("The file was not found and New File created:" + e.Message);
+            return default(T);
         }
         catch (DirectoryNotFoundException e)
         {
@@ -127,7 +144,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         {
             Debug.Log("The file could not be opened:" + e.Message);
         }
-        return default;
+        return default(T);
     }
 
     public void DebugReturn(DebugLevel level, string message)
@@ -170,7 +187,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 time = timeFormat;
                 text = msg;
             }
-            appendDialog(channelName, new CustomMsg(senders[i], time, text));
+            appendMsg(channelName, new CustomMsg(senders[i], time, text));
         }
 
         throw new System.NotImplementedException();
@@ -178,29 +195,33 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     public void OnPrivateMessage(string sender, object message, string channelName)
     {
-        foreach (var dialog in udc.dialogs)
+        string frontMsg = "";
+        string rearMsg = "";
+        string fulltext = "";
+        string datetime = "[yyyy-MM-dd HH:mm]";
+        string msg = message.ToString();
+        if (msg.Length >= datetime.Length)
         {
-            if (dialog.channelName == channelName)
-            {
-                string frontMsg = "";
-                string rearMsg = "";
-                string fulltext = "";
-                string datetime = "[yyyy-MM-dd HH:mm]";
-                string msg = message.ToString();
-                if (msg.Length >= datetime.Length)
-                {
-                    frontMsg = msg.Substring(0, datetime.Length);
-                    rearMsg = msg.Substring(datetime.Length);
-                    fulltext = fulltext + frontMsg + " " + sender + " : " + rearMsg + "\n";
-                }
-                else
-                    fulltext = message + "\n";
-                //dialog.chatContents += fulltext;
-            }
-            DataSaveText(udc, udc.userId);
-            break;
+            frontMsg = msg.Substring(0, datetime.Length);
+            rearMsg = msg.Substring(datetime.Length);
+            fulltext = fulltext + frontMsg + " " + sender + " : " + rearMsg + "\n";
         }
+        else
+            fulltext = message + "\n";
+
+        udc.channels[channelName].Add(new CustomMsg(sender, frontMsg, rearMsg));
+        DataSaveText(udc, udc.userId);
+
         throw new System.NotImplementedException();
+    }
+    string ObjectToJson(object obj)
+    {
+        return JsonConvert.SerializeObject(obj);
+    }
+
+    T JsonToOject<T>(string jsonData)
+    {
+        return JsonConvert.DeserializeObject<T>(jsonData);
     }
 
     public void OnSubscribed(string[] channels, bool[] results)

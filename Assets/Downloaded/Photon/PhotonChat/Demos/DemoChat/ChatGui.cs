@@ -209,7 +209,7 @@ namespace Photon.Chat.Demo
             {
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
                 this.SendChatMessage(nowtime + this.InputFieldChat.text);
-                DataManager.instance.appendDialog(this.selectedChannelName,
+                DataManager.instance.appendMsg(this.selectedChannelName,
                                                     new CustomMsg(this.UserName, nowtime, this.InputFieldChat.text));
                 this.InputFieldChat.text = "";
             }
@@ -221,7 +221,7 @@ namespace Photon.Chat.Demo
             {
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
                 this.SendChatMessage(nowtime + this.InputFieldChat.text);
-                DataManager.instance.appendDialog(this.selectedChannelName,
+                DataManager.instance.appendMsg(this.selectedChannelName,
                                                     new CustomMsg(this.UserName, nowtime, this.InputFieldChat.text));
                 this.InputFieldChat.text = "";
             }

@@ -1,9 +1,0 @@
-{
-    "userId": "1234",
-    "userName": "Bob",
-    "dialogs": [
-        {
-            "channelName": "Region"
-        }
-    ]
-}
