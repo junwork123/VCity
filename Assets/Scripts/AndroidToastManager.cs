@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Android 기기에서 실행 가능
-public class AndroidToast : MonoBehaviour
-{
 
-    public static AndroidToast instance;
+/// <summary>
+/// Android 기기에서 실행했을 때 Toast 메시지 출력
+/// </summary>
+public class AndroidToastManager : MonoBehaviour
+{
+    public static AndroidToastManager instance;
 
 
 #if UNITY_ANDROID

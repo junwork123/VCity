@@ -8,7 +8,7 @@ public class Interactionable : MonoBehaviour, IInteraction
 {
 
     [SerializeField]
-    GameObject interactionUI;
+    GameObject interactionTextUI;
 
     [SerializeField]
     InteractionType _interType;
@@ -67,7 +67,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     #region Interaciton
     public void ShowInter()
     {
-        interactionUI.SetActive(true);
+        interactionTextUI.SetActive(true);
         SetOutline();
 
         _enable = true;
@@ -78,14 +78,14 @@ public class Interactionable : MonoBehaviour, IInteraction
         if (_enable == false)
             return;
 
-        if ((Input.GetKeyDown(InteractionKeyCode) || ButtonEvent.instance.activeActionButton == true))
+        if ((Input.GetKeyDown(InteractionKeyCode) || ButtonEventManager.instance.activeActionButton == true))
         {
-            ButtonEvent.instance.activeActionButton = false;
+            ButtonEventManager.instance.activeActionButton = false;
 
             // TODO Action
             print("Action : " + gameObject.name);
             #region Action
-            
+
 
             #endregion
         }
@@ -93,7 +93,7 @@ public class Interactionable : MonoBehaviour, IInteraction
 
     public void EndInter()
     {
-        interactionUI.SetActive(false);
+        interactionTextUI.SetActive(false);
         UnsetOutline();
 
         _enable = false;

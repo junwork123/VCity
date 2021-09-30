@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonEvent : MonoBehaviour
+public class ButtonEventManager : MonoBehaviour
 {
-    public static ButtonEvent instance;
+    public static ButtonEventManager instance;
 
 
     public PlayerController playerController;
@@ -21,18 +21,18 @@ public class ButtonEvent : MonoBehaviour
 
     public void OnClickMenuButton()
     {
-        AndroidToast.instance.ShowToast("Menu Button");
+        AndroidToastManager.instance.ShowToast("Menu Button");
     }
 
     public void OnClickActionButton()
     {
-        AndroidToast.instance.ShowToast("Action Button");
+        AndroidToastManager.instance.ShowToast("Action Button");
 
         activeActionButton = true;
     }
 
     public void OnClickSettingButton()
     {
-        AndroidToast.instance.ShowToast("Setting Button");
+        AndroidToastManager.instance.ShowToast("Setting Button");
     }
 }

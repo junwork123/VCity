@@ -243,10 +243,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12cb05b173e33941b570fe0e12b95a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionUI: {fileID: 7599095811892062251}
+  interactionTextUI: {fileID: 7599095811892062251}
   _interType: 0
   InteractionKeyCode: 120
-  interOutline: {fileID: 92906826586889807}
+  interactionRadius: 3
 --- !u!114 &92906826586889807
 MonoBehaviour:
   m_ObjectHideFlags: 0

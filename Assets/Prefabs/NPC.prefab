@@ -434,6 +434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 2
+  lookRange: 4
 --- !u!1 &7386810112228090392
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,10 +495,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12cb05b173e33941b570fe0e12b95a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionUI: {fileID: 7386810111796826011}
+  interactionTextUI: {fileID: 7386810111796826011}
   _interType: 1
   InteractionKeyCode: 120
-  interOutline: {fileID: 2850184789758511346}
+  interactionRadius: 3
 --- !u!114 &2850184789758511346
 MonoBehaviour:
   m_ObjectHideFlags: 0

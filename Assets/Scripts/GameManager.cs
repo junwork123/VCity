@@ -12,16 +12,17 @@ public class GameManager : MonoBehaviour
     void Update()
     {
 #if UNITY_ANDROID
-        // 백버튼을 눌렀을 경우 게임 종료
         if (Application.platform == RuntimePlatform.Android)
+            // 취소 버튼 두번 눌렀을 경우 게임 종료
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (isQuitWait == false)
                 {
-                    AndroidToast.instance.ShowToast("한번 더 누르시면 종료됩니다.");
+                    AndroidToastManager.instance.ShowToast("한번 더 누르시면 종료됩니다.");
                     StartCoroutine(CheckQuitApplication());
                     isQuitWait = true;
                 }
+                // isQuitWait : true
                 else
                 {
                     Application.Quit();
