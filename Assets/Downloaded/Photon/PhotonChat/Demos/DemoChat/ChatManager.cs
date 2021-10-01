@@ -61,8 +61,7 @@ namespace Photon.Chat
 
         public GameObject missingAppIdErrorPanel;
         public GameObject ConnectingLabel;
-
-        public RectTransform ChatPanel;     // set in inspector (to enable/disable panel)
+        public GameObject ChatOutputPanel;
         public GameObject UserIdFormPanel;
         public InputField InputFieldChat;   // set in inspector
         public Text CurrentChannelText;     // set in inspector
@@ -123,7 +122,7 @@ namespace Photon.Chat
             this.StateText.text = "";
             this.StateText.gameObject.SetActive(true);
             this.UserIdText.gameObject.SetActive(true);
-            this.ChatPanel.gameObject.SetActive(false);
+            this.ChatOutputPanel.gameObject.SetActive(false);
             this.ConnectingLabel.SetActive(false);
 
             if (string.IsNullOrEmpty(this.UserName))
@@ -179,15 +178,10 @@ namespace Photon.Chat
                 this.chatClient.Disconnect();
             }
         }
-        public void EnableChatPanel()
+        public void LoadChat(string _channelName)
         {
-            ChatPanel.gameObject.SetActive(true);
-            GetComponentInChildren<Canvas>().sortingOrder = 5;
-        }
-        public void DisableChatPanel()
-        {
-            ChatPanel.gameObject.SetActive(false);
-            GetComponentInChildren<Canvas>().sortingOrder = 0;
+            this.CurrentChannelName.text = _channelName;
+            this.CurrentChannelText.text = DataManager.instance.LoadPreMsg(_channelName);
         }
         public void Update()
         {
@@ -386,8 +380,7 @@ namespace Photon.Chat
 
             this.ConnectingLabel.SetActive(false);
             this.UserIdText.text = "Connected as " + this.UserName;
-            this.CurrentChannelName.text = selectedChannelName;
-            this.CurrentChannelText.text = DataManager.instance.LoadPreMsg(selectedChannelName);
+            LoadChat("Region");
             //this.ChatPanel.gameObject.SetActive(true);
 
             if (this.FriendsList != null && this.FriendsList.Length > 0)

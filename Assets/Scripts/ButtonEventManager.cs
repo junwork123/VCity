@@ -22,7 +22,7 @@ public class ButtonEventManager : MonoBehaviour
     public void OnClickMenuButton()
     {
         AndroidToastManager.instance.ShowToast("Menu Button");
-        FindObjectOfType<Photon.Chat.ChatManager>().EnableChatPanel();
+        FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu(Photon.Chat.ChatMenu.ChannelBar);
     }
 
     public void OnClickActionButton()

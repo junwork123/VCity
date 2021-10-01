@@ -1033,8 +1033,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 168328768073629729, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
-        m_TargetAssemblyTypeName: Photon.Chat.Demo.ChatGui, Assembly-CSharp
-        m_MethodName: EnableChatPanel
+        m_TargetAssemblyTypeName: Photon.Chat.ChatManager, Assembly-CSharp
+        m_MethodName: EnableChannelPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
