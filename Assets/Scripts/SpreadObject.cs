@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// 오브젝트가 생성되었을 때 Button 오브젝트들을 균일한 각도로 배치
+/// </summary>
 public class SpreadObject : MonoBehaviour
 {
     public List<GameObject> childObjects;
     public float radiusRange = 1.5f;
+    float angle;
+    [Range(1, 100)]
+    public float paddingPercent = 10f;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         Transform[] transforms = GetComponentsInChildren<Transform>();
@@ -21,31 +27,23 @@ public class SpreadObject : MonoBehaviour
             }
         }
 
-        // Spread();
-    }
+        // atan(y/x) : 버튼이 인접했을 때 각의 절반
+        float buttonRadius = childObjects[0].transform.localScale.x * 0.5f;
+        // 10f padding 추가
+        angle = Mathf.Atan2(buttonRadius, radiusRange) * Mathf.Rad2Deg * 2 * 1+paddingPercent * 0.01f;
 
-    private void Update()
-    {
-        float halfAngle = Mathf.Atan2(1f, radiusRange);
-        int count = childObjects.Count;
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-            childObjects[0].transform.RotateAround(transform.position, Vector3.back, (count - 1) * halfAngle);
+        Spread();
     }
 
     void Spread()
     {
-        /*
-        범위 : spreadRange
-        중심 축 : (x, y, z) 중 1, 기본 z축
-        */
-
         int count = childObjects.Count;
-        // 0.5f : 버튼 반지름
-        float halfAngle = Mathf.Atan2(0.5f, radiusRange);
         for (int i = 0; i < count; ++i)
         {
-            childObjects[i].transform.RotateAround(transform.position, Vector3.back, (count - 1) * halfAngle);
-            // childObjects[i].transform.RotateAround(transform.position, Vector3.back, halfAngle * 2);
+            // N개일 때 초기위치 (N - 1) * angle * 0.5
+            // 중심을 기준으로 angle만큼 회전하면서 배치
+            childObjects[i].transform.RotateAround(transform.position, Vector3.forward, (count - 1) * angle * 0.5f);
+            childObjects[i].transform.RotateAround(transform.position, Vector3.back, angle * i);
             childObjects[i].transform.localEulerAngles = Vector3.zero;
         }
     }

@@ -10,6 +10,8 @@ public class Interactionable : MonoBehaviour, IInteraction
 
     [SerializeField]
     GameObject interactionTextUI;
+    [SerializeField]
+    GameObject interactionMenuUI;
 
     public KeyCode InteractionKeyCode = KeyCode.X;
     public float interactionRadius = 3f;
@@ -71,11 +73,11 @@ public class Interactionable : MonoBehaviour, IInteraction
 
     public void EndInter()
     {
+        enable = false;
+
         interactionTextUI.SetActive(false);
         UnsetOutline();
         HideInteractionMenu();
-
-        enable = false;
     }
 
     public void NonShowInter()
@@ -89,30 +91,31 @@ public class Interactionable : MonoBehaviour, IInteraction
         if (enable == false)
             return;
 
-        if (ButtonEventManager.instance.activeActionButton == true)
-        {
-            ButtonEventManager.instance.activeActionButton = false;
+        if (ButtonEventManager.instance.activeActionButton == false)
+            return;
 
-            // TODO Action
-            #region Action
-            EndInter();
-            ShowInteractionMenu();
+        print("Start Action");
+        ButtonEventManager.instance.activeActionButton = false;
 
-            // switch (interactionType)
-            // {
-            //     case InteractionType.NPC:
+        // TODO Action
+        #region Action
+        EndInter();
+        ShowInteractionMenu();
 
-            //         break;
-            //     case InteractionType.UNMANNED:
+        // switch (interactionType)
+        // {
+        //     case InteractionType.NPC:
 
-            //         break;
-            //     default:
-            //         break;
-            // }
-            #endregion
+        //         break;
+        //     case InteractionType.UNMANNED:
 
-            // EndAction();
-        }
+        //         break;
+        //     default:
+        //         break;
+        // }
+        #endregion
+
+        // EndAction();
     }
 
     public void EndAction()
@@ -126,12 +129,14 @@ public class Interactionable : MonoBehaviour, IInteraction
     /// </summary>
     public void ShowInteractionMenu()
     {
-
+        print("Show Menu");
+        interactionMenuUI.SetActive(true);
     }
 
     public void HideInteractionMenu()
     {
-
+        print("Hide Menu");
+        interactionMenuUI.SetActive(false);
     }
 
     #region Outline
