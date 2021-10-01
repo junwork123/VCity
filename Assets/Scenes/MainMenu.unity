@@ -931,8 +931,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ConnManager, Assembly-CSharp
+      - m_Target: {fileID: 448453163}
+        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
         m_MethodName: CreateRoom
         m_Mode: 1
         m_Arguments:
@@ -2527,6 +2527,74 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 168328766592805360, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328766592805360, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328766592805360, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 530
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328766592805360, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -60
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767021690536, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767021690536, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767021690536, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1060
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767021690536, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -60
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767099502501, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_FontData.m_VerticalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767099502501, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767246711706, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_FontData.m_VerticalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767246711706, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767336664239, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_FontData.m_VerticalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767336664239, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767610899734, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767610899734, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 168328767694773678, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 49.993195
+      objectReference: {fileID: 0}
     - target: {fileID: 168328768073629728, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
       propertyPath: idInput
       value: 
@@ -2578,10 +2646,6 @@ PrefabInstance:
     - target: {fileID: 168328768073629735, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4621157990001813232, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}

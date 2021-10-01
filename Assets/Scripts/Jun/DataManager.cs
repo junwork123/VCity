@@ -19,13 +19,13 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     void Start()
     {
-        udc = new UserDataContainer();
-        #region @Test 테스트용 코드(추후 삭제)
 
-        udc.userId = "1234";
-        udc.userName = "Bob";
-        udc.channels["Region"].Add(new CustomMsg("Joe", "[yyyy-MM-dd HH:mm]", "Hello world!"));
-        DataSaveText(udc, "1234");
+        #region @Test 테스트용 코드(추후 삭제)
+        // udc = new UserDataContainer();
+        // udc.userId = "1234";
+        // udc.userName = "Bob";
+        // udc.channels["Region"].Add(new CustomMsg("Joe", "[yyyy-MM-dd HH:mm]", "Hello world!"));
+        // DataSaveText(udc, "1234");
         #endregion
     }
 
@@ -60,12 +60,23 @@ public class DataManager : MonoBehaviour, IChatClientListener
         //     break;
         // }
     }
-    public void appendMsg(string _channelName, CustomMsg _msg)
+    public void AppendMsg(string _channelName, CustomMsg _msg)
     {
         udc.channels[_channelName].Add(_msg);
         DataSaveText(udc, udc.userId);
         Debug.Log("append received Messages");
         return;
+    }
+    public string LoadPreMsg(string _channelName){
+        string previousMsg = "";
+        if(udc != null && udc.channels.ContainsKey(_channelName)){
+            foreach (var msg in udc.channels[_channelName])
+            {
+                previousMsg = previousMsg + msg.time + " " + msg.sender + " : " + msg.text + "\n";
+            }
+            
+        }
+        return previousMsg;
     }
     public void DataSaveText<T>(T data, string userId)
     {
@@ -187,7 +198,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 time = timeFormat;
                 text = msg;
             }
-            appendMsg(channelName, new CustomMsg(senders[i], time, text));
+            AppendMsg(channelName, new CustomMsg(senders[i], time, text));
         }
 
         throw new System.NotImplementedException();

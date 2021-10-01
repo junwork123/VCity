@@ -66,6 +66,7 @@ namespace Photon.Chat
         public GameObject UserIdFormPanel;
         public InputField InputFieldChat;   // set in inspector
         public Text CurrentChannelText;     // set in inspector
+        public Text CurrentChannelName;     // set in inspector
         public Toggle ChannelToggleToInstantiate; // set in inspector
 
 
@@ -212,7 +213,7 @@ namespace Photon.Chat
             {
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
                 this.SendChatMessage(nowtime + this.InputFieldChat.text);
-                DataManager.instance.appendMsg(this.selectedChannelName,
+                DataManager.instance.AppendMsg(this.selectedChannelName,
                                                     new CustomMsg(this.UserName, nowtime, this.InputFieldChat.text));
                 this.InputFieldChat.text = "";
             }
@@ -224,7 +225,7 @@ namespace Photon.Chat
             {
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
                 this.SendChatMessage(nowtime + this.InputFieldChat.text);
-                DataManager.instance.appendMsg(this.selectedChannelName,
+                DataManager.instance.AppendMsg(this.selectedChannelName,
                                                     new CustomMsg(this.UserName, nowtime, this.InputFieldChat.text));
                 this.InputFieldChat.text = "";
             }
@@ -384,9 +385,9 @@ namespace Photon.Chat
             }
 
             this.ConnectingLabel.SetActive(false);
-
             this.UserIdText.text = "Connected as " + this.UserName;
-
+            this.CurrentChannelName.text = selectedChannelName;
+            this.CurrentChannelText.text = DataManager.instance.LoadPreMsg(selectedChannelName);
             //this.ChatPanel.gameObject.SetActive(true);
 
             if (this.FriendsList != null && this.FriendsList.Length > 0)
@@ -659,6 +660,7 @@ namespace Photon.Chat
                     fulltext = channel.Messages[i] + "\n";
             }
             this.CurrentChannelText.text = fulltext;
+            this.CurrentChannelName.text = selectedChannelName;
             //this.CurrentChannelText.text = channel.ToStringMessages();
 
 
