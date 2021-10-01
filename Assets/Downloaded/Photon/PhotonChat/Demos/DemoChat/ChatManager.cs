@@ -181,7 +181,7 @@ namespace Photon.Chat
         public void LoadChat(string _channelName)
         {
             this.CurrentChannelName.text = _channelName;
-            this.CurrentChannelText.text = DataManager.instance.LoadPreMsg(_channelName);
+            this.CurrentChannelText.text = DataManager.instance.LoadPreviousMsg(_channelName);
         }
         public void Update()
         {
@@ -652,7 +652,7 @@ namespace Photon.Chat
                 else
                     fulltext = channel.Messages[i] + "\n";
             }
-            this.CurrentChannelText.text = fulltext;
+            this.CurrentChannelText.text += fulltext;
             this.CurrentChannelName.text = selectedChannelName;
             //this.CurrentChannelText.text = channel.ToStringMessages();
 

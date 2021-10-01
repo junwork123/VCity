@@ -67,7 +67,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         Debug.Log("append received Messages");
         return;
     }
-    public string LoadPreMsg(string _channelName){
+    public string LoadPreviousMsg(string _channelName){
         string previousMsg = "";
         if(udc != null && udc.channels.ContainsKey(_channelName)){
             foreach (var msg in udc.channels[_channelName])
