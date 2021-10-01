@@ -9,15 +9,19 @@ public class GameManager : MonoBehaviour
 
 
     public string playerName;
-
+    public KeyCode InteractionKeyCode;
 
     // 취소버튼 대기시간
     public float waitTimeQuitApp = 2f;
     bool isQuitWait;
 
 
-    private void Awake() {
-        
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
     }
 
     void Update()
@@ -45,6 +49,11 @@ public class GameManager : MonoBehaviour
     public void SetPlayerName(string name)
     {
         playerName = name;
+    }
+
+    public void SetInteractionKey(KeyCode keyCode)
+    {
+        InteractionKeyCode = keyCode;
     }
 
     IEnumerator CheckQuitApplication()

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 524974705121343514}
   - component: {fileID: 524974705121343509}
   - component: {fileID: 524974705121343513}
+  - component: {fileID: -4311720817414552497}
   m_Layer: 5
   m_Name: NPCInteractionMenuCanvas
   m_TagString: Untagged
@@ -87,7 +88,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &524974705121343509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,7 +105,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &524974705121343513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,8 +119,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   childObjects: []
-  radiusRange: 1
+  radiusRange: 2
   paddingPercent: 10
+--- !u!114 &-4311720817414552497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524974705121343508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b524762e8fc127a4593b510c4745da41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3371676116732496146
 PrefabInstance:
   m_ObjectHideFlags: 0

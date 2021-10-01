@@ -140,7 +140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7599095812110010779, guid: fef8de61a2272c24aa1d4c03500e5089, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.37
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7599095812110010779, guid: fef8de61a2272c24aa1d4c03500e5089, type: 3}
       propertyPath: m_LocalPosition.y
@@ -148,7 +148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7599095812110010779, guid: fef8de61a2272c24aa1d4c03500e5089, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.94
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7599095812110010779, guid: fef8de61a2272c24aa1d4c03500e5089, type: 3}
       propertyPath: m_LocalRotation.w
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  m_BlockingObjects: 1
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -717,6 +717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
+  InteractionKeyCode: 0
   waitTimeQuitApp: 2
 --- !u!4 &693795179
 Transform:
@@ -1952,9 +1953,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1769933176}
-  - component: {fileID: 1769933177}
   - component: {fileID: 1769933179}
   - component: {fileID: 1769933178}
+  - component: {fileID: 1769933177}
   m_Layer: 5
   m_Name: JoystickRange
   m_TagString: Untagged

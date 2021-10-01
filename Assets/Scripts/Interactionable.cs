@@ -13,7 +13,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     [SerializeField]
     GameObject interactionMenuUI;
 
-    public KeyCode InteractionKeyCode = KeyCode.X;
+    public KeyCode InteractionKeyCode;
     public float interactionRadius = 3f;
     new SphereCollider collider;
     Outline outline;
@@ -22,6 +22,8 @@ public class Interactionable : MonoBehaviour, IInteraction
     // Start is called before the first frame update
     void Start()
     {
+        InteractionKeyCode = GameManager.instance.InteractionKeyCode;
+
         collider = GetComponent<SphereCollider>();
         collider.radius = interactionRadius;
 
@@ -94,7 +96,6 @@ public class Interactionable : MonoBehaviour, IInteraction
         if (ButtonEventManager.instance.activeActionButton == false)
             return;
 
-        print("Start Action");
         ButtonEventManager.instance.activeActionButton = false;
 
         // TODO Action
@@ -129,13 +130,11 @@ public class Interactionable : MonoBehaviour, IInteraction
     /// </summary>
     public void ShowInteractionMenu()
     {
-        print("Show Menu");
         interactionMenuUI.SetActive(true);
     }
 
     public void HideInteractionMenu()
     {
-        print("Hide Menu");
         interactionMenuUI.SetActive(false);
     }
 

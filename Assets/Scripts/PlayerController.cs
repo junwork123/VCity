@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         movementBehavior = GetComponent<PlayerMovement>();
+
+        GameManager.instance.SetInteractionKey(interactionKey);
     }
 
     // Update is called once per frame
@@ -28,7 +30,7 @@ public class PlayerController : MonoBehaviour
         {
             movementBehavior.Move(moveVector);
         }
-        
+
 
         bool isAction = Input.GetKeyDown(interactionKey);
         if (isAction == true)
@@ -44,6 +46,6 @@ public class PlayerController : MonoBehaviour
 
     public void Interaction()
     {
-        ButtonEventManager.instance.activeActionButton = true;
+        ButtonEventManager.instance.OnClickActionButton();
     }
 }
