@@ -10,20 +10,20 @@ using UnityEngine.UI;
 using Photon.Pun;
 using TMPro;
 
-namespace Photon.Chat.Demo
+namespace Photon.Chat
 {
-    [RequireComponent(typeof(ChatGui))]
+    [RequireComponent(typeof(ChatManager))]
     public class NamePickGui : MonoBehaviour
     {
         private const string UserNamePlayerPref = "1234";
 
-        public ChatGui chatNewComponent;
+        public ChatManager chatNewComponent;
 
         public TMP_InputField idInput;
 
         public void Start()
         {
-            this.chatNewComponent = FindObjectOfType<ChatGui>();
+            this.chatNewComponent = FindObjectOfType<ChatManager>();
 
 
             string prefsName = PlayerPrefs.GetString(UserNamePlayerPref);
@@ -45,7 +45,7 @@ namespace Photon.Chat.Demo
 
         public void StartChat()
         {
-            ChatGui chatNewComponent = FindObjectOfType<ChatGui>();
+            ChatManager chatNewComponent = FindObjectOfType<ChatManager>();
             //chatNewComponent.UserName = this.idInput.text.Trim();
             // 유저 데이터를 여기서 불러옴
             UserDataContainer udc = DataManager.instance.LoadDataWithId(idInput.text);

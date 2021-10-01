@@ -7,9 +7,9 @@ using ExitGames.Client.Photon;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class ConnManager : MonoBehaviourPunCallbacks, IOnEventCallback
+public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
-    public static ConnManager instance;
+    public static NetworkManager instance;
     [SerializeField] TMP_InputField UserIdInputField;
     [SerializeField] TMP_InputField UserPwInputField;
     [SerializeField] TMP_InputField roomNameInputField;
@@ -25,7 +25,7 @@ public class ConnManager : MonoBehaviourPunCallbacks, IOnEventCallback
     void Start()
     {
         // 앱 실행 화면의 창 크기를 고정한다.
-        Screen.SetResolution(1920, 1080, FullScreenMode.MaximizedWindow);
+        //Screen.SetResolution(1080, 1920, FullScreenMode.);
 
         // 데이터 송수신 빈도를 초당 30회로 설정한다.
         PhotonNetwork.SendRate = 30;
@@ -87,7 +87,7 @@ public class ConnManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             return;//방 이름이 빈값이면 방 안만들어짐
         }
-        PhotonNetwork.CreateRoom(roomNameInputField.text, new RoomOptions { MaxPlayers = (byte) maxPlayer, IsVisible = true});//포톤 네트워크기능으로 roomNameInputField.text의 이름으로 방을 만든다.
+        PhotonNetwork.CreateRoom(roomNameInputField.text, new RoomOptions { MaxPlayers = (byte)maxPlayer, IsVisible = true });//포톤 네트워크기능으로 roomNameInputField.text의 이름으로 방을 만든다.
         //MenuManager.Instance.OpenMenu("loading");//로딩창 열기
     }
 
@@ -122,7 +122,7 @@ public class ConnManager : MonoBehaviourPunCallbacks, IOnEventCallback
         else
         {
             SceneManager.LoadScene("NetworkTest");
-            
+
             Debug.Log("룸에 입장!");
         }
     }

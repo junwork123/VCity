@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4683146834157109836}
-  - component: {fileID: 4676903276470743330}
+  - component: {fileID: 7333611401655907674}
   m_Layer: 0
-  m_Name: ConnManager
+  m_Name: NetManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,13 +25,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7423038602011934862}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 730.1923, y: 536.6229, z: 337.0498}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4676903276470743330
+--- !u!114 &7333611401655907674
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,4 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910ca3cd24e25a64f93c7c385ea8651c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UserIdInputField: {fileID: 0}
+  UserPwInputField: {fileID: 0}
   roomNameInputField: {fileID: 0}
+  roomListContent: {fileID: 0}
+  roomListItemPrefab: {fileID: 998110447359786807, guid: 0be71690483151c418ddc8b8ed17f2bb, type: 3}

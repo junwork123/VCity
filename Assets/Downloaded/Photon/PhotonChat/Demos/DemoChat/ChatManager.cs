@@ -19,7 +19,7 @@ using Photon.Pun;
 #endif
 
 
-namespace Photon.Chat.Demo
+namespace Photon.Chat
 {
     /// <summary>
     /// This simple Chat UI demonstrate basics usages of the Chat Api
@@ -38,7 +38,7 @@ namespace Photon.Chat.Demo
     /// Note:
     /// Don't forget to call ChatClient.Service() on Update to keep the Chatclient operational.
     /// </remarks>
-    public class ChatGui : MonoBehaviour, IChatClientListener
+    public class ChatManager : MonoBehaviour, IChatClientListener
     {
 
         public string[] ChannelsToJoinOnConnect; // set in inspector. Demo channels to join automatically.
@@ -48,7 +48,6 @@ namespace Photon.Chat.Demo
         public int HistoryLengthToFetch; // set in inspector. Up to a certain degree, previously sent messages can be fetched for context
 
         public string UserName { get; set; }
-        public GameObject chatPanel;
 
         private string selectedChannelName; // mainly used for GUI/input
 
@@ -179,14 +178,18 @@ namespace Photon.Chat.Demo
                 this.chatClient.Disconnect();
             }
         }
-
+        public void EnableChatPanel()
+        {
+            ChatPanel.gameObject.SetActive(true);
+            GetComponentInChildren<Canvas>().sortingOrder = 5;
+        }
+        public void DisableChatPanel()
+        {
+            ChatPanel.gameObject.SetActive(false);
+            GetComponentInChildren<Canvas>().sortingOrder = 0;
+        }
         public void Update()
         {
-            // 메인 메뉴에서 채팅 호출 불가, 탭키로 호출
-            // @TODO : 안드로이드에서 호출 시 호출방법 변경 필요
-            if (SceneManager.GetActiveScene().name != ("MainMenu") && Input.GetKeyDown(KeyCode.Tab))
-                chatPanel.SetActive(!chatPanel.activeSelf);
-
             if (this.chatClient != null)
             {
                 this.chatClient.Service(); // make sure to call this regularly! it limits effort internally, so calling often is ok!

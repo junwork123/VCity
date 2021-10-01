@@ -15,6 +15,6 @@ public class RoomListItem : MonoBehaviour
     }
 
     public void OnClick(){
-        ConnManager.instance.JoinRoom(info);
+        NetworkManager.instance.JoinRoom(info);
     }
 }
