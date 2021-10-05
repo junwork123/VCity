@@ -11,6 +11,6 @@ public class LookForward : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.rotation = Quaternion.LookRotation(Vector3.forward);
+        transform.rotation = Quaternion.LookRotation(Camera.main.transform.forward);
     }
 }

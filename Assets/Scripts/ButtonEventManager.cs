@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class ButtonEventManager : MonoBehaviour
 {
+    enum BUTTON_EVENT
+    {
+        ACTION,
+        MENU,
+        SETTING,
+        MAP,
+    }
+
     public static ButtonEventManager instance;
 
 
@@ -17,6 +25,27 @@ public class ButtonEventManager : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public void OnClick(int buttonId)
+    {
+        switch ((BUTTON_EVENT)buttonId)
+        {
+            case BUTTON_EVENT.ACTION:
+                OnClickActionButton();
+                break;
+            case BUTTON_EVENT.MENU:
+                OnClickMenuButton();
+                break;
+            case BUTTON_EVENT.SETTING:
+                OnClickSettingButton();
+                break;
+            case BUTTON_EVENT.MAP:
+                break;
+            default:
+                print("OnClick default");
+                break;
+        }
     }
 
     public void OnClickMenuButton()
@@ -33,6 +62,11 @@ public class ButtonEventManager : MonoBehaviour
     }
 
     public void OnClickSettingButton()
+    {
+        AndroidToastManager.instance.ShowToast("Setting Button");
+    }
+
+    public void OnClickMapButton()
     {
         AndroidToastManager.instance.ShowToast("Setting Button");
     }

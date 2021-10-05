@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public float waitTimeQuitApp = 2f;
     bool isQuitWait;
 
+    public GameObject joystick;
+
 
     private void Awake()
     {
@@ -44,6 +46,22 @@ public class GameManager : MonoBehaviour
                 }
             }
 #endif
+
+        #region 
+        /// 조이스틱을 사용중일 때 커서가 버튼 위로 이동하면 조이스틱을 비활성화함
+        if (joystick != null)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            LayerMask layerMask = LayerMask.GetMask("UI");
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+            {
+                joystick.SetActive(false);
+            }
+            else
+                joystick.SetActive(true);
+        }
+        #endregion
     }
 
     public void SetPlayerName(string name)

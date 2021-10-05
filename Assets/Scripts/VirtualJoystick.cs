@@ -17,7 +17,6 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
     private float leverRange;
 
     Vector2 inputVector;
-    bool onJoystick;
     bool isInput;
 
     public PlayerController playerController;
@@ -26,12 +25,16 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
     // Start is called before the first frame update
     void Start()
     {
-        joystick.SetActive(false);
-        lever.SetActive(true);
-
         rectTransform = GetComponent<RectTransform>();
 
         sizeOffset = new Vector2(rectTransform.sizeDelta.x * 0.5f, rectTransform.sizeDelta.y * 0.5f);
+    }
+
+    private void OnEnable()
+    {
+        joystick.SetActive(false);
+        lever.SetActive(true);
+        isInput = false;
     }
 
     // Update is called once per frame
@@ -43,6 +46,10 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         }
     }
 
+    private void OnDisable() {
+        DisableJoystick();
+    }
+
     #region Drag Event
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -51,9 +58,6 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (onJoystick == false)
-            return;
-
         isInput = true;
 
         ControlJoystickLever(eventData);
@@ -74,30 +78,6 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
 
     void EnableJoyStick(PointerEventData eventData)
     {
-        // 화면의 다른 UI를 클릭하면 실행하지 않음
-        Ray ray = Camera.main.ScreenPointToRay(eventData.position);
-        RaycastHit hit;
-        LayerMask layerMask = LayerMask.GetMask("UI");
-
-        RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity);
-        for(int i = 0; i < hits.Length; ++i)
-        {
-            print(hits[i].collider.name);
-        }
-
-        // if (Physics.Raycast(ray, out hit))
-        // {
-        //     print(hit.collider.transform.name);
-        //     print(LayerMask.LayerToName(hit.collider.transform.gameObject.layer));
-        //     return;
-        // }
-        // else
-        // {
-        //     print(hit);
-        //     onJoystick = true;
-        // }
-
-
         joystick.transform.position = eventData.position;
         lever.transform.position = eventData.position;
 
