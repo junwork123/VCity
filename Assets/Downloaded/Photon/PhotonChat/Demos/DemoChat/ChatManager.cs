@@ -427,7 +427,8 @@ namespace Photon.Chat
             foreach (string channel in channels)
             {
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
-                this.chatClient.PublishMessage(channel, nowtime + "login success."); // you don't HAVE to send a msg on join but you could.
+                Debug.Log($"login sucussed in channel <{channel}>");
+                //this.chatClient.PublishMessage(channel, nowtime + "login success."); // you don't HAVE to send a msg on join but you could.
 
                 if (this.ChannelToggleToInstantiate != null)
                 {
@@ -636,28 +637,9 @@ namespace Photon.Chat
             }
 
             this.selectedChannelName = channelName;
-            string frontMsg = "";
-            string rearMsg = "";
-            string fulltext = "";
-            string datetime = "[yyyy-MM-dd HH:mm]";
-            for (int i = 0; i < channel.Senders.Count; i++)
-            {
-                string msg = channel.Messages[i].ToString();
-                if (msg.Length >= datetime.Length)
-                {
-                    frontMsg = msg.Substring(0, datetime.Length);
-                    rearMsg = msg.Substring(datetime.Length);
-                    fulltext = fulltext + frontMsg + " " + channel.Senders[i] + " : " + rearMsg + "\n";
-                }
-                else
-                    fulltext = channel.Messages[i] + "\n";
-            }
-            this.CurrentChannelName.text = selectedChannelName;
-            this.CurrentChannelText.text = fulltext;
-            
+            LoadChat(channelName);
+
             //this.CurrentChannelText.text = channel.ToStringMessages();
-
-
             Debug.Log("ShowChannel: " + this.selectedChannelName);
 
             foreach (KeyValuePair<string, Toggle> pair in this.channelToggles)
@@ -665,14 +647,5 @@ namespace Photon.Chat
                 pair.Value.isOn = pair.Key == channelName ? true : false;
             }
         }
-
-        public void OpenDashboard()
-        {
-            Application.OpenURL("https://dashboard.photonengine.com");
-        }
-
-
-
-
     }
 }

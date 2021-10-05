@@ -23,4 +23,8 @@ public class CustomMsg
         time = _msg.time;
         text = _msg.text;
     }
+    public override string ToString()
+    {
+        return time + " " + sender + " : " + text + "\n";
+    }
 }
