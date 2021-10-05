@@ -8,6 +8,7 @@ public class UserDataContainer
 
     public string userId;
     public string userName;
+    public Image profile;
     //public string userPw;
     //public List<Channel> channels;
     public Dictionary<string, List<CustomMsg>> channels;
@@ -16,6 +17,7 @@ public class UserDataContainer
     {
         userId = null;
         userName = "Mr.temp";
+        //profile = new Image;
         channels = new Dictionary<string, List<CustomMsg>>();
         channels["Region"] = new List<CustomMsg>();
         //channels["Guild"] = new List<CustomMsg>();

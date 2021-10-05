@@ -10,7 +10,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager instance;
     // 데이터 매니저는 싱글톤으로 존재
-    UserDataContainer udc { get; set; }
+    public UserDataContainer udc { get; set; }
     void Awake()
     {
         if (instance == null) instance = new DataManager();
@@ -65,17 +65,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         Debug.Log("append received Messages");
         return;
     }
-    public string LoadPreviousMsg(string _channelName){
-        string previousMsg = "";
-        if(udc != null && udc.channels.ContainsKey(_channelName)){
-            foreach (var msg in udc.channels[_channelName])
-            {
-                previousMsg = previousMsg + msg.time + " " + msg.sender + " : " + msg.text + "\n";
-            }
-            
-        }
-        return previousMsg;
-    }
+
     public void SaveAsFile<T>(T data, string userId)
     {
         string path = Application.dataPath + "/UserJson";
@@ -257,7 +247,8 @@ public class DataManager : MonoBehaviour, IChatClientListener
     {
         throw new System.NotImplementedException();
     }
-    private void OnApplicationQuit() {
+    private void OnApplicationQuit()
+    {
         SaveAsFile<UserDataContainer>(udc, udc.userId);
     }
 }
