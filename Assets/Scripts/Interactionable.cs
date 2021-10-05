@@ -70,6 +70,9 @@ public class Interactionable : MonoBehaviour, IInteraction
         interactionTextUI.SetActive(true);
         SetOutline();
 
+        // 버튼 활성화
+        // ButtonEventManager.instance.ActionButton
+
         enable = true;
     }
 
@@ -80,6 +83,10 @@ public class Interactionable : MonoBehaviour, IInteraction
         interactionTextUI.SetActive(false);
         UnsetOutline();
         HideInteractionMenu();
+
+        
+        // 버튼 비활성화
+        // ButtonEventManager.instance.ActionButton
     }
 
     public void NonShowInter()

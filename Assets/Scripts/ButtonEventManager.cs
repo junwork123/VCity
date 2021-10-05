@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonEventManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class ButtonEventManager : MonoBehaviour
 
 
     public PlayerController playerController;
+    public Button ActionButton;
 
     public bool activeActionButton;
 
