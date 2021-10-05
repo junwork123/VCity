@@ -652,8 +652,9 @@ namespace Photon.Chat
                 else
                     fulltext = channel.Messages[i] + "\n";
             }
-            this.CurrentChannelText.text += fulltext;
             this.CurrentChannelName.text = selectedChannelName;
+            this.CurrentChannelText.text = fulltext;
+            
             //this.CurrentChannelText.text = channel.ToStringMessages();
 
 

@@ -135,10 +135,11 @@ MonoBehaviour:
   HistoryLengthToFetch: 0
   missingAppIdErrorPanel: {fileID: 8475502372118003871}
   ConnectingLabel: {fileID: 8475502373123949737}
-  ChatPanel: {fileID: 8475502373494559265}
+  ChatOutputPanel: {fileID: 0}
   UserIdFormPanel: {fileID: 8475502373011532854}
   InputFieldChat: {fileID: 8475502373745120974}
   CurrentChannelText: {fileID: 8475502372701708950}
+  CurrentChannelName: {fileID: 0}
   ChannelToggleToInstantiate: {fileID: 8475502372336476683}
   FriendListUiItemtoInstantiate: {fileID: 8475502373763386630}
   ShowState: 1
@@ -483,8 +484,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.027}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 25}
-  m_SizeDelta: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8475502371958830996
 CanvasRenderer:
