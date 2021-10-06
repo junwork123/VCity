@@ -5,24 +5,24 @@ using UnityEngine;
 
 public class ButtonClickListener : MonoBehaviour
 {
-    int buttonId = -1;
-    Action<int> onClickCallback;
+    public TaskType taskType;
+    Action<TaskType> onClickCallback;
 
-    public void SetButtonID(int id)
+    public void SetTaskType(TaskType type)
     {
-        buttonId = id;
+        taskType = type;
     }
 
-    public void AddClickCallback(Action<int> callback)
+    public void AddClickCallback(Action<TaskType> callback)
     {
         onClickCallback += callback;
     }
 
-    void OnClick()
+    public void OnClick()
     {
         if (onClickCallback == null)
             return;
 
-        onClickCallback(buttonId);
+        onClickCallback(taskType);
     }
 }

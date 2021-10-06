@@ -100,10 +100,10 @@ public class Interactionable : MonoBehaviour, IInteraction
         if (enable == false)
             return;
 
-        if (ButtonEventManager.instance.activeActionButton == false)
+        if (UIButtonEventManager.instance.activeActionButton == false)
             return;
 
-        ButtonEventManager.instance.activeActionButton = false;
+        UIButtonEventManager.instance.activeActionButton = false;
 
         // TODO Action
         #region Action

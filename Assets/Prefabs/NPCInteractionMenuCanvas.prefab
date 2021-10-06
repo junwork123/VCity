@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 524974705121343509}
   - component: {fileID: 524974705121343513}
   - component: {fileID: -4311720817414552497}
+  - component: {fileID: 4625791241358125243}
   m_Layer: 5
   m_Name: NPCInteractionMenuCanvas
   m_TagString: Untagged
@@ -88,7 +89,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &524974705121343509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +134,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b524762e8fc127a4593b510c4745da41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4625791241358125243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524974705121343508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034096bcaa48ed7409a41a2320c79f37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickListener: []
 --- !u!1001 &3371676116732496146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -140,9 +154,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
+    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: taskType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Action Button (2)
+      value: Task Button (2)
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -244,7 +262,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Action Button (3)
+      value: Task Button (3)
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -344,9 +362,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
+    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: taskType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Action Button (1)
+      value: Task Button (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -448,7 +470,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Action Button (4)
+      value: Task Button (4)
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -548,9 +570,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
+    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: taskType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Action Button (0)
+      value: Task Button (0)
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
