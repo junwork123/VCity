@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace Photon.Chat.Demo
+namespace Photon.Chat
 {
     /// <summary>
     /// Friend UI item used to represent the friend status as well as message. 

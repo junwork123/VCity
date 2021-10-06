@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "811728586995",
+    "project_id": "vcity-77962",
+    "storage_bucket": "vcity-77962.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:811728586995:android:f22d6bdca8875cad7e8f86",
+        "android_client_info": {
+          "package_name": "com.vcity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "811728586995-833g080jcmbfnobm9rtpd6p2nfdq30o7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAar-cl_ozayCgSomL70IGokZ5aDp_raQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "811728586995-833g080jcmbfnobm9rtpd6p2nfdq30o7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "811728586995-h7s984s8ddc281s99kpcr5p82q7cr0nk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vcity"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

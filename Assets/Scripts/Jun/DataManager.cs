@@ -5,12 +5,14 @@ using System.IO;
 using Newtonsoft.Json;
 using Photon.Chat;
 using ExitGames.Client.Photon;
+using Firebase.Auth;
+using Firebase.Database;
 
 public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager instance;
     // 데이터 매니저는 싱글톤으로 존재
-    UserDataContainer udc { get; set; }
+    public UserDataContainer udc { get; set; }
     void Awake()
     {
         if (instance == null) instance = new DataManager();
@@ -19,13 +21,13 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     void Start()
     {
-        udc = new UserDataContainer();
-        #region @Test 테스트용 코드(추후 삭제)
 
-        udc.userId = "1234";
-        udc.userName = "Bob";
-        udc.channels["Region"].Add(new CustomMsg("Joe", "[yyyy-MM-dd HH:mm]", "Hello world!"));
-        DataSaveText(udc, "1234");
+        #region @Test 테스트용 코드(추후 삭제)
+        // udc = new UserDataContainer();
+        // udc.userId = "1234";
+        // udc.userName = "Bob";
+        // udc.channels["Region"].Add(new CustomMsg("Joe", "[yyyy-MM-dd HH:mm]", "Hello world!"));
+        // DataSaveText(udc, "1234");
         #endregion
     }
 
@@ -36,40 +38,39 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     public UserDataContainer LoadDataWithId(string _id)
     {
-        udc = DataLoadText<UserDataContainer>(_id);
+        udc = LoadFromFile<UserDataContainer>(_id);
         // 처음 접속하는 유저일 경우 빈 UDC가 반환되므로
         // 이름을 다시 설정해준다
         if (udc == null)
         {
             udc = new UserDataContainer(_id);
-            DataSaveText<UserDataContainer>(udc, udc.userId);
+            SaveAsFile<UserDataContainer>(udc, udc.userId);
         }
 
         return udc;
     }
+
     public void UpdateMsg(string _channelName, string _chatContents)
     {
-        // foreach (var dialog in udc.dialogs)
-        // {
-        //     if (dialog.channelName == _channelName)
-        //     {
-        //         dialog.chatContents = _chatContents + '\n';
-        //     }
-        //     Debug.Log("append Dialog and Sava Data to File as JSON");
-        //     DataSaveText(udc, udc.userId);
-        //     break;
+        // 마지막 메시지가 같지 않다면
+        // 내용을 업데이트
+        // if(_chatContents.EndsWith(udc.channels[_channelName][-1].ToString()) == false){
+        //     _chatContents
         // }
+
+        // udc.channels[_channelName] = 
     }
-    public void appendMsg(string _channelName, CustomMsg _msg)
+    public void AppendMsg(string _channelName, CustomMsg _msg)
     {
         udc.channels[_channelName].Add(_msg);
-        DataSaveText(udc, udc.userId);
+        SaveAsFile(udc, udc.userId);
         Debug.Log("append received Messages");
         return;
     }
-    public void DataSaveText<T>(T data, string userId)
+
+    public void SaveAsFile<T>(T data, string userId)
     {
-        string path = Application.dataPath + "/UserJson";
+        string path = Application.persistentDataPath + "/UserJson";
 
         try
         {
@@ -101,9 +102,9 @@ public class DataManager : MonoBehaviour, IChatClientListener
             Debug.Log("The file could not be opened:" + e.Message);
         }
     }
-    public T DataLoadText<T>(string userId)
+    public T LoadFromFile<T>(string userId)
     {
-        string path = Application.dataPath + "/UserJson";
+        string path = Application.persistentDataPath + "/UserJson";
 
         try
         {
@@ -187,7 +188,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 time = timeFormat;
                 text = msg;
             }
-            appendMsg(channelName, new CustomMsg(senders[i], time, text));
+            AppendMsg(channelName, new CustomMsg(senders[i], time, text));
         }
 
         throw new System.NotImplementedException();
@@ -195,22 +196,22 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     public void OnPrivateMessage(string sender, object message, string channelName)
     {
-        string frontMsg = "";
-        string rearMsg = "";
-        string fulltext = "";
-        string datetime = "[yyyy-MM-dd HH:mm]";
-        string msg = message.ToString();
-        if (msg.Length >= datetime.Length)
-        {
-            frontMsg = msg.Substring(0, datetime.Length);
-            rearMsg = msg.Substring(datetime.Length);
-            fulltext = fulltext + frontMsg + " " + sender + " : " + rearMsg + "\n";
-        }
-        else
-            fulltext = message + "\n";
+        // string frontMsg = "";
+        // string rearMsg = "";
+        // string fulltext = "";
+        // string datetime = "[yyyy-MM-dd HH:mm]";
+        // string msg = message.ToString();
+        // if (msg.Length >= datetime.Length)
+        // {
+        //     frontMsg = msg.Substring(0, datetime.Length);
+        //     rearMsg = msg.Substring(datetime.Length);
+        //     fulltext = fulltext + frontMsg + " " + sender + " : " + rearMsg + "\n";
+        // }
+        // else
+        //     fulltext = message + "\n";
 
-        udc.channels[channelName].Add(new CustomMsg(sender, frontMsg, rearMsg));
-        DataSaveText(udc, udc.userId);
+        // udc.channels[channelName].Add(new CustomMsg(sender, frontMsg, rearMsg));
+        // SaveAsFile(udc, udc.userId);
 
         throw new System.NotImplementedException();
     }
@@ -247,5 +248,9 @@ public class DataManager : MonoBehaviour, IChatClientListener
     public void OnUserUnsubscribed(string channel, string user)
     {
         throw new System.NotImplementedException();
+    }
+    private void OnApplicationQuit()
+    {
+        SaveAsFile<UserDataContainer>(udc, udc.userId);
     }
 }

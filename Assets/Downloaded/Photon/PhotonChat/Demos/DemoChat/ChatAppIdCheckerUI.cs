@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-namespace Photon.Chat.Demo
+namespace Photon.Chat
 {
     /// <summary>
     /// This is used in the Editor Splash to properly inform the developer about the chat AppId requirement.
@@ -43,7 +43,7 @@ namespace Photon.Chat.Demo
 
 #else
 
-namespace Photon.Chat.Demo
+namespace Photon.Chat
 {
     public class ChatAppIdCheckerUI : MonoBehaviour
     {
