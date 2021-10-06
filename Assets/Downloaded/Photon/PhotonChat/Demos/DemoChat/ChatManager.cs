@@ -227,8 +227,6 @@ namespace Photon.Chat
             {
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
                 this.SendChatMessage(nowtime + this.InputFieldChat.text);
-                DataManager.instance.AppendMsg(this.selectedChannelName,
-                                                    new CustomMsg(this.UserName, nowtime, this.InputFieldChat.text));
                 this.InputFieldChat.text = "";
             }
         }
@@ -239,8 +237,6 @@ namespace Photon.Chat
             {
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
                 this.SendChatMessage(nowtime + this.InputFieldChat.text);
-                DataManager.instance.AppendMsg(this.selectedChannelName,
-                                                    new CustomMsg(this.UserName, nowtime, this.InputFieldChat.text));
                 this.InputFieldChat.text = "";
             }
         }
@@ -552,11 +548,32 @@ namespace Photon.Chat
 
         public void OnGetMessages(string channelName, string[] senders, object[] messages)
         {
-            if (channelName.Equals(this.selectedChannelName))
+
+            string time = "";
+            string text = "";
+            string timeFormat = "[yyyy-MM-dd HH:mm]";
+            for (int i = 0; i < senders.Length; i++)
             {
-                // update text
-                this.ShowChannel(this.selectedChannelName);
+                string msg = messages[i].ToString();
+                if (msg.Length >= timeFormat.Length)
+                {
+                    time = msg.Substring(0, timeFormat.Length);
+                    text = msg.Substring(timeFormat.Length);
+
+                }
+                else
+                {
+                    Debug.Log("Can't Find timeFormat in received text");
+                    time = timeFormat;
+                    text = msg;
+                }
+                DataManager.instance.AppendMsg(channelName, new CustomMsg(senders[i], time, text));
             }
+
+            // update text
+            this.ShowChannel(this.selectedChannelName);
+
+            //throw new System.NotImplementedException();
         }
 
         public void OnPrivateMessage(string sender, object message, string channelName)

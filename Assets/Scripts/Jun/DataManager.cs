@@ -68,7 +68,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     public void SaveAsFile<T>(T data, string userId)
     {
-        string path = Application.dataPath + "/UserJson";
+        string path = Application.persistentDataPath + "/UserJson";
 
         try
         {
@@ -102,7 +102,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     public T LoadFromFile<T>(string userId)
     {
-        string path = Application.dataPath + "/UserJson";
+        string path = Application.persistentDataPath + "/UserJson";
 
         try
         {
