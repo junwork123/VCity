@@ -1456,18 +1456,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Photon.Chat.NamePickGui, Assembly-CSharp
-        m_MethodName: StartChat
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 448453163}
         m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
         m_MethodName: Login
@@ -2800,6 +2788,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 168328768073629728, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: idInput
+      value: 
+      objectReference: {fileID: 1383608055}
     - target: {fileID: 168328768073629730, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
       propertyPath: m_Name
       value: ChatManager
