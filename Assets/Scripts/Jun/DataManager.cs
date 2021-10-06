@@ -5,6 +5,8 @@ using System.IO;
 using Newtonsoft.Json;
 using Photon.Chat;
 using ExitGames.Client.Photon;
+using Firebase.Auth;
+using Firebase.Database;
 
 public class DataManager : MonoBehaviour, IChatClientListener
 {

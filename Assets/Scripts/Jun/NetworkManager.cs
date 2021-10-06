@@ -6,6 +6,8 @@ using Photon.Realtime;
 using ExitGames.Client.Photon;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Firebase.Auth;
+using Firebase.Extensions;
 
 public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
@@ -18,12 +20,31 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public static int maxPlayer = 4;
     public static int currentPlayer = 0;
 
+    FirebaseAuth auth;
+    FirebaseUser user;
+    Firebase.DependencyStatus dependencyStatus;
+
     void Awake()
     {
         instance = this;//메서드로 사용
+
     }
     void Start()
     {
+        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        {
+            dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
+            {
+                InitializeFirebase();
+            }
+            else
+            {
+                Debug.LogError("Can't not resolve Firebase Dependencies : " + dependencyStatus);
+            }
+        });
+        dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
         // 앱 실행 화면의 창 크기를 고정한다.
         //Screen.SetResolution(1080, 1920, FullScreenMode.);
 
@@ -36,7 +57,33 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         PhotonNetwork.GameVersion = "0.1";
     }
 
+    void InitializeFirebase()
+    {
+        Debug.Log("Firebase Authentication initialize");
+        auth = FirebaseAuth.DefaultInstance;
+        auth.StateChanged += AuthStateChanged;
+    }
 
+    void AuthStateChanged(object sender, System.EventArgs eventArgs)
+    {
+        if (auth.CurrentUser != user)
+        {
+            bool signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
+            if (signedIn == false && user != null)
+            {
+                Debug.Log("Signed out " + user.UserId);
+            }
+            user = auth.CurrentUser;
+            if (signedIn == true)
+            {
+                Debug.Log("Signed in " + user.UserId);
+            }
+            else
+            {
+                Login();
+            }
+        }
+    }
 
     // 자신 주변 랜덤한 위치에 플레이어 생성
     void MakePlayerInstance()
@@ -68,18 +115,61 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
             return;//ID, PW가 빈값이면 로그인 불가
         }
 
-        // @TODO : 여기에 로그인 값을 인증하는 코드 삽입하기
+        // 제공되는 함수 : 이메일과 비밀번호로 로그인 시켜 줌
+        auth.SignInWithEmailAndPasswordAsync(UserIdInputField.text, UserPwInputField.text).ContinueWith(
+            task =>
+            {
+                if (task.IsCompleted)
+                {
+                    user = task.Result;
+                    Debug.Log(user.DisplayName + "(" + user.UserId + ")님이 로그인 하셨습니다.");
+                    // 로그인 성공 시
+                    // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
+                    PhotonNetwork.NickName = UserIdInputField.text;
 
-
-        // 로그인 성공 시
-        // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
-        int num = Random.Range(0, 1000);
-        PhotonNetwork.NickName = UserIdInputField.text;
-
-        // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
-        PhotonNetwork.AutomaticallySyncScene = true;
-        // 마스터 서버에 접속한다.
-        PhotonNetwork.ConnectUsingSettings();
+                    // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
+                    PhotonNetwork.AutomaticallySyncScene = true;
+                    // 마스터 서버에 접속한다.
+                    PhotonNetwork.ConnectUsingSettings();
+                }
+                else if (task.IsFaulted)
+                {
+                    Debug.Log("에러 발생으로 인하여 로그인에 실패하셨습니다. : " + task.Exception);
+                    return;
+                }
+                else if (task.IsCanceled)
+                {
+                    Debug.Log("로그인이 취소되었습니다.");
+                    return;
+                }
+            }
+        );
+    }
+    public void Logout()
+    {
+        Debug.Log(user.DisplayName + "(" + user.UserId + ")님이 로그아웃 하셨습니다.");
+        auth.SignOut();
+    }
+    public void Register()
+    {
+        // 제공되는 함수 : 이메일과 비밀번호로 회원가입 시켜 줌
+        auth.CreateUserWithEmailAndPasswordAsync(UserIdInputField.text, UserPwInputField.text).ContinueWith(
+            task =>
+            {
+                if (task.IsCompleted)
+                {
+                    Debug.Log(UserIdInputField.text + "로 회원가입\n");
+                }
+                else
+                    Debug.Log("회원가입 실패\n");
+            }
+            );
+    }
+    public FirebaseUser GetCurrentUser(){
+        if(user != null)
+            return user;
+        else   
+            return null;
     }
     public void CreateRoom()//방만들기
     {
