@@ -7,11 +7,8 @@ using UnityEngine;
 /// Android 기기에서 실행했을 때 Toast 메시지 출력
 /// <list>AndroidToastManager.instance.ShowToast(string message)</list>
 /// </summary>
-public class AndroidToastManager : MonoBehaviour
+public class AndroidToastManager : Singleton<AndroidToastManager>
 {
-    public static AndroidToastManager instance;
-
-
 #if UNITY_ANDROID
     AndroidJavaClass unityPlayer;
     AndroidJavaObject currentActivity;
@@ -22,11 +19,6 @@ public class AndroidToastManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-
 #if UNITY_ANDROID
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -37,13 +29,13 @@ public class AndroidToastManager : MonoBehaviour
                 context = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
         }
 #endif
-
-        DontDestroyOnLoad(this.gameObject);
     }
 
     // 기존에 출력중인 Toast 제거후 message 출력
     public void ShowToast(string message)
     {
+        print(message);
+        
 #if UNITY_ANDROID
         CancelToast();
 

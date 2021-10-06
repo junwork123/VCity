@@ -8,6 +8,7 @@ public class ButtonClickListener : MonoBehaviour
     public TaskType taskType;
     Action<TaskType> onClickCallback;
 
+
     public void SetTaskType(TaskType type)
     {
         taskType = type;

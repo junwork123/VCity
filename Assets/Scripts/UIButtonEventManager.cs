@@ -3,21 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIButtonEventManager : MonoBehaviour
+public class UIButtonEventManager : Singleton<UIButtonEventManager>
 {
-    public static UIButtonEventManager instance;
-
-
     [HideInInspector]
     public bool activeActionButton;
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-    }
 
     public void OnClickMenuButton()
     {

@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager instance;
-
-
     public string playerName;
     public KeyCode InteractionKeyCode;
 
@@ -17,14 +14,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject joystick;
 
-
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-    }
 
     void Update()
     {
@@ -47,7 +36,7 @@ public class GameManager : MonoBehaviour
             }
 #endif
 
-        #region 
+        #region joystick
         /// 조이스틱을 사용중일 때 커서가 버튼 위로 이동하면 조이스틱을 비활성화함
         if (joystick != null)
         {
@@ -55,9 +44,10 @@ public class GameManager : MonoBehaviour
             RaycastHit hit;
             LayerMask layerMask = LayerMask.GetMask("UI");
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-            {
+         {
+             AndroidToastManager.instance.ShowToast("Disable Joystick");
                 joystick.SetActive(false);
-            }
+        }
             else
                 joystick.SetActive(true);
         }
