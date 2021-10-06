@@ -17,14 +17,10 @@ namespace Photon.Chat
     {
         private const string UserNamePlayerPref = "1234";
 
-        public ChatManager chatNewComponent;
-
         public TMP_InputField idInput;
 
         public void Start()
         {
-            this.chatNewComponent = FindObjectOfType<ChatManager>();
-
 
             string prefsName = PlayerPrefs.GetString(UserNamePlayerPref);
             if (!string.IsNullOrEmpty(prefsName))
@@ -39,21 +35,10 @@ namespace Photon.Chat
         {
             if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
             {
-                this.StartChat();
+                this.enabled = false;
+                PlayerPrefs.SetString(UserNamePlayerPref, idInput.text);
             }
         }
 
-        public void StartChat()
-        {
-            ChatManager chatNewComponent = FindObjectOfType<ChatManager>();
-            //chatNewComponent.UserName = this.idInput.text.Trim();
-            // 유저 데이터를 여기서 불러옴
-            UserDataContainer udc = DataManager.instance.LoadDataWithId(idInput.text);
-            chatNewComponent.UserName = udc.userName;
-            chatNewComponent.Connect();
-            this.enabled = false;
-
-            PlayerPrefs.SetString(UserNamePlayerPref, udc.userId);
-        }
     }
 }
