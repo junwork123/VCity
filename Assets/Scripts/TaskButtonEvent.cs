@@ -27,6 +27,7 @@ public class TaskButtonEvent : MonoBehaviour
         {
             case TaskType.MESSAGE:
                 AndroidToastManager.instance.ShowToast("Message Button");
+                FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
                 print("Message Button");
                 break;
             case TaskType.TELEPORT:

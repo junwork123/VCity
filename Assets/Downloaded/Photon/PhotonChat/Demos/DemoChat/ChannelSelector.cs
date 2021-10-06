@@ -31,8 +31,8 @@ namespace Photon.Chat
 
             PanelSelector ps = FindObjectOfType<PanelSelector>();
             ps.CloseChatMenu(ChatMenu.ChannelBar);
-            ps.OpenChatMenu(ChatMenu.ChatOutput);
-            ps.OpenChatMenu(ChatMenu.InputBar);
+            ps.OpenChatMenu((int)ChatMenu.ChatOutput);
+            ps.OpenChatMenu((int)ChatMenu.InputBar);
         }
     }
 }

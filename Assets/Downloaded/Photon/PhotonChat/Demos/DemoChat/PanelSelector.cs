@@ -38,10 +38,10 @@ namespace Photon.Chat
             BackgroundPanel.SetActive(false);
             ChatPanel.SetActive(false);
         }
-        public void OpenChatMenu(ChatMenu _menu)
+        public void OpenChatMenu(int _menu)
         {
             OpenMenu();
-            switch (_menu)
+            switch ((ChatMenu)_menu)
             {
                 case ChatMenu.ChannelBar:
                     ChannelBarPanel.SetActive(true);
