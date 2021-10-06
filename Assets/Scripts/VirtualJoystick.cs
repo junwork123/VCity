@@ -25,12 +25,16 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
     // Start is called before the first frame update
     void Start()
     {
-        joystick.SetActive(false);
-        lever.SetActive(true);
-
         rectTransform = GetComponent<RectTransform>();
 
         sizeOffset = new Vector2(rectTransform.sizeDelta.x * 0.5f, rectTransform.sizeDelta.y * 0.5f);
+    }
+
+    private void OnEnable()
+    {
+        joystick.SetActive(false);
+        lever.SetActive(true);
+        isInput = false;
     }
 
     // Update is called once per frame
@@ -40,6 +44,10 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         {
             InputControlVector();
         }
+    }
+
+    private void OnDisable() {
+        DisableJoystick();
     }
 
     #region Drag Event

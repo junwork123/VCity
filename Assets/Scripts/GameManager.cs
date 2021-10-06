@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
+    public string playerName;
+    public KeyCode InteractionKeyCode;
+
     // 취소버튼 대기시간
     public float waitTimeQuitApp = 2f;
     bool isQuitWait;
+
+    public GameObject joystick;
+
 
     void Update()
     {
@@ -29,6 +35,33 @@ public class GameManager : MonoBehaviour
                 }
             }
 #endif
+
+        #region joystick
+        /// 조이스틱을 사용중일 때 커서가 버튼 위로 이동하면 조이스틱을 비활성화함
+        if (joystick != null)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            LayerMask layerMask = LayerMask.GetMask("UI");
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+         {
+             AndroidToastManager.instance.ShowToast("Disable Joystick");
+                joystick.SetActive(false);
+        }
+            else
+                joystick.SetActive(true);
+        }
+        #endregion
+    }
+
+    public void SetPlayerName(string name)
+    {
+        playerName = name;
+    }
+
+    public void SetInteractionKey(KeyCode keyCode)
+    {
+        InteractionKeyCode = keyCode;
     }
 
     IEnumerator CheckQuitApplication()
