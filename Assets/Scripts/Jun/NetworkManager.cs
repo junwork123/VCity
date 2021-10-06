@@ -211,7 +211,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
-            SceneManager.LoadScene("NetworkTest");
+            SceneManager.LoadScene("Net2");
 
             Debug.Log("룸에 입장!");
         }

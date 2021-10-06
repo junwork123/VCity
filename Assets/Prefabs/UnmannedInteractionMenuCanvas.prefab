@@ -263,6 +263,38 @@ PrefabInstance:
       propertyPath: taskType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5088090280799550508, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OpenChatMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Photon.Chat.PanelSelector, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
       value: Task Button (0)

@@ -83,10 +83,6 @@ public class Interactionable : MonoBehaviour, IInteraction
         interactionTextUI.SetActive(false);
         UnsetOutline();
         HideInteractionMenu();
-
-        
-        // 버튼 비활성화
-        // ButtonEventManager.instance.ActionButton
     }
 
     public void NonShowInter()
@@ -105,22 +101,9 @@ public class Interactionable : MonoBehaviour, IInteraction
 
         UIButtonEventManager.instance.activeActionButton = false;
 
-        // TODO Action
         #region Action
         EndInter();
         ShowInteractionMenu();
-
-        // switch (interactionType)
-        // {
-        //     case InteractionType.NPC:
-
-        //         break;
-        //     case InteractionType.UNMANNED:
-
-        //         break;
-        //     default:
-        //         break;
-        // }
         #endregion
 
         // EndAction();
@@ -143,6 +126,9 @@ public class Interactionable : MonoBehaviour, IInteraction
     public void HideInteractionMenu()
     {
         interactionMenuUI.SetActive(false);
+
+        if(GameManager.instance.centerPanel.activeSelf == true)
+            GameManager.instance.HideCenterPanel();
     }
 
     #region Outline
