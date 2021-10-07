@@ -8,9 +8,12 @@ using ExitGames.Client.Photon;
 using Firebase.Auth;
 using Firebase.Database;
 
+// 네트워크 매니저가 넘겨준 아이디를 받아서, 
+// 사용자 정보(이름, 프로필, 대화내역 등)을 불러오기, 저장하기를 수행
 public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager instance;
+    public DatabaseReference reference { get; set; }
     // 데이터 매니저는 싱글톤으로 존재
     public UserDataContainer udc { get; set; }
     void Awake()
@@ -21,7 +24,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     void Start()
     {
-
+        // FirebaseDatabase.DefaultInstance.
         #region @Test 테스트용 코드(추후 삭제)
         // udc = new UserDataContainer();
         // udc.userId = "1234";

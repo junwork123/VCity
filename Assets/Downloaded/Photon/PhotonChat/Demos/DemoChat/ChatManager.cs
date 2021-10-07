@@ -18,7 +18,8 @@ using AuthenticationValues = Photon.Chat.AuthenticationValues;
 using Photon.Pun;
 #endif
 
-
+// 채팅 서버에 연결하고 대화를 동기화, 보내기, 받기 수행
+// 각 동작을 데이터 매니저를 통해 수행
 namespace Photon.Chat
 {
     /// <summary>

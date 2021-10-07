@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 using Firebase.Auth;
 using Firebase.Extensions;
 
+// 1. Firebase에 접속, 아이디를 확인하고, 데이터 매니저(DB)가 값을 불러올 수 있게 함.
+// 2. Photon 서버에 접속하고 서로 연결할 수 있도록 함.
 public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     public static NetworkManager instance;
