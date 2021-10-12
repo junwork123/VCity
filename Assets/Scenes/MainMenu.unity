@@ -2810,6 +2810,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1490999488}
     - target: {fileID: 7333611401655907674, guid: 6f15ce95ec638f0469f92af1ef3b78d7, type: 3}
+      propertyPath: UserNameInputField
+      value: 
+      objectReference: {fileID: 1965453259}
+    - target: {fileID: 7333611401655907674, guid: 6f15ce95ec638f0469f92af1ef3b78d7, type: 3}
       propertyPath: roomNameInputField
       value: 
       objectReference: {fileID: 1847150119}

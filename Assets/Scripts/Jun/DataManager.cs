@@ -47,9 +47,23 @@ public class DataManager : MonoBehaviour, IChatClientListener
         {
             udc = new UserDataContainer(_id, _name);
             udc.channels = new Dictionary<string, List<CustomMsg>>();
-            string json = ObjectToJson(udc);
-            rootRef.Child("users").Child(_id).Push().SetRawJsonValueAsync(json);
-            Debug.Log("[Database] " + "아이디에 대한 DB를 새로 등록했습니다. : " + _id);
+            string json = JsonUtility.ToJson(udc);
+            // users 항목에 id를 먼저 추가
+            Debug.Log("[Database] " + "아이디를 users에 등록 요청 중 : " + _id);
+            System.Threading.Tasks.Task task = rootRef.Child("users").Push().SetRawJsonValueAsync(_id);
+            // id 추가가 완료된 경우 사용자 정보를 추가
+            task.GetAwaiter().OnCompleted(() =>
+            {
+                Debug.Log("[Database] " + "아이디를 users에 새로 등록 완료 : " + _id);
+                Debug.Log("[Database] " + "아이디에 대한 사용자 정보 등록 요청 중 : " + _id);
+                System.Threading.Tasks.Task task2 = rootRef.Child("users").Child(_id).Push().SetRawJsonValueAsync(json);
+                task2.GetAwaiter().OnCompleted(() =>
+                {
+                    Debug.Log("[Database] " + "아이디에 대한 사용자 정보 등록 완료 : " + _id);
+                });
+            });
+
+
         }
         else
         {
@@ -59,28 +73,35 @@ public class DataManager : MonoBehaviour, IChatClientListener
     // CRUD Operation @GET
     public void GetUsers(string _id, string _name)
     {
-        Debug.Log("[Database] " + "아이디 불러오기 시작");
-        rootRef.Child("users").Child(_id).GetValueAsync().ContinueWith(task =>
+        Debug.Log("[Database] " + "사용자 정보 불러오기 시작");
+        rootRef.GetValueAsync().ContinueWith(task =>
         {
-            if (task.IsFaulted)
+            if (task.IsFaulted || task.IsCanceled)
             {
-                Debug.Log("[Database] " + "아이디를 불러오는데 실패했습니다. : " + _id);
+                Debug.Log("[Database] " + "사용자 정보 불러오기 실패 : " + task.Exception);
                 // Handle the error...
             }
             else if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
-                // 아이디가 없다면 등록
                 if (snapshot == null)
+                {
+                    Debug.Log("[Database] " + "사용자 정보를 불러오기 실패");
+                }
+                Debug.Log(snapshot.Key);
+                // 아이디가 등록되어 있는지 확인
+                if (snapshot.HasChild("users") && snapshot.Child("users").HasChild(_id))
+                {
+                    string json = snapshot.Child("users").Child(_id).GetRawJsonValue();
+                    udc = JsonUtility.FromJson<UserDataContainer>(json);
+                    Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + _id);
+                }
+                // 아이디가 없다면 등록
+                else
                 {
                     AddUser(_id, _name);
                 }
-                else
-                {
-                    string json = snapshot.Child(_id).GetRawJsonValue();
-                    udc = JsonConvert.DeserializeObject<UserDataContainer>(json);
-                    Debug.Log("[Database] " + "아이디에 대한 DB가 이미 등록되어 있습니다. : " + _id);
-                }
+
             }
         });
     }

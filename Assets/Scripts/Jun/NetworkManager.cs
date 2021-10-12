@@ -32,7 +32,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     void Awake()
     {
         instance = this;//메서드로 사용
-
+        
     }
     void Start()
     {
@@ -125,7 +125,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         // 이미 로그인 되어있는 경우
         if (user != null)
         {
-            Debug.Log("[Network] " + UserNameInputField.text + "(" + user.UserId + ")님이 이미 로그인되어 있습니다.");
+            Debug.Log("[Network] " + "이미 로그인되어있음 : " + "(" + user.UserId + ")");
             return;
         }
 
@@ -136,7 +136,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 if (task.IsCompleted)
                 {
                     user = task.Result;
-                    Debug.Log("[Network] " + UserNameInputField.text + "(" + user.UserId + ")님이 로그인 하셨습니다.");
+                    Debug.Log("[Network] " + "로그인 완료 : " + "(" + user.UserId + ")");
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
                     DataManager.instance.GetUsers(user.UserId, UserNameInputField.text);
@@ -151,12 +151,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 }
                 else if (task.IsFaulted)
                 {
-                    Debug.Log("[Network] " + "에러 발생으로 인하여 로그인에 실패하셨습니다. : " + task.Exception);
+                    Debug.Log("[Network] " + "로그인 실패 : " + task.Exception);
                     return;
                 }
                 else if (task.IsCanceled)
                 {
-                    Debug.Log("[Network] " + "로그인이 취소되었습니다.");
+                    Debug.Log("[Network] " + "로그인이 취소됨");
                     return;
                 }
             }
@@ -164,7 +164,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     public void Logout()
     {
-        Debug.Log(user.DisplayName + "(" + user.UserId + ")님이 로그아웃 하셨습니다.");
+        Debug.Log("[Network] " + "로그아웃 : " + "(" + user.UserId + ")");
         auth.SignOut();
     }
     public void Register()
