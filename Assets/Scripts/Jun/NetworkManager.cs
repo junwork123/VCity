@@ -6,7 +6,9 @@ using Photon.Realtime;
 using ExitGames.Client.Photon;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Firebase;
 using Firebase.Auth;
+using Firebase.Database;
 using Firebase.Extensions;
 
 // 1. Firebase에 접속, 아이디를 확인하고, 데이터 매니저(DB)가 값을 불러올 수 있게 함.
@@ -129,10 +131,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     Debug.Log(user.DisplayName + "(" + user.UserId + ")님이 로그인 하셨습니다.");
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
-                    DataManager.instance.LoadDataWithId(user.UserId);
-                    Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
-                    chatManager.Connect(user.UserId);
-                    PhotonNetwork.NickName = user.UserId;
+                    Debug.Log("[Database] " + "아이디 불러오기 시작");
+                    
+                    
+                    DataManager.instance.AddUser(user.UserId, user.DisplayName);
+                    DataManager.instance.GetUsers();
+                    // Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
+                    // chatManager.Connect(user.UserId);
+                    // PhotonNetwork.NickName = user.UserId;
 
                     // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
                     PhotonNetwork.AutomaticallySyncScene = true;

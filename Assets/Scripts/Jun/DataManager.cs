@@ -13,7 +13,7 @@ using Firebase.Database;
 public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager instance;
-    public DatabaseReference reference { get; set; }
+    DatabaseReference reference;
     // 데이터 매니저는 싱글톤으로 존재
     public UserDataContainer udc { get; set; }
     void Awake()
@@ -41,19 +41,33 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     public UserDataContainer LoadDataWithId(string _id)
     {
-        // TODO : Firebase DB와 연결하여 정보 받아오기
-        udc = LoadFromFile<UserDataContainer>(_id);
-        // 처음 접속하는 유저일 경우 빈 UDC가 반환되므로
-        // 이름을 다시 설정해준다
-        if (udc == null)
-        {
-            udc = new UserDataContainer(_id);
-            SaveAsFile<UserDataContainer>(udc, udc.userId);
-        }
 
         return udc;
     }
+    public void AddUser(string _id, string _name)
+    {
+        UserDataContainer user = new UserDataContainer(_id, _name);
+        string json = ObjectToJson(user);
+        Firebase.Database.DatabaseReference dbRef = Firebase.Database.FirebaseDatabase.DefaultInstance.RootReference;
+        dbRef.Child("users").Push().SetRawJsonValueAsync(json);
+    }
 
+    public void GetUsers()
+    {
+        Firebase.Database.FirebaseDatabase dbInstance = Firebase.Database.FirebaseDatabase.DefaultInstance;
+        dbInstance.GetReference("users").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error...
+            }
+            else if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                Debug.Log(snapshot);
+            }
+        });
+    }
     public void UpdateMsg(string _channelName, string _chatContents)
     {
         // 마지막 메시지가 같지 않다면
