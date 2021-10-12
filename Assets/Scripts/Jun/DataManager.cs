@@ -41,46 +41,15 @@ public class DataManager : MonoBehaviour, IChatClientListener
             CollectionReference usersRef = db.Collection("users");
             // 기본적인 유저 데이터 컨테이너 생성
             udc = new UserDataContainer(_email, _name);
-            udc.channels = new Dictionary<string, List<CustomMsg>>();
+            udc.channels = new Dictionary<string, string>();
 
-            // 아이디 document로 'users' collection에 추가
-            System.Threading.Tasks.Task taskAppendId = usersRef.AddAsync(_id);
-            Debug.Log("[Database] " + "아이디를 users에 등록 요청 중 : " + _id);
-            taskAppendId.GetAwaiter().OnCompleted(() =>
-           {
-               Debug.Log("[Database] " + "아이디 등록 성공 : " + taskAppendId.ToString());
-               // 아이디 document가 'users' collection에 추가됬다면
-               // 사용자 정보를 해당 아이디 document 아래에 추가
-               System.Threading.Tasks.Task taskAppendInfo = usersRef.Document(_id).UpdateAsync(udc.ToDictionary());
-               Debug.Log("[Database] " + "사용자 정보를 등록 요청 중 : " + _id);
-               taskAppendInfo.GetAwaiter().OnCompleted(async () =>
-               {
-                   Debug.Log("[Database] " + "사용자 정보 등록 성공 : " + taskAppendInfo.ToString());
-                   // 사용자 정보 추가가 완료됬다면
-                   // 불러오기 작업을 통해 등록이 제대로 되었는지 확인
-                   await usersRef.Document(_id).GetSnapshotAsync().ContinueWith(task =>
-                   {
-                       DocumentSnapshot snapshot = task.Result;
-                       if (snapshot.Exists)
-                       {
-                           udc = snapshot.ConvertTo<UserDataContainer>();
-                           Debug.Log("[Database] " + "아이디 및 사용자 정보 등록 확인 완료 : " + udc.userEmail);
-                           Debug.Log(string.Format("Document data for {0} document:", snapshot.Id));
-                           Dictionary<string, object> city = snapshot.ToDictionary();
-                           foreach (KeyValuePair<string, object> pair in city)
-                           {
-                               Debug.Log(string.Format("{0}: {1}", pair.Key, pair.Value));
-                           }
-                       }
-                       else
-                       {
-                           Debug.Log(string.Format("Document {0} does not exist!", snapshot.Id));
-                       }
-                   });
+            DocumentReference docRef = db.Collection("users").Document(_id);
+            Dictionary<string, object> info = udc.ToDictionary();
 
-               });
-           });
-            // users 항목에 id를 먼저 추가
+            docRef.SetAsync(info).ContinueWith(task =>
+            {
+                Debug.Log("Added data to the LA document in the cities collection.");
+            });
         }
         else
         {
@@ -138,7 +107,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     public void AppendMsg(string _channelName, CustomMsg _msg)
     {
-        udc.channels[_channelName].Add(_msg);
+        //udc.channels[_channelName].Add(_msg);
         UpdateDialog(_channelName);
         //SaveAsFile(udc, udc.userId);
         Debug.Log("[Database] " + "append received Messages");
