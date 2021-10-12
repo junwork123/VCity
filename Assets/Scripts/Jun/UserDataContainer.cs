@@ -31,5 +31,14 @@ public class UserDataContainer
         channels["Region"] = new List<CustomMsg>();
         //channels["Guild"] = new List<CustomMsg>();
     }
+    public Dictionary<string, System.Object> ToDictionary()
+    {
+        Dictionary<string, System.Object> result = new Dictionary<string, System.Object>();
+        result["userid"] = userId;
+        result["userName"] = userName;
+        result["profile"] = profile;
+        result["channels"] = channels;
 
+        return result;
+    }
 }

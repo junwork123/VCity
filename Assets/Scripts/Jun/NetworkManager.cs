@@ -18,6 +18,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public static NetworkManager instance;
     [SerializeField] TMP_InputField UserIdInputField;
     [SerializeField] TMP_InputField UserPwInputField;
+    [SerializeField] TMP_InputField UserNameInputField;
     [SerializeField] TMP_InputField roomNameInputField;
     [SerializeField] Transform roomListContent;
     [SerializeField] GameObject roomListItemPrefab;
@@ -115,10 +116,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     public void Login()
     {
+        //ID, PW가 빈값이면 로그인 불가
         if (string.IsNullOrEmpty(UserIdInputField.text) && string.IsNullOrEmpty(UserPwInputField.text))
         {
             Debug.LogError("아이디와 PW를 모두 입력해주세요");
-            return;//ID, PW가 빈값이면 로그인 불가
+            return;
+        }
+        // 이미 로그인 되어있는 경우
+        if (user != null)
+        {
+            Debug.Log("[Network] " + UserNameInputField.text + "(" + user.UserId + ")님이 이미 로그인되어 있습니다.");
+            return;
         }
 
         // 제공되는 함수 : 이메일과 비밀번호로 로그인 시켜 줌
@@ -128,17 +136,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 if (task.IsCompleted)
                 {
                     user = task.Result;
-                    Debug.Log(user.DisplayName + "(" + user.UserId + ")님이 로그인 하셨습니다.");
+                    Debug.Log("[Network] " + UserNameInputField.text + "(" + user.UserId + ")님이 로그인 하셨습니다.");
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
-                    Debug.Log("[Database] " + "아이디 불러오기 시작");
-                    
-                    
-                    DataManager.instance.AddUser(user.UserId, user.DisplayName);
-                    DataManager.instance.GetUsers();
-                    // Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
-                    // chatManager.Connect(user.UserId);
-                    // PhotonNetwork.NickName = user.UserId;
+                    DataManager.instance.GetUsers(user.UserId, UserNameInputField.text);
+                    Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
+                    chatManager.Connect(user.UserId);
+                    PhotonNetwork.NickName = UserNameInputField.text;
 
                     // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
                     PhotonNetwork.AutomaticallySyncScene = true;
@@ -147,12 +151,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 }
                 else if (task.IsFaulted)
                 {
-                    Debug.Log("에러 발생으로 인하여 로그인에 실패하셨습니다. : " + task.Exception);
+                    Debug.Log("[Network] " + "에러 발생으로 인하여 로그인에 실패하셨습니다. : " + task.Exception);
                     return;
                 }
                 else if (task.IsCanceled)
                 {
-                    Debug.Log("로그인이 취소되었습니다.");
+                    Debug.Log("[Network] " + "로그인이 취소되었습니다.");
                     return;
                 }
             }

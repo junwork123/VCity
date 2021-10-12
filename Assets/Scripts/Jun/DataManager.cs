@@ -13,7 +13,7 @@ using Firebase.Database;
 public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager instance;
-    DatabaseReference reference;
+    DatabaseReference rootRef;
     // 데이터 매니저는 싱글톤으로 존재
     public UserDataContainer udc { get; set; }
     void Awake()
@@ -24,6 +24,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     void Start()
     {
+        rootRef = Firebase.Database.FirebaseDatabase.DefaultInstance.RootReference;
         // FirebaseDatabase.DefaultInstance.
         #region @Test 테스트용 코드(추후 삭제)
         // udc = new UserDataContainer();
@@ -39,50 +40,79 @@ public class DataManager : MonoBehaviour, IChatClientListener
     {
 
     }
-    public UserDataContainer LoadDataWithId(string _id)
-    {
-
-        return udc;
-    }
+    // CRUD Operation @POST
     public void AddUser(string _id, string _name)
     {
-        UserDataContainer user = new UserDataContainer(_id, _name);
-        string json = ObjectToJson(user);
-        Firebase.Database.DatabaseReference dbRef = Firebase.Database.FirebaseDatabase.DefaultInstance.RootReference;
-        dbRef.Child("users").Push().SetRawJsonValueAsync(json);
+        if (udc == null)
+        {
+            udc = new UserDataContainer(_id, _name);
+            udc.channels = new Dictionary<string, List<CustomMsg>>();
+            string json = ObjectToJson(udc);
+            rootRef.Child("users").Child(_id).Push().SetRawJsonValueAsync(json);
+            Debug.Log("[Database] " + "아이디에 대한 DB를 새로 등록했습니다. : " + _id);
+        }
+        else
+        {
+            Debug.Log("[Database] " + "이미 UDC 인스턴스가 생성되어 있습니다. : " + udc.userId);
+        }
     }
-
-    public void GetUsers()
+    // CRUD Operation @GET
+    public void GetUsers(string _id, string _name)
     {
-        Firebase.Database.FirebaseDatabase dbInstance = Firebase.Database.FirebaseDatabase.DefaultInstance;
-        dbInstance.GetReference("users").GetValueAsync().ContinueWith(task =>
+        Debug.Log("[Database] " + "아이디 불러오기 시작");
+        rootRef.Child("users").Child(_id).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
+                Debug.Log("[Database] " + "아이디를 불러오는데 실패했습니다. : " + _id);
                 // Handle the error...
             }
             else if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
-                Debug.Log(snapshot);
+                // 아이디가 없다면 등록
+                if (snapshot == null)
+                {
+                    AddUser(_id, _name);
+                }
+                else
+                {
+                    string json = snapshot.Child(_id).GetRawJsonValue();
+                    udc = JsonConvert.DeserializeObject<UserDataContainer>(json);
+                    Debug.Log("[Database] " + "아이디에 대한 DB가 이미 등록되어 있습니다. : " + _id);
+                }
             }
         });
     }
-    public void UpdateMsg(string _channelName, string _chatContents)
+    // CRUD Operation @PUT
+    public void UpdateDialog(string _channelName)
     {
-        // 마지막 메시지가 같지 않다면
-        // 내용을 업데이트
-        // if(_chatContents.EndsWith(udc.channels[_channelName][-1].ToString()) == false){
-        //     _chatContents
-        // }
+        if (udc != null)
+        {
+            string json = JsonConvert.SerializeObject(udc);
+            string key = rootRef.Child("users").Child(udc.userId).Push().Key;
 
-        // udc.channels[_channelName] = 
+            Dictionary<string, System.Object> childUpdates = new Dictionary<string, System.Object>();
+            childUpdates[udc.userId + "/" + _channelName + "/" + key] = udc.channels[_channelName];
+
+            rootRef.Child("users").Child(udc.userId).UpdateChildrenAsync(childUpdates);
+        }
+    }
+    // CRUD Operation @DELETE
+    public void DeleteUser()
+    {
+        Firebase.Database.FirebaseDatabase dbInstance = Firebase.Database.FirebaseDatabase.DefaultInstance;
+        if (udc != null)
+        {
+            rootRef.Child("users").Child(udc.userId).SetValueAsync(null);
+        }
     }
     public void AppendMsg(string _channelName, CustomMsg _msg)
     {
         udc.channels[_channelName].Add(_msg);
-        SaveAsFile(udc, udc.userId);
-        Debug.Log("append received Messages");
+        UpdateDialog(_channelName);
+        //SaveAsFile(udc, udc.userId);
+        Debug.Log("[Database] " + "append received Messages");
         return;
     }
 
