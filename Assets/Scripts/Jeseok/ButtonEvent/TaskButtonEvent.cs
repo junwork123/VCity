@@ -35,7 +35,7 @@ public class TaskButtonEvent : MonoBehaviour
                 break;
             case TaskType.APPLY:
                 AndroidToastManager.instance.ShowToast("Apply Button");
-                GameManager.instance.ShowCenterPanel();
+                UIManager.instance.ShowApplyPanel();
                 break;
             case TaskType.ETC:
                 AndroidToastManager.instance.ShowToast("ETC Button");

@@ -7,6 +7,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     InteractionType _interactionType;
     public InteractionType interactionType { get => _interactionType; set => _interactionType = value; }
     public bool enable { get; set; }
+    bool isOpenTaskMenu;
 
     [SerializeField]
     GameObject interactionTextUI;
@@ -45,6 +46,8 @@ public class Interactionable : MonoBehaviour, IInteraction
     {
         if (other.tag == "Player")
         {
+            enable = true;
+
             ShowInter();
         }
     }
@@ -58,6 +61,8 @@ public class Interactionable : MonoBehaviour, IInteraction
     {
         if (other.tag == "Player")
         {
+            enable = false;
+
             EndInter();
             NonShowInter();
         }
@@ -68,21 +73,21 @@ public class Interactionable : MonoBehaviour, IInteraction
     public void ShowInter()
     {
         interactionTextUI.SetActive(true);
+
         SetOutline();
 
-        // 버튼 활성화
+        // 액션 버튼 활성화
         // ButtonEventManager.instance.ActionButton
-
-        enable = true;
     }
 
     public void EndInter()
     {
-        enable = false;
-
         interactionTextUI.SetActive(false);
+
         UnsetOutline();
         HideInteractionMenu();
+
+        // 액션 버튼 비활성화
     }
 
     public void NonShowInter()
@@ -98,20 +103,26 @@ public class Interactionable : MonoBehaviour, IInteraction
 
         if (UIButtonEventManager.instance.activeActionButton == false)
             return;
-
         UIButtonEventManager.instance.activeActionButton = false;
 
-        #region Action
-        EndInter();
-        ShowInteractionMenu();
+
+        GameManager.instance.joystickRange.SetActive(isOpenTaskMenu);
+
+        #region Close Task Menu, 현재 열려있는 Task 메뉴를 닫음
+        if (isOpenTaskMenu == true)
+        {
+            ShowInter();
+            HideInteractionMenu();
+        }
+        #endregion
+        #region Open Task Menu
+        else
+        {
+            EndInter();
+            ShowInteractionMenu();
+        }
         #endregion
 
-        // EndAction();
-    }
-
-    public void EndAction()
-    {
-        ShowInter();
     }
     #endregion
 
@@ -121,14 +132,16 @@ public class Interactionable : MonoBehaviour, IInteraction
     public void ShowInteractionMenu()
     {
         interactionMenuUI.SetActive(true);
+        isOpenTaskMenu = true;
     }
 
     public void HideInteractionMenu()
     {
         interactionMenuUI.SetActive(false);
+        isOpenTaskMenu = false;
 
-        if(GameManager.instance.centerPanel.activeSelf == true)
-            GameManager.instance.HideCenterPanel();
+        if (UIManager.instance.applyPanel.activeSelf == true)
+            UIManager.instance.HideApplyPanel();
     }
 
     #region Outline

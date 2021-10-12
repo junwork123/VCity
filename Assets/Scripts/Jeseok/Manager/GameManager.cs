@@ -2,25 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-    public string playerName;
+    [HideInInspector]
     public KeyCode InteractionKeyCode;
 
-    // 취소버튼 대기시간
-    public float waitTimeQuitApp = 2f;
-    bool isQuitWait;
-
+    [Header("Player")]
     public GameObject player;
-    public GameObject joystick;
+    public GameObject joystickRange;
+    public string playerName;
 
-    public GameObject centerPanel;
+    [Header("Task")]
     public Transform teleportPosition;
 
+    [Header("System")]
+    // 취소버튼 대기시간
+    public float delayToQuitApp = 2f;
 
-    private void Start() {
-        HideCenterPanel();
+    bool isQuitWait;
+
+
+    private void Start()
+    {
+        UIManager.instance.SetPlayerName();
     }
 
     void Update()
@@ -45,44 +51,29 @@ public class GameManager : Singleton<GameManager>
         }
 
         #region joystick
-        /// 조이스틱을 사용중일 때 커서가 버튼 위로 이동하면 조이스틱을 비활성화함
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        LayerMask layerMask = LayerMask.GetMask("UI");
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-        {
-            // DEBUG
-            // AndroidToastManager.instance.ShowToast("Disable Joystick");
-            joystick.SetActive(false);
+        // /// 조이스틱을 사용중일 때 커서가 버튼 위로 이동하면 조이스틱을 비활성화함
+        // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // RaycastHit hit;
+        // LayerMask layerMask = LayerMask.GetMask("UI");
+        // if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        // {
+        //     // DEBUG
+        //     // AndroidToastManager.instance.ShowToast("Disable Joystick");
+        //     joystickRange.SetActive(false);
 
-            if (Input.GetMouseButton(0))
-                hit.collider.GetComponent<ButtonClickListener>().OnClick();
-        }
-        else
-            joystick.SetActive(true);
+
+        //     // if (Input.GetMouseButton(0))
+        //     //     hit.collider.GetComponent<ButtonClickListener>().OnClick();
+        // }
+        // else
+        //     joystickRange.SetActive(true);
         #endregion
 
-    }
-
-
-    public void SetPlayerName(string name)
-    {
-        playerName = name;
     }
 
     public void SetInteractionKey(KeyCode keyCode)
     {
         InteractionKeyCode = keyCode;
-    }
-
-    public void ShowCenterPanel()
-    {
-        centerPanel.SetActive(true);
-    }
-
-    public void HideCenterPanel()
-    {
-        centerPanel.SetActive(false);
     }
 
     public void TeleportPlayer()
@@ -92,7 +83,7 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator CheckQuitApplication()
     {
-        yield return new WaitForSeconds(waitTimeQuitApp);
+        yield return new WaitForSeconds(delayToQuitApp);
         isQuitWait = false;
     }
 }
