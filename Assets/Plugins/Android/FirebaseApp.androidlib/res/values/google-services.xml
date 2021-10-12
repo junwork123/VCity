@@ -6,6 +6,6 @@
   <string name="project_id" translatable="false">vcity-77962</string>
   <string name="google_api_key" translatable="false">AIzaSyAar-cl_ozayCgSomL70IGokZ5aDp_raQc</string>
   <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAar-cl_ozayCgSomL70IGokZ5aDp_raQc</string>
-  <string name="google_app_id" translatable="false">1:811728586995:android:f22d6bdca8875cad7e8f86</string>
+  <string name="google_app_id" translatable="false">1:811728586995:android:970749775b0890717e8f86</string>
   <string name="default_web_client_id" translatable="false">811728586995-833g080jcmbfnobm9rtpd6p2nfdq30o7.apps.googleusercontent.com</string>
 </resources>

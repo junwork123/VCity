@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UserDataContainer
 {
 
-    public string userId;
+    public string userEmail;
     public string userName;
     public Image profile;
     //public string userPw;
@@ -15,7 +15,7 @@ public class UserDataContainer
 
     public UserDataContainer()
     {
-        userId = null;
+        userEmail = null;
         userName = "Mr.temp";
         //profile = new Image;
         channels = new Dictionary<string, List<CustomMsg>>();
@@ -25,7 +25,7 @@ public class UserDataContainer
 
     public UserDataContainer(string _userId, string _userName = "Ms.temp")
     {
-        userId = _userId;
+        userEmail = _userId;
         userName = _userName;
         channels = new Dictionary<string, List<CustomMsg>>();
         channels["Region"] = new List<CustomMsg>();
@@ -34,7 +34,7 @@ public class UserDataContainer
     public Dictionary<string, System.Object> ToDictionary()
     {
         Dictionary<string, System.Object> result = new Dictionary<string, System.Object>();
-        result["userid"] = userId;
+        result["userid"] = userEmail;
         result["userName"] = userName;
         result["profile"] = profile;
         result["channels"] = channels;

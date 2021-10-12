@@ -139,7 +139,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     Debug.Log("[Network] " + "로그인 완료 : " + "(" + user.UserId + ")");
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
-                    DataManager.instance.GetUsers(user.UserId, UserNameInputField.text);
+                    DataManager.instance.GetUsers(user.UserId, UserIdInputField.text, UserNameInputField.text);
                     Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
                     chatManager.Connect(user.UserId);
                     PhotonNetwork.NickName = UserNameInputField.text;

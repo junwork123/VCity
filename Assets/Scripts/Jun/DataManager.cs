@@ -6,14 +6,14 @@ using Newtonsoft.Json;
 using Photon.Chat;
 using ExitGames.Client.Photon;
 using Firebase.Auth;
-using Firebase.Database;
+using Firebase.Firestore;
 
 // 네트워크 매니저가 넘겨준 아이디를 받아서, 
 // 사용자 정보(이름, 프로필, 대화내역 등)을 불러오기, 저장하기를 수행
 public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager instance;
-    DatabaseReference rootRef;
+    FirebaseFirestore db;
     // 데이터 매니저는 싱글톤으로 존재
     public UserDataContainer udc { get; set; }
     void Awake()
@@ -24,15 +24,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     void Start()
     {
-        rootRef = Firebase.Database.FirebaseDatabase.DefaultInstance.RootReference;
-        // FirebaseDatabase.DefaultInstance.
-        #region @Test 테스트용 코드(추후 삭제)
-        // udc = new UserDataContainer();
-        // udc.userId = "1234";
-        // udc.userName = "Bob";
-        // udc.channels["Region"].Add(new CustomMsg("Joe", "[yyyy-MM-dd HH:mm]", "Hello world!"));
-        // DataSaveText(udc, "1234");
-        #endregion
+
     }
 
     // Update is called once per frame
@@ -41,67 +33,83 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     }
     // CRUD Operation @POST
-    public void AddUser(string _id, string _name)
+    public void AddUser(string _id, string _email, string _name)
     {
         if (udc == null)
         {
-            udc = new UserDataContainer(_id, _name);
+            // users 콜렉션 지정
+            CollectionReference usersRef = db.Collection("users");
+            // 기본적인 유저 데이터 컨테이너 생성
+            udc = new UserDataContainer(_email, _name);
             udc.channels = new Dictionary<string, List<CustomMsg>>();
-            string json = JsonUtility.ToJson(udc);
-            // users 항목에 id를 먼저 추가
+
+            // 아이디 document로 'users' collection에 추가
+            System.Threading.Tasks.Task taskAppendId = usersRef.AddAsync(_id);
             Debug.Log("[Database] " + "아이디를 users에 등록 요청 중 : " + _id);
-            System.Threading.Tasks.Task task = rootRef.Child("users").Push().SetRawJsonValueAsync(_id);
-            // id 추가가 완료된 경우 사용자 정보를 추가
-            task.GetAwaiter().OnCompleted(() =>
-            {
-                Debug.Log("[Database] " + "아이디를 users에 새로 등록 완료 : " + _id);
-                Debug.Log("[Database] " + "아이디에 대한 사용자 정보 등록 요청 중 : " + _id);
-                System.Threading.Tasks.Task task2 = rootRef.Child("users").Child(_id).Push().SetRawJsonValueAsync(json);
-                task2.GetAwaiter().OnCompleted(() =>
-                {
-                    Debug.Log("[Database] " + "아이디에 대한 사용자 정보 등록 완료 : " + _id);
-                });
-            });
+            taskAppendId.GetAwaiter().OnCompleted(() =>
+           {
+               Debug.Log("[Database] " + "아이디 등록 성공 : " + taskAppendId.ToString());
+               // 아이디 document가 'users' collection에 추가됬다면
+               // 사용자 정보를 해당 아이디 document 아래에 추가
+               System.Threading.Tasks.Task taskAppendInfo = usersRef.Document(_id).UpdateAsync(udc.ToDictionary());
+               Debug.Log("[Database] " + "사용자 정보를 등록 요청 중 : " + _id);
+               taskAppendInfo.GetAwaiter().OnCompleted(async () =>
+               {
+                   Debug.Log("[Database] " + "사용자 정보 등록 성공 : " + taskAppendInfo.ToString());
+                   // 사용자 정보 추가가 완료됬다면
+                   // 불러오기 작업을 통해 등록이 제대로 되었는지 확인
+                   await usersRef.Document(_id).GetSnapshotAsync().ContinueWith(task =>
+                   {
+                       DocumentSnapshot snapshot = task.Result;
+                       if (snapshot.Exists)
+                       {
+                           udc = snapshot.ConvertTo<UserDataContainer>();
+                           Debug.Log("[Database] " + "아이디 및 사용자 정보 등록 확인 완료 : " + udc.userEmail);
+                           Debug.Log(string.Format("Document data for {0} document:", snapshot.Id));
+                           Dictionary<string, object> city = snapshot.ToDictionary();
+                           foreach (KeyValuePair<string, object> pair in city)
+                           {
+                               Debug.Log(string.Format("{0}: {1}", pair.Key, pair.Value));
+                           }
+                       }
+                       else
+                       {
+                           Debug.Log(string.Format("Document {0} does not exist!", snapshot.Id));
+                       }
+                   });
 
-
+               });
+           });
+            // users 항목에 id를 먼저 추가
         }
         else
         {
-            Debug.Log("[Database] " + "이미 UDC 인스턴스가 생성되어 있습니다. : " + udc.userId);
+            Debug.Log("[Database] " + "이미 UDC 인스턴스가 생성되어 있습니다. : " + udc.userEmail);
         }
     }
     // CRUD Operation @GET
-    public void GetUsers(string _id, string _name)
+    public void GetUsers(string _id, string _email, string _name)
     {
+        db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
         Debug.Log("[Database] " + "사용자 정보 불러오기 시작");
-        rootRef.GetValueAsync().ContinueWith(task =>
+        CollectionReference cref = db.Collection("users");
+        Debug.Log(cref);
+        DocumentReference document = db.Collection("users").Document(_id);
+        document.GetSnapshotAsync().ContinueWith(task =>
         {
-            if (task.IsFaulted || task.IsCanceled)
+            DocumentSnapshot snapshot = task.Result;
+            if (snapshot.Exists)
             {
-                Debug.Log("[Database] " + "사용자 정보 불러오기 실패 : " + task.Exception);
-                // Handle the error...
+                Debug.Log(snapshot.ToDictionary());
+                //Dictionary<string, object> user = snapshot.ToDictionary();
+                string json = snapshot.ToString();
+                udc = JsonUtility.FromJson<UserDataContainer>(json);
+                Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + udc.userEmail);
             }
-            else if (task.IsCompleted)
+            else
             {
-                DataSnapshot snapshot = task.Result;
-                if (snapshot == null)
-                {
-                    Debug.Log("[Database] " + "사용자 정보를 불러오기 실패");
-                }
-                Debug.Log(snapshot.Key);
-                // 아이디가 등록되어 있는지 확인
-                if (snapshot.HasChild("users") && snapshot.Child("users").HasChild(_id))
-                {
-                    string json = snapshot.Child("users").Child(_id).GetRawJsonValue();
-                    udc = JsonUtility.FromJson<UserDataContainer>(json);
-                    Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + _id);
-                }
-                // 아이디가 없다면 등록
-                else
-                {
-                    AddUser(_id, _name);
-                }
-
+                Debug.Log("[Database] " + "사용자 정보 불러오기 실패");
+                AddUser(_id, _email, _name);
             }
         });
     }
@@ -110,23 +118,23 @@ public class DataManager : MonoBehaviour, IChatClientListener
     {
         if (udc != null)
         {
-            string json = JsonConvert.SerializeObject(udc);
-            string key = rootRef.Child("users").Child(udc.userId).Push().Key;
+            // string json = JsonConvert.SerializeObject(udc);
+            // string key = rootRef.Child("users").Child(udc.userId).Push().Key;
 
-            Dictionary<string, System.Object> childUpdates = new Dictionary<string, System.Object>();
-            childUpdates[udc.userId + "/" + _channelName + "/" + key] = udc.channels[_channelName];
+            // Dictionary<string, System.Object> childUpdates = new Dictionary<string, System.Object>();
+            // childUpdates[udc.userId + "/" + _channelName + "/" + key] = udc.channels[_channelName];
 
-            rootRef.Child("users").Child(udc.userId).UpdateChildrenAsync(childUpdates);
+            // rootRef.Child("users").Child(udc.userId).UpdateChildrenAsync(childUpdates);
         }
     }
     // CRUD Operation @DELETE
     public void DeleteUser()
     {
-        Firebase.Database.FirebaseDatabase dbInstance = Firebase.Database.FirebaseDatabase.DefaultInstance;
-        if (udc != null)
-        {
-            rootRef.Child("users").Child(udc.userId).SetValueAsync(null);
-        }
+        // Firebase.Database.FirebaseDatabase dbInstance = Firebase.Database.FirebaseDatabase.DefaultInstance;
+        // if (udc != null)
+        // {
+        //     rootRef.Child("users").Child(udc.userId).SetValueAsync(null);
+        // }
     }
     public void AppendMsg(string _channelName, CustomMsg _msg)
     {
@@ -320,6 +328,6 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     private void OnApplicationQuit()
     {
-        SaveAsFile<UserDataContainer>(udc, udc.userId);
+        SaveAsFile<UserDataContainer>(udc, udc.userEmail);
     }
 }
