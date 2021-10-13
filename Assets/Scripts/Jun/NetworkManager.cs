@@ -32,7 +32,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     void Awake()
     {
         instance = this;//메서드로 사용
-        
+
     }
     void Start()
     {
@@ -130,7 +130,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
 
         // 제공되는 함수 : 이메일과 비밀번호로 로그인 시켜 줌
-        auth.SignInWithEmailAndPasswordAsync(UserIdInputField.text, UserPwInputField.text).ContinueWith(
+        auth.SignInWithEmailAndPasswordAsync(UserIdInputField.text, UserPwInputField.text).ContinueWithOnMainThread(
             task =>
             {
                 if (task.IsCompleted)

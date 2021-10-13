@@ -90,10 +90,9 @@ public class DataManager : MonoBehaviour, IChatClientListener
         {
             Debug.Log("[Database] " + "사용자 정보 업데이트 시작");
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
-            Debug.Log("[Database] " + "사용자 정보 아이디 : " + udc.Id);
+            Debug.Log("[Database] " + "사용자 정보 업데이트 요청 : " + udc.Id);
             DocumentReference userRef = db.Collection("users").Document(udc.Id);
             Dictionary<string, object> userData = udc.ToDictionary();
-            Debug.Log("[Database] " + "사용자 정보 업데이트 요청");
             userRef.SetAsync(userData).ContinueWithOnMainThread(task =>
             {
                 Debug.Log("[Database] " + "사용자 정보 업데이트 성공");
@@ -123,13 +122,14 @@ public class DataManager : MonoBehaviour, IChatClientListener
             channelRef.SetAsync(channelData).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCompleted)
-                    userRef.UpdateAsync("channels", udc.channels).ContinueWithOnMainThread(task =>
-                                                {
-                                                    if (task.IsCompleted)
-                                                        Debug.Log("[Database] " + "채널 추가 성공");
-                                                    else if (task.IsFaulted)
-                                                        Debug.Log("[Database] " + "채널 추가 실패");
-                                                });
+                    userRef.UpdateAsync("channels", udc.channels)
+                        .ContinueWithOnMainThread(task =>
+                        {
+                            if (task.IsCompleted)
+                                Debug.Log("[Database] " + "채널 추가 성공");
+                            else if (task.IsFaulted)
+                                Debug.Log("[Database] " + "채널 추가 실패");
+                        });
 
             });
 
@@ -148,19 +148,18 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
     }
     // CRUD Operation @GET
-    public Channel GetChannel(string _channelId)
+    public Channel GetChannel(string _channelName)
     {
         if (udc != null && udc.channels != null)
         {
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
-            DocumentReference channelRef = db.Collection("channels").Document(_channelId);
+            DocumentReference channelRef = db.Collection("channels").Document((string)udc.channels[_channelName]);
             channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
                 DocumentSnapshot snapshot = task.Result;
                 if (snapshot.Exists)
                 {
-                    string json = snapshot.ToString();
-                    Channel channel = JsonUtility.FromJson<Channel>(json);
+                    Channel channel = snapshot.ConvertTo<Channel>();
                     Debug.Log("[Database] " + "채널 가져오기 성공");
                     return channel;
                 }
@@ -173,13 +172,45 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
         return null;
     }
+    public void UpdateChannel(Channel _channel)
+    {
+        if (udc != null)
+        {
+            Debug.Log("[Database] " + "채널 업데이트 시작");
+            db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
+            Debug.Log("[Database] " + "채널 업데이트 요청 : " + _channel.Id);
+            DocumentReference channelRef = db.Collection("users").Document(_channel.Id);
+            Dictionary<string, object> channelData = _channel.ToDictionary();
+            Debug.Log("[Database] " + "채널 정보 업데이트 요청");
+            channelRef.UpdateAsync(channelData).ContinueWithOnMainThread(task =>
+            {
+                Debug.Log("[Database] " + "사용자 정보 업데이트 성공");
+            });
+        }
+        else
+        {
+            Debug.Log("[Database] " + "띠요옹");
+        }
 
+    }
     public void AppendMsg(string _channelName, CustomMsg _msg)
     {
-        //udc.channels[_channelName].Add(_msg);
         //UpdateDialog(_channelName);
         //SaveAsFile(udc, udc.userId);
         Debug.Log("[Database] " + "append received Messages");
+        if (udc != null)
+        {
+            Debug.Log("[Database] " + "메시지 추가 시작");
+            db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
+
+            Channel channel = GetChannel(_channelName);
+            channel.ChatContents.Add(_msg);
+            UpdateChannel(channel);
+        }
+        else
+        {
+            Debug.Log("[Database] " + "메시지 추가 실패");
+        }
         return;
     }
 
@@ -223,7 +254,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 time = timeFormat;
                 text = msg;
             }
-            AppendMsg(channelName, new CustomMsg(senders[i], time, text));
+            //AppendMsg(channelName, new CustomMsg(senders[i], time, text));
         }
 
         throw new System.NotImplementedException();

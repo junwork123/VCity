@@ -182,28 +182,29 @@ namespace Photon.Chat
         }
         public void LoadChat(string _channelName)
         {
-            // string previousMsg = "";
-            // if (DataManager.instance.udc != null && DataManager.instance.udc.channels.ContainsKey(_channelName))
-            // {
-            //     // // [yyyy-MM-dd HH:mm]
-            //     // string day = "";
-            //     // // TODO : 메시지 생성 및 좌우 정렬
-            //     // //GameObject msg = Instantiate<GameObject>();
-            //     // foreach (var msg in DataManager.instance.udc.channels[_channelName])
-            //     // {
-            //     //     // 날짜가 다를 경우에만
-            //     //     // 채팅내역에 한번 표시되도록 한다
-            //     //     // if (day != msg.time.Substring(1, "yyyy-MM-dd".Length))
-            //     //     // {
-            //     //     //     day = msg.time.Substring(1, "yyyy-MM-dd".Length);
-            //     //     //     previousMsg = previousMsg + "> " + day + '\n';
-            //     //     // }
-            //     //     // previousMsg = previousMsg + msg.sender + " : " + msg.text
-            //     //     //                           + " [" + msg.time.Substring("[yyyy-MM-dd ".Length) + "\n";
-            //     // }
-            //     // this.CurrentChannelName.text = _channelName;
-            //     // this.CurrentChannelText.text = previousMsg;
-            // }
+            string previousMsg = "";
+            Channel channel = DataManager.instance.GetChannel(_channelName);
+            if (channel != null)
+            {
+                // [yyyy-MM-dd HH:mm]
+                string day = "";
+                // TODO : 메시지 생성 및 좌우 정렬
+                //GameObject msg = Instantiate<GameObject>();
+                foreach (var msg in channel.ChatContents)
+                {
+                    //날짜가 다를 경우에만
+                    //채팅내역에 한번 표시되도록 한다
+                    if (day != msg.time.Substring(1, "yyyy-MM-dd".Length))
+                    {
+                        day = msg.time.Substring(1, "yyyy-MM-dd".Length);
+                        previousMsg = previousMsg + "> " + day + '\n';
+                    }
+                    previousMsg = previousMsg + msg.sender + " : " + msg.text
+                                              + " [" + msg.time.Substring("[yyyy-MM-dd ".Length) + "\n";
+                }
+                this.CurrentChannelName.text = _channelName;
+                this.CurrentChannelText.text = previousMsg;
+            }
         }
         public void Update()
         {
@@ -398,7 +399,7 @@ namespace Photon.Chat
 
             this.ConnectingLabel.SetActive(false);
             this.UserIdText.text = "Connected as " + this.UserName;
-            LoadChat("Region");
+            //LoadChat("Region");
             //this.ChatPanel.gameObject.SetActive(true);
 
             if (this.FriendsList != null && this.FriendsList.Length > 0)
@@ -676,7 +677,7 @@ namespace Photon.Chat
             }
 
             this.selectedChannelName = channelName;
-            LoadChat(channelName);
+            //LoadChat(channelName);
 
             //this.CurrentChannelText.text = channel.ToStringMessages();
             Debug.Log("ShowChannel: " + this.selectedChannelName);
