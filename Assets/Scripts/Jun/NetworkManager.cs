@@ -61,6 +61,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         Debug.Log("Firebase Authentication initialize");
         auth = FirebaseAuth.DefaultInstance;
+        // 재접속 시 함수 실행
         auth.StateChanged += AuthStateChanged;
     }
 
@@ -112,6 +113,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (string.IsNullOrEmpty(UserIdInputField.text) && string.IsNullOrEmpty(UserPwInputField.text))
         {
+            Debug.LogError("아이디와 PW를 모두 입력해주세요");
             return;//ID, PW가 빈값이면 로그인 불가
         }
 
@@ -125,7 +127,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     Debug.Log(user.DisplayName + "(" + user.UserId + ")님이 로그인 하셨습니다.");
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
-                    PhotonNetwork.NickName = UserIdInputField.text;
+                    DataManager.instance.LoadDataWithId(user.UserId);
+                    Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
+                    chatManager.Connect(user.UserId);
+                    PhotonNetwork.NickName = user.UserId;
 
                     // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
                     PhotonNetwork.AutomaticallySyncScene = true;
@@ -165,10 +170,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
             );
     }
-    public FirebaseUser GetCurrentUser(){
-        if(user != null)
+    public FirebaseUser GetCurrentUser()
+    {
+        if (user != null)
             return user;
-        else   
+        else
             return null;
     }
     public void CreateRoom()//방만들기
@@ -242,5 +248,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public override void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
+    }
+    public void OnApplicationQuit()
+    {
+        Logout();
     }
 }

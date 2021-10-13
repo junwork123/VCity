@@ -38,6 +38,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     public UserDataContainer LoadDataWithId(string _id)
     {
+        // TODO : Firebase DB와 연결하여 정보 받아오기
         udc = LoadFromFile<UserDataContainer>(_id);
         // 처음 접속하는 유저일 경우 빈 UDC가 반환되므로
         // 이름을 다시 설정해준다

@@ -145,8 +145,9 @@ namespace Photon.Chat
             }
         }
 
-        public void Connect()
+        public void Connect(string _id)
         {
+            this.UserName = _id;
             this.UserIdFormPanel.gameObject.SetActive(false);
 
             this.chatClient = new ChatClient(this);
