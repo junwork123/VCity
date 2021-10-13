@@ -3,39 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Firebase.Firestore.FirestoreData]
 public class UserDataContainer
 {
+    [Firebase.Firestore.FirestoreProperty] public string Id { get; set; }
+    [Firebase.Firestore.FirestoreProperty] public string Email { get; set; }
+    [Firebase.Firestore.FirestoreProperty] public string Name { get; set; }
+    [Firebase.Firestore.FirestoreProperty] public string Profile { get; set; }
 
-    public string userEmail;
-    public string userName;
-    public Image profile;
-
-    // 채널명, 채널명에 대한 Firestore 참조값
-    public Dictionary<string, string> channels;
+    // <친구id, 채널명에 대한 Firestore 참조값>
+    [Firebase.Firestore.FirestoreProperty] public Dictionary<string, object> friends { get; set; }
+    // <채널명, 채널명에 대한 Firestore 참조값>
+    [Firebase.Firestore.FirestoreProperty] public Dictionary<string, object> channels { get; set; }
 
     public UserDataContainer()
     {
-        userEmail = null;
-        userName = "Mr.temp";
-        //profile = new Image;
-        channels = new Dictionary<string, string>();
+        Id = null;
+        Email = null;
+        Name = "Mr.temp";
+        Profile = null;
+        friends = new Dictionary<string, object>();
+        channels = new Dictionary<string, object>();
         channels["region"] = "/rooms/region";
         //channels["Guild"] = new List<CustomMsg>();
     }
 
-    public UserDataContainer(string _userEmail, string _userName = "Ms.temp")
+    public UserDataContainer(string _userId, string _userEmail, string _userName = "Ms.temp")
     {
-        userEmail = _userEmail;
-        userName = _userName;
-        channels = new Dictionary<string, string>();
-        channels["region"] = "/rooms/region";
+        Id = _userId;
+        Email = _userEmail;
+        Name = _userName;
+        Profile = null;
+        friends = new Dictionary<string, object>();
+        channels = new Dictionary<string, object>();
+        channels["region"] = null;
     }
     public Dictionary<string, System.Object> ToDictionary()
     {
         Dictionary<string, System.Object> result = new Dictionary<string, System.Object>();
-        result["Email"] = userEmail;
-        result["Name"] = userName;
-        result["profile"] = profile;
+        result["id"] = Id;
+        result["Email"] = Email;
+        result["Name"] = Name;
+        result["profile"] = Profile;
+        result["friends"] = friends;
         result["channels"] = channels;
 
         return result;
