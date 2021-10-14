@@ -74,19 +74,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (auth.CurrentUser != user)
         {
-            bool signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
+            bool signedIn = (user != auth.CurrentUser && auth.CurrentUser != null);
             if (signedIn == false && user != null)
             {
                 Debug.Log("Signed out " + user.UserId);
             }
             user = auth.CurrentUser;
-            if (signedIn == true)
+            if (signedIn == true && user != null)
             {
                 Debug.Log("Signed in " + user.UserId);
             }
             else
             {
-                Login();
+                //Login();
             }
         }
     }
@@ -142,7 +142,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     DataManager.instance.GetUser(user.UserId, UserIdInputField.text, UserNameInputField.text);
                     //DataManager.instance.AddUser(user.UserId, UserIdInputField.text, UserNameInputField.text);
                     Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
-                    chatManager.Connect(user.UserId);
+                    chatManager.Connect(UserNameInputField.text);
                     PhotonNetwork.NickName = UserNameInputField.text;
 
                     // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
@@ -176,12 +176,50 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
             {
                 if (task.IsCompleted)
                 {
+                    user = task.Result;
+                    Firebase.Auth.UserProfile profile = new Firebase.Auth.UserProfile
+                    {
+                        DisplayName = UserNameInputField.text,
+                        PhotoUrl = new System.Uri("https://example.com/jane-q-user/profile.jpg"),
+                    };
+                    user.UpdateUserProfileAsync(profile).ContinueWith(task =>
+                    {
+                        if (task.IsCanceled)
+                        {
+                            Debug.LogError("UpdateUserProfileAsync was canceled.");
+                            return;
+                        }
+                        if (task.IsFaulted)
+                        {
+                            Debug.LogError("UpdateUserProfileAsync encountered an error: " + task.Exception);
+                            return;
+                        }
+
+                        Debug.Log("User profile updated successfully.");
+                    });
+                    user.UpdateEmailAsync(UserIdInputField.text).ContinueWith(task =>
+                    {
+                        if (task.IsCanceled)
+                        {
+                            Debug.LogError("UpdateUserProfileAsync was canceled.");
+                            return;
+                        }
+                        if (task.IsFaulted)
+                        {
+                            Debug.LogError("UpdateUserProfileAsync encountered an error: " + task.Exception);
+                            return;
+                        }
+
+                        Debug.Log("User profile updated successfully.");
+                    });
+
                     Debug.Log(UserIdInputField.text + "로 회원가입\n");
+                    DataManager.instance.AddUser(user.UserId, user.Email, user.DisplayName);
+                    DataManager.instance.SubcribeChannel(DataManager.REGION_CHANNEL_ID);
                 }
                 else
                     Debug.Log("회원가입 실패\n");
-            }
-            );
+            });
     }
     public FirebaseUser GetCurrentUser()
     {

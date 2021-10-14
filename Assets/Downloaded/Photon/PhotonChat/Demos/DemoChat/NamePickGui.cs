@@ -15,17 +15,25 @@ namespace Photon.Chat
     [RequireComponent(typeof(ChatManager))]
     public class NamePickGui : MonoBehaviour
     {
-        private const string UserNamePlayerPref = "1234";
+        private const string UserIdPref = "junwork123@gmail.com";
+        private const string UserPwPref = "wnswns95";
+        private const string UserNamePref = "jun";
 
         public TMP_InputField idInput;
+        public TMP_InputField pwInput;
+        public TMP_InputField nameInput;
 
         public void Start()
         {
 
-            string prefsName = PlayerPrefs.GetString(UserNamePlayerPref);
-            if (!string.IsNullOrEmpty(prefsName))
+            string prefsId = PlayerPrefs.GetString(UserIdPref);
+            string prefsPw = PlayerPrefs.GetString(UserPwPref);
+            string prefsName = PlayerPrefs.GetString(UserNamePref);
+            if (!string.IsNullOrEmpty(prefsId) && !string.IsNullOrEmpty(prefsPw) && !string.IsNullOrEmpty(prefsName))
             {
-                this.idInput.text = prefsName;
+                this.idInput.text = prefsId;
+                this.pwInput.text = prefsPw;
+                this.nameInput.text = prefsName;
             }
         }
 
@@ -33,11 +41,10 @@ namespace Photon.Chat
         // new UI will fire "EndEdit" event also when loosing focus. So check "enter" key and only then StartChat.
         public void EndEditOnEnter()
         {
-            if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
-            {
-                this.enabled = false;
-                PlayerPrefs.SetString(UserNamePlayerPref, idInput.text);
-            }
+            this.enabled = false;
+            PlayerPrefs.SetString(UserIdPref, idInput.text);
+            PlayerPrefs.SetString(UserPwPref, pwInput.text);
+            PlayerPrefs.SetString(UserNamePref, nameInput.text);
         }
 
     }

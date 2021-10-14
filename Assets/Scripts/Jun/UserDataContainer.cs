@@ -24,7 +24,6 @@ public class UserDataContainer
         Profile = null;
         friends = new Dictionary<string, object>();
         channels = new Dictionary<string, object>();
-        channels["region"] = "/rooms/region";
         //channels["Guild"] = new List<CustomMsg>();
     }
 
@@ -36,7 +35,6 @@ public class UserDataContainer
         Profile = null;
         friends = new Dictionary<string, object>();
         channels = new Dictionary<string, object>();
-        channels["region"] = null;
     }
     public Dictionary<string, System.Object> ToDictionary()
     {

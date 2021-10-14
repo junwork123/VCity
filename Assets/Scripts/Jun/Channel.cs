@@ -36,4 +36,7 @@ public class Channel
 
         return result;
     }
+    public string DisplayName(){
+        return Name;
+    }
 }

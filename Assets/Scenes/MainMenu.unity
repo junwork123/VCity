@@ -3254,6 +3254,14 @@ PrefabInstance:
       propertyPath: idInput
       value: 
       objectReference: {fileID: 1383608055}
+    - target: {fileID: 168328768073629728, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: pwInput
+      value: 
+      objectReference: {fileID: 1490999488}
+    - target: {fileID: 168328768073629728, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
+      propertyPath: nameInput
+      value: 
+      objectReference: {fileID: 1965453259}
     - target: {fileID: 168328768073629730, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
       propertyPath: m_Name
       value: ChatManager
