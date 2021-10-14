@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum InteractionType
+public enum ObjectType
 {
     NPC,
     UNMANNED,
@@ -17,7 +17,7 @@ public interface IInteraction
     /// <summary>
     /// 상호작용 종류(NPC, UNMANNED, ...).
     /// </summary>
-    InteractionType interactionType { get; set; }
+    ObjectType objectType { get; set; }
     /// <summary>
     /// 플레이어가 이 오브젝트를 사용할 수 있는지 여부.
     /// </summary>
