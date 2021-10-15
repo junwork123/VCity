@@ -27,20 +27,18 @@ public class TaskButtonEvent : MonoBehaviour
         {
             case TaskType.MESSAGE:
                 AndroidToastManager.instance.ShowToast("Message Button");
-                FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
-                print("Message Button");
+                // FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
                 break;
             case TaskType.TELEPORT:
                 AndroidToastManager.instance.ShowToast("Teleport Button");
-                print("Teleport Button");
+                GameManager.instance.TeleportPlayer();
                 break;
             case TaskType.APPLY:
                 AndroidToastManager.instance.ShowToast("Apply Button");
-                print("Apply Button");
+                UIManager.instance.ShowApplyPanel();
                 break;
             case TaskType.ETC:
                 AndroidToastManager.instance.ShowToast("ETC Button");
-                print("ETC Button");
                 break;
             default:
                 break;

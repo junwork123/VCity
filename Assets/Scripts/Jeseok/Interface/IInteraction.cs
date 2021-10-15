@@ -27,11 +27,11 @@ public interface IInteraction
 
 
     /// <summary>
-    /// 범위 내에서 상호작용할 수 있는 오브젝트임을 출력하는 동작.
+    /// 범위 내에서 상호작용할 수 있는 오브젝트임을 출력하는 동작
     /// </summary>
     void ShowInter();
     /// <summary>
-    /// 범위 밖으로 오브젝트가 나갔을 때 동작
+    /// 상호작용을 비활성화하는 동작
     /// </summary> 
     void EndInter();
     /// <summary>
@@ -42,8 +42,4 @@ public interface IInteraction
     /// ShowInter 상태에서 enable이 true이고 Action 키를 입력 실행했을 때 동작.
     /// </summary>
     void Action();
-    /// <summary>
-    /// Action이 끝난 후 동작
-    /// </summary>
-    void EndAction();
 }
