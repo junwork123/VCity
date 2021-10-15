@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Firebase.Firestore.FirestoreData]
+
 public class Channel
 {
-    [Firebase.Firestore.FirestoreProperty] public string Id { get; set; }
+    public string Id { get; set; }
 
-    [Firebase.Firestore.FirestoreProperty] public string Name { get; set; }
+    public string Name { get; set; }
 
-    [Firebase.Firestore.FirestoreProperty] public string Kind { get; set; }
+    public string Kind { get; set; }
 
-    [Firebase.Firestore.FirestoreProperty] public List<string> Members { get; set; }
+    public List<string> Members { get; set; }
 
-    [Firebase.Firestore.FirestoreProperty] public List<CustomMsg> ChatContents { get; set; }
+    public List<CustomMsg> ChatContents { get; set; }
 
     public Channel(string _channelId, string _memberId, string _memberId2)
     {
@@ -36,7 +36,8 @@ public class Channel
 
         return result;
     }
-    public string DisplayName(){
+    public string DisplayName()
+    {
         return Name;
     }
 }

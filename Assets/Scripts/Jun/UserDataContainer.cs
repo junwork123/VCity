@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Firebase.Firestore.FirestoreData]
+
 public class UserDataContainer
 {
-    [Firebase.Firestore.FirestoreProperty] public string Id { get; set; }
-    [Firebase.Firestore.FirestoreProperty] public string Email { get; set; }
-    [Firebase.Firestore.FirestoreProperty] public string Name { get; set; }
-    [Firebase.Firestore.FirestoreProperty] public string Profile { get; set; }
+    public string Id { get; set; }
+    public string Email { get; set; }
+    public string Name { get; set; }
+    public string Profile { get; set; }
 
     // <친구id, 채널명에 대한 Firestore 참조값>
-    [Firebase.Firestore.FirestoreProperty] public Dictionary<string, object> friends { get; set; }
+    public Dictionary<string, object> friends { get; set; }
     // <채널명, 채널명에 대한 Firestore 참조값>
-    [Firebase.Firestore.FirestoreProperty] public Dictionary<string, object> channels { get; set; }
+    public Dictionary<string, object> channels { get; set; }
 
     public UserDataContainer()
     {
@@ -36,9 +36,9 @@ public class UserDataContainer
         friends = new Dictionary<string, object>();
         channels = new Dictionary<string, object>();
     }
-    public Dictionary<string, System.Object> ToDictionary()
+    public Dictionary<string, object> ToDictionary()
     {
-        Dictionary<string, System.Object> result = new Dictionary<string, System.Object>();
+        Dictionary<string, object> result = new Dictionary<string, object>();
         result["id"] = Id;
         result["Email"] = Email;
         result["Name"] = Name;

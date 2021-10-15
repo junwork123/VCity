@@ -17,7 +17,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     public const string REGION_CHANNEL_ID = "hf5yBbH0JEyNBJpmLI6p";
     FirebaseFirestore db;
     // 데이터 매니저는 싱글톤으로 존재
-    static UserDataContainer udc { get; set; }
+    public UserDataContainer udc { get; set; }
     void Awake()
     {
         if (instance == null) instance = new DataManager();
@@ -37,6 +37,9 @@ public class DataManager : MonoBehaviour, IChatClientListener
     // CRUD Operation @POST
     public void AddUser(string _id, string _email, string _name)
     {
+        // 유저를 먼저 불러오도록 요청한 뒤
+        // 없다면 유저를 새로 생성한다
+        udc = GetUser(_id);
         if (udc == null)
         {
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
@@ -59,7 +62,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
     }
     // CRUD Operation about 'users' collection @GET
-    public UserDataContainer GetUser(string _id, string _email, string _name)
+    public UserDataContainer GetUser(string _id)
     {
         db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
         Debug.Log("[Database] " + "사용자 정보 불러오기 시작");
@@ -77,10 +80,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             {
                 // 유저 신규 생성 및 Region 채널을 구독 추가
                 Debug.Log("[Database] " + "사용자 정보 불러오기 실패");
-                AddUser(_id, _email, _name);
-                SubcribeChannel(REGION_CHANNEL_ID);
             }
-            Debug.Log("[Database] " + "GetUser 종료");
             return udc;
         });
         return null;
@@ -151,23 +151,32 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     public void SubcribeChannel(string _channelId)
     {
-        Channel channel = GetChannel(_channelId);
-        if (udc.channels.ContainsKey(_channelId) && channel.Members.Contains(udc.Id))
+        if (udc.channels.ContainsKey(_channelId))
         {
             Debug.Log("[Database] " + "이미 채널을 구독하고 있습니다 : " + udc.channels[_channelId]);
             return;
         }
         else
         {
-            udc.channels[_channelId] = channel;
-            channel.Members.Add(udc.Id);
-            UpdateUser();
-            UpdateChannel(channel);
+            Debug.Log("[Database] " + "채널 구독 작업 시작 : " + _channelId);
+            System.Threading.Tasks.Task<Channel> task = GetChannel(_channelId);
+            if (task.IsCompleted)
+            {
+                Channel channel = task.Result;
+                udc.channels[_channelId] = channel;
+                channel.Members.Add(udc.Id);
+                UpdateUser();
+                UpdateChannel(channel);
+                Debug.Log("[Database] " + "채널 구독 완료 : " + channel.Id);
+            }else{
+                Debug.Log("[Database] " + "채널을 불러오지 못했습니다.");
+            }
+
         }
 
     }
     // CRUD Operation @GET
-    public Channel GetChannel(string _channelId)
+    public async System.Threading.Tasks.Task<Channel> GetChannel(string _channelId)
     {
         if (udc != null && udc.channels != null)
         {
@@ -179,7 +188,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 return null;
             }
             DocumentReference channelRef = db.Collection("channels").Document(_channelId);
-            channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            await channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
                 DocumentSnapshot snapshot = task.Result;
                 if (snapshot.Exists)
@@ -232,12 +241,16 @@ public class DataManager : MonoBehaviour, IChatClientListener
             Debug.Log("[Database] " + "메시지 추가 시작");
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
 
-            Channel channel = GetChannel(_channelId);
-            if (channel != null)
+            System.Threading.Tasks.Task<Channel> task = GetChannel(_channelId);
+            if (task.IsCompleted)
+            {
+                Channel channel = task.Result;
                 channel.ChatContents.Add(_msg);
-            else
+                UpdateChannel(channel);
+                Debug.Log("[Database] " + "메시지 추가 성공 : " + _msg.text);
+            }else{
                 Debug.Log("[Database] " + "해당 채널에 속해있지 않아 전송 실패");
-            UpdateChannel(channel);
+            }
         }
         else
         {

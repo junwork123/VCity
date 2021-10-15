@@ -146,22 +146,7 @@ namespace Photon.Chat
             }
         }
 
-        public void Connect(string _id)
-        {
-            this.UserName = _id;
-            this.UserIdFormPanel.gameObject.SetActive(false);
 
-            this.chatClient = new ChatClient(this);
-#if !UNITY_WEBGL
-            this.chatClient.UseBackgroundWorkerForSending = true;
-#endif
-            this.chatClient.AuthValues = new AuthenticationValues(this.UserName);
-            this.chatClient.ConnectUsingSettings(this.chatAppSettings);
-
-            this.ChannelToggleToInstantiate.gameObject.SetActive(false);
-            Debug.Log("[Chat] " + "Connecting as: " + this.UserName);
-            this.ConnectingLabel.SetActive(true);
-        }
 
         /// <summary>To avoid that the Editor becomes unresponsive, disconnect all Photon connections in OnDestroy.</summary>
         public void OnDestroy()
@@ -183,13 +168,10 @@ namespace Photon.Chat
         public void LoadChat(string _channelId)
         {
             string previousMsg = "";
-            Channel channel = DataManager.instance.GetChannel(_channelId);
-            if (channel == null)
+            System.Threading.Tasks.Task<Channel> task = DataManager.instance.GetChannel(_channelId);
+            if (task.IsCompleted)
             {
-                Debug.Log("[Chat] " + "채널을 불러올 수 없습니다");
-            }
-            else
-            {
+                Channel channel = task.Result;
                 // [yyyy-MM-dd HH:mm]
                 string day = "";
                 // TODO : 메시지 생성 및 좌우 정렬
@@ -208,6 +190,11 @@ namespace Photon.Chat
                 }
                 this.CurrentChannelName.text = _channelId;
                 this.CurrentChannelText.text = previousMsg;
+                Debug.Log("[Chat] " + "메시지 불러오기 성공 : " + channel.Id);
+            }
+            else
+            {
+                Debug.Log("[Chat] " + "메시지 불러오기 실패");
             }
         }
         public void Update()
@@ -393,13 +380,37 @@ namespace Photon.Chat
                 Debug.Log(message);
             }
         }
+        public void Connect(string _id)
+        {
+            this.UserName = _id;
+            this.UserIdFormPanel.gameObject.SetActive(false);
+
+            this.chatClient = new ChatClient(this);
+#if !UNITY_WEBGL
+            this.chatClient.UseBackgroundWorkerForSending = true;
+#endif
+            this.chatClient.AuthValues = new AuthenticationValues(this.UserName);
+            this.chatClient.ConnectUsingSettings(this.chatAppSettings);
+
+            this.ChannelToggleToInstantiate.gameObject.SetActive(false);
+            Debug.Log("[Chat] " + "Connecting as: " + this.UserName);
+            this.ConnectingLabel.SetActive(true);
+
+            DataManager.instance.SubcribeChannel(DataManager.REGION_CHANNEL_ID);
+        }
 
         public void OnConnected()
         {
-            foreach (string channelId in DataManager.instance.GetChannelList().Keys)
+            print(DataManager.instance.udc);
+            //print(FindObjectOfType<DataManager>().udc);
+            if (DataManager.instance.GetChannelList() != null)
             {
-                this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
-            } 
+                foreach (string channelId in DataManager.instance.GetChannelList().Keys)
+                {
+                    this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
+                }
+            }
+
             // if (this.ChannelsToJoinOnConnect != null && this.ChannelsToJoinOnConnect.Length > 0)
             // {
             //     this.chatClient.Subscribe(this.ChannelsToJoinOnConnect, this.HistoryLengthToFetch);

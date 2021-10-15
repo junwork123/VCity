@@ -77,12 +77,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
             bool signedIn = (user != auth.CurrentUser && auth.CurrentUser != null);
             if (signedIn == false && user != null)
             {
-                Debug.Log("Signed out " + user.UserId);
+                Debug.Log("[Network] " + "Signed out " + user.UserId);
             }
             user = auth.CurrentUser;
             if (signedIn == true && user != null)
             {
-                Debug.Log("Signed in " + user.UserId);
+                Debug.Log("[Network] " + "Signed in " + user.UserId);
             }
             else
             {
@@ -136,19 +136,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 if (task.IsCompleted)
                 {
                     user = task.Result;
-                    Debug.Log("[Network] " + "로그인 완료 : " + "(" + user.UserId + ")");
+
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
-                    DataManager.instance.GetUser(user.UserId, UserIdInputField.text, UserNameInputField.text);
+                    DataManager.instance.AddUser(user.UserId, UserIdInputField.text, UserNameInputField.text);
                     //DataManager.instance.AddUser(user.UserId, UserIdInputField.text, UserNameInputField.text);
-                    Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
-                    chatManager.Connect(UserNameInputField.text);
                     PhotonNetwork.NickName = UserNameInputField.text;
 
                     // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
                     PhotonNetwork.AutomaticallySyncScene = true;
                     // 마스터 서버에 접속한다.
                     PhotonNetwork.ConnectUsingSettings();
+                    
+                    Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
+                    chatManager.Connect(UserNameInputField.text);
+
+
+                    Debug.Log("[Network] " + "로그인 완료 : " + "(" + user.UserId + ")");
                 }
                 else if (task.IsFaulted)
                 {
@@ -186,39 +190,38 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     {
                         if (task.IsCanceled)
                         {
-                            Debug.LogError("UpdateUserProfileAsync was canceled.");
+                            Debug.Log("[Network] " + "UpdateUserProfileAsync was canceled.");
                             return;
                         }
                         if (task.IsFaulted)
                         {
-                            Debug.LogError("UpdateUserProfileAsync encountered an error: " + task.Exception);
+                            Debug.Log("[Network] " + "UpdateUserProfileAsync encountered an error: " + task.Exception);
                             return;
                         }
 
-                        Debug.Log("User profile updated successfully.");
+                        Debug.Log("[Network] " + "User profile updated successfully.");
                     });
                     user.UpdateEmailAsync(UserIdInputField.text).ContinueWith(task =>
                     {
                         if (task.IsCanceled)
                         {
-                            Debug.LogError("UpdateUserProfileAsync was canceled.");
+                            Debug.Log("[Network] " + "UpdateUserProfileAsync was canceled.");
                             return;
                         }
                         if (task.IsFaulted)
                         {
-                            Debug.LogError("UpdateUserProfileAsync encountered an error: " + task.Exception);
+                            Debug.Log("[Network] " + "UpdateUserProfileAsync encountered an error: " + task.Exception);
                             return;
                         }
 
-                        Debug.Log("User profile updated successfully.");
+                        Debug.Log("[Network] " + "User profile updated successfully.");
                     });
 
-                    Debug.Log(UserIdInputField.text + "로 회원가입\n");
+                    Debug.Log("[Network] " + UserIdInputField.text + "로 회원가입\n");
                     DataManager.instance.AddUser(user.UserId, user.Email, user.DisplayName);
-                    DataManager.instance.SubcribeChannel(DataManager.REGION_CHANNEL_ID);
                 }
                 else
-                    Debug.Log("회원가입 실패\n");
+                    Debug.Log("[Network] " + "회원가입 실패\n");
             });
     }
     public FirebaseUser GetCurrentUser()
@@ -247,7 +250,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     #region 포톤 콜백함수 모음
     public override void OnConnectedToMaster()
     {
-        Debug.Log("마스터 서버에 접속 완료!");
+        Debug.Log("[Network] " + "마스터 서버에 접속 완료!");
 
         // 로비에 진입한다.
         PhotonNetwork.JoinLobby(TypedLobby.Default);
@@ -255,7 +258,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public override void OnJoinedLobby()
     {
-        Debug.Log("로비에 접속 완료!");
+        Debug.Log("[Network] " + "로비에 접속 완료!");
     }
 
     public override void OnJoinedRoom()
@@ -263,14 +266,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         if (PhotonNetwork.CurrentRoom.PlayerCount > maxPlayer)
         {
-            Debug.Log("플레이어가 가득 차 참여할 수 없습니다.");
+            Debug.Log("[Network] " + "플레이어가 가득 차 참여할 수 없습니다.");
             Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
         }
         else
         {
             SceneManager.LoadScene("Net2");
 
-            Debug.Log("룸에 입장!");
+            Debug.Log("[Network] " + "룸에 입장!");
         }
     }
     public override void OnCreateRoomFailed(short returnCode, string message)//방 만들기 실패시 작동
