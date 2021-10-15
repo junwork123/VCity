@@ -164,7 +164,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             DocumentReference channelRef = db.Collection("Channels").Document(_channelId);
             channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
-                
+
                 DocumentSnapshot snapshot = task.Result;
                 if (snapshot.Exists)
                 {
@@ -178,7 +178,8 @@ public class DataManager : MonoBehaviour, IChatClientListener
                     Channel channel = snapshot.ConvertTo<Channel>();
                     Debug.Log("[Database] " + "채널 변환 완료 : " + channel.Id);
                     udc.Channels.Add(channel.Id);
-                    channel.Members.Add(udc.Id);
+                    if (!channel.Members.Contains(udc.Id))
+                        channel.Members.Add(udc.Id);
                     UpdateUser();
                     UpdateChannel(channel);
                     Debug.Log("[Database] " + "채널 구독 완료 : " + channel.Id);
