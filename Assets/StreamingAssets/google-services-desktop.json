@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "811728586995",
+    "firebase_url": "https://vcity-77962-default-rtdb.firebaseio.com",
     "project_id": "vcity-77962",
     "storage_bucket": "vcity-77962.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:811728586995:android:f22d6bdca8875cad7e8f86",
+        "mobilesdk_app_id": "1:811728586995:android:970749775b0890717e8f86",
         "android_client_info": {
           "package_name": "com.vcity"
         }

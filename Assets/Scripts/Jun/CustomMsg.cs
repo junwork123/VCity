@@ -1,30 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Firebase.Firestore;
 
+[FirestoreData]
 public class CustomMsg
 {
-    public string sender { get; set; }
-    public string time { get; set; }
+    [FirestoreProperty] public string Sender { get; set; }
+    [FirestoreProperty] public string Time { get; set; }
 
-    public string text { get; set; }
+    [FirestoreProperty] public string Text { get; set; }
 
-    public CustomMsg(){ sender = ""; time = ""; text = "";}
+    public CustomMsg(){}
     public CustomMsg(string _sender, string _datetime, string _text)
     {
-        sender = _sender;
-        time = _datetime;
-        text = _text;
+        Sender = _sender;
+        Time = _datetime;
+        Text = _text;
     }
 
     public CustomMsg(CustomMsg _msg)
     {
-        sender = _msg.sender;
-        time = _msg.time;
-        text = _msg.text;
+        Sender = _msg.Sender;
+        Time = _msg.Time;
+        Text = _msg.Text;
+    }
+    public Dictionary<string, object> ToDictionary()
+    {
+        Dictionary<string, object> result = new Dictionary<string, object>();
+        result["Sender"] = Sender;
+        result["Time"] = Time;
+        result["Text"] = Text;
+
+        return result;
     }
     public override string ToString()
     {
-        return time + " " + sender + " : " + text + "\n";
+        return Time + " " + Sender + " : " + Text + "\n";
     }
 }

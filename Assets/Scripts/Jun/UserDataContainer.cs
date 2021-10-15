@@ -1,35 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using Firebase.Firestore;
 
+[FirestoreData]
 public class UserDataContainer
 {
+    [FirestoreProperty] public string Id { get; set; }
+    [FirestoreProperty] public string Email { get; set; }
+    [FirestoreProperty] public string Name { get; set; }
+    [FirestoreProperty] public string Profile { get; set; }
 
-    public string userId;
-    public string userName;
-    public Image profile;
-    //public string userPw;
-    //public List<Channel> channels;
-    public Dictionary<string, List<CustomMsg>> channels;
+    // <친구id, 채널명에 대한 Firestore 참조값>
+    [FirestoreProperty] public List<string> Friends { get; set; }
+    // <채널명, 채널명에 대한 Firestore 참조값>
+    [FirestoreProperty] public List<string> Channels { get; set; }
 
     public UserDataContainer()
     {
-        userId = null;
-        userName = "Mr.temp";
-        //profile = new Image;
-        channels = new Dictionary<string, List<CustomMsg>>();
-        channels["Region"] = new List<CustomMsg>();
+        Id = null;
+        Email = null;
+        Name = "Mr.temp";
+        Profile = null;
+        Friends = new List<string>();
+        Channels = new List<string>();
         //channels["Guild"] = new List<CustomMsg>();
     }
 
-    public UserDataContainer(string _userId, string _userName = "Ms.temp")
+    public UserDataContainer(string _userId, string _userEmail, string _userName = "Ms.temp")
     {
-        userId = _userId;
-        userName = _userName;
-        channels = new Dictionary<string, List<CustomMsg>>();
-        channels["Region"] = new List<CustomMsg>();
-        //channels["Guild"] = new List<CustomMsg>();
+        Id = _userId;
+        Email = _userEmail;
+        Name = _userName;
+        Profile = null;
+        Friends = new List<string>();
+        Channels = new List<string>();
     }
+    public Dictionary<string, object> ToDictionary()
+    {
+        Dictionary<string, object> result = new Dictionary<string, object>();
+        result["Id"] = Id;
+        result["Email"] = Email;
+        result["Name"] = Name;
+        result["Profile"] = Profile;
+        result["Friends"] = Friends;
+        result["Channels"] = Channels;
 
+        return result;
+    }
 }

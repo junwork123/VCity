@@ -1,16 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using Firebase.Firestore;
 
-[System.Serializable]
-public class Channelqwer
+[FirestoreData]
+public class Channel
 {
-    public string name;
-    public List<CustomMsg> chatContents;
+    [FirestoreProperty] public string Id { get; set; }
 
-    public Channelqwer(string _name){
-        name = _name;
-        chatContents = new List<CustomMsg>();
+    [FirestoreProperty] public string Name { get; set; }
+
+    [FirestoreProperty] public string Kind { get; set; }
+
+    [FirestoreProperty] public List<string> Members { get; set; }
+
+    //[FirestoreDocumentId] public CollectionReference ChatContents { get; set; }
+    public Channel(){}
+    public Channel(string _channelId, string _channelName, List<string> _memberList)
+    {
+        Id = _channelId;
+        Kind = "request";
+        Members = _memberList;
+        Name = _channelName;
+
+        //CollectionReference ChatContents = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance).Collection("Channels").Document(_channelId).Collection("ChatContents");
+    }
+    public Dictionary<string, object> ToDictionary()
+    {
+        Dictionary<string, object> result = new Dictionary<string, object>();
+        result["Id"] = Id;
+        result["Name"] = Name;
+        result["Kind"] = Kind;
+        result["Members"] = Members;
+        //result["ChatContents"] = ChatContents;
+
+        return result;
+    }
+    public string DisplayName()
+    {
+        return Name;
     }
 }
