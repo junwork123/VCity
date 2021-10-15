@@ -15,14 +15,20 @@ public class SpreadObject : MonoBehaviour
     public float paddingPercent = 10f;
 
 
-    void Start()
+    void OnEnable()
+    {
+
+        Spread();
+    }
+
+    void Spread()
     {
         Transform[] transforms = GetComponentsInChildren<Transform>();
         for (int i = 0; i < transforms.Length; ++i)
         {
             if (transforms[i].gameObject.name.Contains("Button"))
             {
-                transforms[i].localPosition = transform.up * radiusRange;
+                transforms[i].localPosition = Vector3.up * radiusRange;
                 childObjects.Add(transforms[i].gameObject);
             }
         }
@@ -30,13 +36,8 @@ public class SpreadObject : MonoBehaviour
         // atan(y/x) : 버튼이 인접했을 때 각의 절반
         float buttonRadius = childObjects[0].transform.localScale.x * 0.5f;
         // 10f padding 추가
-        angle = Mathf.Atan2(buttonRadius, radiusRange) * Mathf.Rad2Deg * 2 * 1+paddingPercent * 0.01f;
+        angle = Mathf.Atan2(buttonRadius, radiusRange) * Mathf.Rad2Deg * 2 * 1 + paddingPercent * 0.01f;
 
-        Spread();
-    }
-
-    void Spread()
-    {
         int count = childObjects.Count;
         for (int i = 0; i < count; ++i)
         {
