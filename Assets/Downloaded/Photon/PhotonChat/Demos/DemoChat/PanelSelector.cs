@@ -25,7 +25,14 @@ namespace Photon.Chat
         public GameObject ChannelBarPanel;
         public GameObject ChatOutputPanel;
         public GameObject InputBarPanel;
-
+#region @Test
+        private void Update() {
+            if(Input.GetKeyDown(KeyCode.Tab))
+            {
+                OpenChatMenu((int)ChatMenu.ChannelBar);
+            }
+        }
+#endregion
         public void OpenMenu()
         {
             ChatPanel.SetActive(true);

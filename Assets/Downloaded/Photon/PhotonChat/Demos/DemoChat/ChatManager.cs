@@ -396,7 +396,7 @@ namespace Photon.Chat
             Debug.Log("[Chat] " + "Connecting as: " + this.UserName);
             this.ConnectingLabel.SetActive(true);
 
-            
+
         }
 
         public void OnConnected()
