@@ -168,29 +168,29 @@ namespace Photon.Chat
         public void LoadChat(string _channelId)
         {
             string previousMsg = "";
-            System.Threading.Tasks.Task<Channel> task = DataManager.instance.GetChannel(_channelId);
+            System.Threading.Tasks.Task<List<CustomMsg>> task = DataManager.instance.GetChatContents(_channelId);
             if (task.IsCompleted)
             {
-                Channel channel = task.Result;
+                List<CustomMsg> msgs = task.Result;
                 // [yyyy-MM-dd HH:mm]
                 string day = "";
                 // TODO : 메시지 생성 및 좌우 정렬
                 //GameObject msg = Instantiate<GameObject>();
-                foreach (var msg in channel.ChatContents)
+                foreach (var msg in msgs)
                 {
                     //날짜가 다를 경우에만
                     //채팅내역에 한번 표시되도록 한다
-                    if (day != msg.time.Substring(1, "yyyy-MM-dd".Length))
+                    if (day != msg.Time.Substring(1, "yyyy-MM-dd".Length))
                     {
-                        day = msg.time.Substring(1, "yyyy-MM-dd".Length);
+                        day = msg.Time.Substring(1, "yyyy-MM-dd".Length);
                         previousMsg = previousMsg + "> " + day + '\n';
                     }
-                    previousMsg = previousMsg + msg.sender + " : " + msg.text
-                                              + " [" + msg.time.Substring("[yyyy-MM-dd ".Length) + "\n";
+                    previousMsg = previousMsg + msg.Sender + " : " + msg.Text
+                                              + " [" + msg.Time.Substring("[yyyy-MM-dd ".Length) + "\n";
                 }
                 this.CurrentChannelName.text = _channelId;
                 this.CurrentChannelText.text = previousMsg;
-                Debug.Log("[Chat] " + "메시지 불러오기 성공 : " + channel.Id);
+                Debug.Log("[Chat] " + "메시지 불러오기 성공 : ");
             }
             else
             {
@@ -396,16 +396,14 @@ namespace Photon.Chat
             Debug.Log("[Chat] " + "Connecting as: " + this.UserName);
             this.ConnectingLabel.SetActive(true);
 
-            DataManager.instance.SubcribeChannel(DataManager.REGION_CHANNEL_ID);
+            
         }
 
         public void OnConnected()
         {
-            print(DataManager.instance.udc);
-            //print(FindObjectOfType<DataManager>().udc);
-            if (DataManager.instance.GetChannelList() != null)
+            if (DataManager.instance.udc != null && DataManager.instance.udc.Channels != null)
             {
-                foreach (string channelId in DataManager.instance.GetChannelList().Keys)
+                foreach (string channelId in DataManager.instance.udc.Channels)
                 {
                     this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
                 }

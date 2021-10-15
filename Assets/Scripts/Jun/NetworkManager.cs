@@ -60,6 +60,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         // 어플리케이션의 버전을 설정한다.
         PhotonNetwork.GameVersion = "0.1";
+
     }
 
     void InitializeFirebase()
@@ -91,24 +92,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
-    // 자신 주변 랜덤한 위치에 플레이어 생성
-    void MakePlayerInstance()
-    {
-        Vector3 randPos = new Vector3(-100, 5, -30);
-
-        PhotonNetwork.Instantiate("test", transform.position + randPos, Quaternion.identity);
-        currentPlayer++;
-    }
-
     private void Update()
     {
-        #region @test 테스트용 코드
-        if (Input.GetKeyDown(KeyCode.BackQuote))
-        {
-            //EventTime.ExecutionRaiseEvent(EventTime.Ready);
-        }
-
-        #endregion
+        
     }
     void getRoomList()
     {
@@ -136,18 +122,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 if (task.IsCompleted)
                 {
                     user = task.Result;
-
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
                     DataManager.instance.AddUser(user.UserId, UserIdInputField.text, UserNameInputField.text);
-                    //DataManager.instance.AddUser(user.UserId, UserIdInputField.text, UserNameInputField.text);
+#region @Test용
+                    //DataManager.instance.CreateChannel("Region");
+                    DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
+#endregion
                     PhotonNetwork.NickName = UserNameInputField.text;
 
                     // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
                     PhotonNetwork.AutomaticallySyncScene = true;
                     // 마스터 서버에 접속한다.
                     PhotonNetwork.ConnectUsingSettings();
-                    
+
                     Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
                     chatManager.Connect(UserNameInputField.text);
 

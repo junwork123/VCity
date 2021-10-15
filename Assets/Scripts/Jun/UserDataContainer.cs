@@ -1,20 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using Firebase.Firestore;
 
-
+[FirestoreData]
 public class UserDataContainer
 {
-    public string Id { get; set; }
-    public string Email { get; set; }
-    public string Name { get; set; }
-    public string Profile { get; set; }
+    [FirestoreProperty] public string Id { get; set; }
+    [FirestoreProperty] public string Email { get; set; }
+    [FirestoreProperty] public string Name { get; set; }
+    [FirestoreProperty] public string Profile { get; set; }
 
     // <친구id, 채널명에 대한 Firestore 참조값>
-    public Dictionary<string, object> friends { get; set; }
+    [FirestoreProperty] public List<string> Friends { get; set; }
     // <채널명, 채널명에 대한 Firestore 참조값>
-    public Dictionary<string, object> channels { get; set; }
+    [FirestoreProperty] public List<string> Channels { get; set; }
 
     public UserDataContainer()
     {
@@ -22,8 +21,8 @@ public class UserDataContainer
         Email = null;
         Name = "Mr.temp";
         Profile = null;
-        friends = new Dictionary<string, object>();
-        channels = new Dictionary<string, object>();
+        Friends = new List<string>();
+        Channels = new List<string>();
         //channels["Guild"] = new List<CustomMsg>();
     }
 
@@ -33,18 +32,18 @@ public class UserDataContainer
         Email = _userEmail;
         Name = _userName;
         Profile = null;
-        friends = new Dictionary<string, object>();
-        channels = new Dictionary<string, object>();
+        Friends = new List<string>();
+        Channels = new List<string>();
     }
     public Dictionary<string, object> ToDictionary()
     {
         Dictionary<string, object> result = new Dictionary<string, object>();
-        result["id"] = Id;
+        result["Id"] = Id;
         result["Email"] = Email;
         result["Name"] = Name;
-        result["profile"] = Profile;
-        result["friends"] = friends;
-        result["channels"] = channels;
+        result["Profile"] = Profile;
+        result["Friends"] = Friends;
+        result["Channels"] = Channels;
 
         return result;
     }

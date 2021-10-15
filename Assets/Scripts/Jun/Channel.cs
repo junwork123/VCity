@@ -1,38 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using Firebase.Firestore;
 
-
+[FirestoreData]
 public class Channel
 {
-    public string Id { get; set; }
+    [FirestoreProperty] public string Id { get; set; }
 
-    public string Name { get; set; }
+    [FirestoreProperty] public string Name { get; set; }
 
-    public string Kind { get; set; }
+    [FirestoreProperty] public string Kind { get; set; }
 
-    public List<string> Members { get; set; }
+    [FirestoreProperty] public List<string> Members { get; set; }
 
-    public List<CustomMsg> ChatContents { get; set; }
-
-    public Channel(string _channelId, string _memberId, string _memberId2)
+    //[FirestoreDocumentId] public CollectionReference ChatContents { get; set; }
+    public Channel(){}
+    public Channel(string _channelId, string _channelName, List<string> _memberList)
     {
         Id = _channelId;
         Kind = "request";
-        Name = Kind + " : " + _memberId2;
-        Members = new List<string>();
-        Members.Add(_memberId);
-        Members.Add(_memberId2);
-        ChatContents = new List<CustomMsg>();
+        Members = _memberList;
+        Name = _channelName;
+
+        //CollectionReference ChatContents = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance).Collection("Channels").Document(_channelId).Collection("ChatContents");
     }
-    public Dictionary<string, System.Object> ToDictionary()
+    public Dictionary<string, object> ToDictionary()
     {
-        Dictionary<string, System.Object> result = new Dictionary<string, System.Object>();
-        result["id"] = Id;
-        result["name"] = Name;
-        result["members"] = Members;
-        result["chatContents"] = ChatContents;
+        Dictionary<string, object> result = new Dictionary<string, object>();
+        result["Id"] = Id;
+        result["Name"] = Name;
+        result["Kind"] = Kind;
+        result["Members"] = Members;
+        //result["ChatContents"] = ChatContents;
 
         return result;
     }
