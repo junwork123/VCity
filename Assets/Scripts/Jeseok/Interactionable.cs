@@ -49,6 +49,8 @@ public class Interactionable : MonoBehaviour, IInteraction
             enable = true;
 
             ShowInter();
+
+            UIManager.instance.AtciveActionButton();
         }
     }
 
@@ -65,6 +67,8 @@ public class Interactionable : MonoBehaviour, IInteraction
 
             EndInter();
             NonShowInter();
+
+            UIManager.instance.InactiveActionButton();
         }
     }
     #endregion
