@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &524974705121343512
 RectTransform:
   m_ObjectHideFlags: 0
@@ -62,7 +62,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
@@ -88,7 +88,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &524974705121343509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +118,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a282f9acd9f89b4f8297b85995895a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  childObjects: []
+  childTransforms:
+  - {fileID: 8872505236866384625}
+  - {fileID: 5495089815820305047}
+  - {fileID: 1450649509260726654}
+  - {fileID: 4319230836643379319}
   radiusRange: 1.5
   paddingPercent: 10
 --- !u!114 &7831463280034817009

@@ -10,7 +10,7 @@ public class TaskButtonEvent : MonoBehaviour
     void Start()
     {
         clickListener = GetComponentsInChildren<ButtonClickListener>();
-        
+
         for (int i = 0; i < clickListener.Length; ++i)
             clickListener[i].AddClickCallback(TaskAction);
     }
@@ -29,17 +29,22 @@ public class TaskButtonEvent : MonoBehaviour
                 AndroidToastManager.instance.ShowToast("Message Button");
                 // FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
                 break;
+
             case TaskType.TELEPORT:
                 AndroidToastManager.instance.ShowToast("Teleport Button");
                 GameManager.instance.TeleportPlayer();
+                GameManager.instance.joystickRange.SetActive(true);
                 break;
+
             case TaskType.APPLY:
                 AndroidToastManager.instance.ShowToast("Apply Button");
                 UIManager.instance.ShowApplyPanel();
                 break;
+
             case TaskType.ETC:
                 AndroidToastManager.instance.ShowToast("ETC Button");
                 break;
+
             default:
                 break;
         }

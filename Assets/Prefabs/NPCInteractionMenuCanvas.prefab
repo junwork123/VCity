@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &524974705121343512
 RectTransform:
   m_ObjectHideFlags: 0
@@ -63,7 +63,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
 --- !u!114 &524974705121343513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +119,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a282f9acd9f89b4f8297b85995895a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  childObjects: []
+  childTransforms:
+  - {fileID: 524974703145935761}
+  - {fileID: 1912610220743972112}
+  - {fileID: 9157260982504176645}
+  - {fileID: 1955064360866092389}
+  - {fileID: 2099690481940303402}
   radiusRange: 2
   paddingPercent: 10
 --- !u!114 &-4311720817414552497

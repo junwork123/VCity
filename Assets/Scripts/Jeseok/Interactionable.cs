@@ -4,8 +4,8 @@ using UnityEngine;
 public class Interactionable : MonoBehaviour, IInteraction
 {
     [SerializeField]
-    InteractionType _interactionType;
-    public InteractionType interactionType { get => _interactionType; set => _interactionType = value; }
+    ObjectType _objectType;
+    public ObjectType objectType { get => _objectType; set => _objectType = value; }
     public bool enable { get; set; }
     bool isOpenTaskMenu;
 
@@ -49,6 +49,8 @@ public class Interactionable : MonoBehaviour, IInteraction
             enable = true;
 
             ShowInter();
+
+            UIManager.instance.AtciveActionButton();
         }
     }
 
@@ -65,6 +67,8 @@ public class Interactionable : MonoBehaviour, IInteraction
 
             EndInter();
             NonShowInter();
+
+            UIManager.instance.InactiveActionButton();
         }
     }
     #endregion
@@ -106,9 +110,11 @@ public class Interactionable : MonoBehaviour, IInteraction
         UIButtonEventManager.instance.activeActionButton = false;
 
 
+        // 상호작용하는 동안 조이스틱 비활성화
         GameManager.instance.joystickRange.SetActive(isOpenTaskMenu);
 
-        #region Close Task Menu, 현재 열려있는 Task 메뉴를 닫음
+        #region Close Task Menu
+        /// 이미 열려있는 Task 메뉴를 닫음
         if (isOpenTaskMenu == true)
         {
             ShowInter();

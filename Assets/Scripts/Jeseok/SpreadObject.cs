@@ -8,43 +8,39 @@ using UnityEngine;
 /// </summary>
 public class SpreadObject : MonoBehaviour
 {
-    public List<GameObject> childObjects;
+    public List<Transform> childTransforms;
     public float radiusRange = 1.5f;
     float angle;
     [Range(1, 100)]
     public float paddingPercent = 10f;
 
 
-    void Start()
+    void OnEnable()
     {
-        Transform[] transforms = GetComponentsInChildren<Transform>();
-        for (int i = 0; i < transforms.Length; ++i)
-        {
-            if (transforms[i].gameObject.name.Contains("Button"))
-            {
-                transforms[i].localPosition = transform.up * radiusRange;
-                childObjects.Add(transforms[i].gameObject);
-            }
-        }
-
-        // atan(y/x) : 버튼이 인접했을 때 각의 절반
-        float buttonRadius = childObjects[0].transform.localScale.x * 0.5f;
-        // 10f padding 추가
-        angle = Mathf.Atan2(buttonRadius, radiusRange) * Mathf.Rad2Deg * 2 * 1+paddingPercent * 0.01f;
-
         Spread();
     }
 
     void Spread()
     {
-        int count = childObjects.Count;
+        // 위치 초기화 (0, radiusRange)
+        for (int i = 0; i < childTransforms.Count; ++i)
+        {
+            childTransforms[i].localPosition = Vector3.up * radiusRange;
+        }
+
+        // atan(y/x) : 버튼이 인접했을 때 각의 절반
+        float buttonRadius = childTransforms[0].transform.localScale.x * 0.5f;
+        // 10f padding 추가
+        angle = Mathf.Atan2(buttonRadius, radiusRange) * Mathf.Rad2Deg * 2 * 1 + paddingPercent * 0.01f;
+
+        int count = childTransforms.Count;
         for (int i = 0; i < count; ++i)
         {
             // N개일 때 초기위치 (N - 1) * angle * 0.5
             // 중심을 기준으로 angle만큼 회전하면서 배치
-            childObjects[i].transform.RotateAround(transform.position, Vector3.forward, (count - 1) * angle * 0.5f);
-            childObjects[i].transform.RotateAround(transform.position, Vector3.back, angle * i);
-            childObjects[i].transform.localEulerAngles = Vector3.zero;
+            childTransforms[i].transform.RotateAround(transform.position, Camera.main.transform.forward, (count - 1) * angle * 0.5f);
+            childTransforms[i].transform.RotateAround(transform.position, Camera.main.transform.forward * (-1), angle * i);
+            childTransforms[i].transform.localEulerAngles = Vector3.zero;
         }
     }
 }

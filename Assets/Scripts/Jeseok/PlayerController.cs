@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerMovement movementBehavior;
+    private MovementBehavior movementBehavior;
 
     public KeyCode interactionKey = KeyCode.X;
 
@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        movementBehavior = GetComponent<PlayerMovement>();
+        movementBehavior = GetComponent<MovementBehavior>();
 
         GameManager.instance.SetInteractionKey(interactionKey);
     }
@@ -28,9 +28,8 @@ public class PlayerController : MonoBehaviour
         bool isMove = moveVector.magnitude != 0;
         if (isMove == true)
         {
-            movementBehavior.Move(moveVector);
+            Move(moveVector);
         }
-
 
         bool isAction = Input.GetKeyDown(interactionKey);
         if (isAction == true)
@@ -41,7 +40,8 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector3 moveVector)
     {
-        movementBehavior.Move(moveVector);
+        // movementBehavior.Move(moveVector);
+        movementBehavior.MoveFPS(moveVector);
     }
 
     public void Interaction()
