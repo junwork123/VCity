@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 524974705121343513}
   - component: {fileID: 7831463280034817009}
   - component: {fileID: 8014393653763003518}
-  - component: {fileID: 974101840851291550}
   m_Layer: 5
   m_Name: UnmannedInteractionMenuCanvas
   m_TagString: Untagged
@@ -63,7 +62,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
@@ -119,7 +118,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a282f9acd9f89b4f8297b85995895a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  childObjects: []
+  childTransforms:
+  - {fileID: 8872505236866384625}
+  - {fileID: 5495089815820305047}
+  - {fileID: 1450649509260726654}
+  - {fileID: 4319230836643379319}
   radiusRange: 1.5
   paddingPercent: 10
 --- !u!114 &7831463280034817009
@@ -147,18 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickListener: []
---- !u!114 &974101840851291550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524974705121343508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce30fe739df1f4c4db2052cd60105d72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2134076040453093248
 PrefabInstance:
   m_ObjectHideFlags: 0
