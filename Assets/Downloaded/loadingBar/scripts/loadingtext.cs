@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class loadingtext : MonoBehaviour {
+public class loadingtext : MonoBehaviour
+{
 
     private RectTransform rectComponent;
     private Image imageComp;
@@ -14,14 +15,16 @@ public class loadingtext : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         rectComponent = GetComponent<RectTransform>();
         imageComp = rectComponent.GetComponent<Image>();
         imageComp.fillAmount = 0.0f;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         int a = 0;
         if (imageComp.fillAmount != 1f)
         {
@@ -33,13 +36,14 @@ public class loadingtext : MonoBehaviour {
             }
             else if (a > 33 && a <= 67)
             {
-                textNormal.text = "Downloading...";
+                textNormal.text = "Processing...";
             }
             else if (a > 67 && a <= 100)
             {
                 textNormal.text = "Please wait...";
             }
-            else {
+            else
+            {
 
             }
             text.text = a + "%";

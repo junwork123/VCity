@@ -167,35 +167,31 @@ namespace Photon.Chat
         }
         public void LoadChat(string _channelId)
         {
+            //Debug.Log("시이이이발" + DataManager.instance.udc.Id);
+
+            List<CustomMsg> msgs = DataManager.instance.channels[_channelId];
+
             string previousMsg = "";
-            System.Threading.Tasks.Task<List<CustomMsg>> task = DataManager.instance.GetChatContents(_channelId);
-            if (task.IsCompleted)
+            // [yyyy-MM-dd HH:mm] 
+            string day = "";
+            // TODO : 메시지 생성 및 좌우 정렬
+            //GameObject msg = Instantiate<GameObject>();
+            foreach (var msg in msgs)
             {
-                List<CustomMsg> msgs = task.Result;
-                // [yyyy-MM-dd HH:mm]
-                string day = "";
-                // TODO : 메시지 생성 및 좌우 정렬
-                //GameObject msg = Instantiate<GameObject>();
-                foreach (var msg in msgs)
-                {
-                    //날짜가 다를 경우에만
-                    //채팅내역에 한번 표시되도록 한다
-                    if (day != msg.Time.Substring(1, "yyyy-MM-dd".Length))
-                    {
-                        day = msg.Time.Substring(1, "yyyy-MM-dd".Length);
-                        previousMsg = previousMsg + "> " + day + '\n';
-                    }
-                    previousMsg = previousMsg + msg.Sender + " : " + msg.Text
-                                              + " [" + msg.Time.Substring("[yyyy-MM-dd ".Length) + "\n";
-                }
-                this.CurrentChannelName.text = _channelId;
-                this.CurrentChannelText.text = previousMsg;
-                Debug.Log("[Chat] " + "메시지 불러오기 성공 : ");
+                // //날짜가 다를 경우에만
+                // //채팅내역에 한번 표시되도록 한다
+                // if (day != msg.Time.Substring(1, "yyyy-MM-dd".Length))
+                // {
+                //     day = msg.Time.Substring(1, "yyyy-MM-dd".Length);
+                //     previousMsg = previousMsg + "> " + day + '\n';
+                // }
+                previousMsg = previousMsg + msg.Sender + " : " + msg.Text
+                                          + " " + msg.Time + "\n";
             }
-            else
-            {
-                Debug.Log("[Chat] " + "메시지 불러오기 실패");
-            }
+            this.CurrentChannelName.text = _channelId;
+            this.CurrentChannelText.text = previousMsg;
+            Debug.Log("[Chat] " + "메시지 불러오기 성공 : ");
+
         }
         public void Update()
         {
@@ -222,6 +218,7 @@ namespace Photon.Chat
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
                 this.SendChatMessage(nowtime + this.InputFieldChat.text);
                 this.InputFieldChat.text = "";
+
             }
         }
 
@@ -299,6 +296,8 @@ namespace Photon.Chat
                 else if ((tokens[0].Equals("\\subscribe") || tokens[0].Equals("\\s")) && !string.IsNullOrEmpty(tokens[1]))
                 {
                     this.chatClient.Subscribe(tokens[1].Split(new char[] { ' ', ',' }));
+
+                    DataManager.instance.SubscribeChannel(tokens[1]);
                 }
                 else if ((tokens[0].Equals("\\unsubscribe") || tokens[0].Equals("\\u")) && !string.IsNullOrEmpty(tokens[1]))
                 {
@@ -406,6 +405,7 @@ namespace Photon.Chat
                 foreach (string channelId in DataManager.instance.udc.Channels)
                 {
                     this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
+                    DataManager.instance.LoadMessages(channelId);
                 }
             }
 
@@ -589,6 +589,7 @@ namespace Photon.Chat
                     text = msg;
                 }
                 DataManager.instance.AppendMsg(channelName, new CustomMsg(senders[i], time, text));
+
             }
 
             // update text
