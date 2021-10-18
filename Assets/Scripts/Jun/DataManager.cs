@@ -242,16 +242,17 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 {
                     QuerySnapshot snapshots = task.Result;
                     List<CustomMsg> result = new List<CustomMsg>();
+                    Debug.Log("[Database] " + "채널 메시지 가져오기 시작");
                     foreach (DocumentSnapshot item in snapshots.Documents)
                     {
                         result.Add(item.ConvertTo<CustomMsg>());
                     }
-                    Debug.Log("[Database] " + "채널 가져오기 성공");
+                    Debug.Log("[Database] " + "채널 메시지 가져오기 성공");
                     return result;
                 }
                 else
                 {
-                    Debug.Log("[Database] " + "채널 가져오기 실패");
+                    Debug.Log("[Database] " + "채널 메시지 가져오기 실패");
                     return null;
                 }
             });

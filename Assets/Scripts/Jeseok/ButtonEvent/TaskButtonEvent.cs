@@ -28,6 +28,11 @@ public class TaskButtonEvent : MonoBehaviour
             case TaskType.MESSAGE:
                 AndroidToastManager.instance.ShowToast("Message Button");
                 // FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
+
+                #region 메시지 호출부
+                FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
+                #endregion
+
                 break;
 
             case TaskType.TELEPORT:
