@@ -51,6 +51,9 @@ namespace Photon.Chat
             switch ((ChatMenu)_menu)
             {
                 case ChatMenu.ChannelBar:
+                
+                    Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
+                    chatManager.ShowChannel(DataManager.REGION_CHANNEL_ID);
                     ChannelBarPanel.SetActive(true);
                     break;
                 case ChatMenu.ChatOutput:

@@ -26,15 +26,9 @@ namespace Photon.Chat
         public void Start()
         {
 
-            string prefsId = PlayerPrefs.GetString(UserIdPref);
-            string prefsPw = PlayerPrefs.GetString(UserPwPref);
-            string prefsName = PlayerPrefs.GetString(UserNamePref);
-            if (!string.IsNullOrEmpty(prefsId) && !string.IsNullOrEmpty(prefsPw) && !string.IsNullOrEmpty(prefsName))
-            {
-                this.idInput.text = prefsId;
-                this.pwInput.text = prefsPw;
-                this.nameInput.text = prefsName;
-            }
+            this.idInput.text = UserIdPref;
+            this.pwInput.text = UserPwPref;
+            this.nameInput.text = UserNamePref;
         }
 
 
