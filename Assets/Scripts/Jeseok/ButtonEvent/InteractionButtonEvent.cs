@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TaskButtonEvent : MonoBehaviour
+public class InteractionButtonEvent : MonoBehaviour
 {
     public ButtonClickListener[] clickListener;
 
@@ -12,7 +12,7 @@ public class TaskButtonEvent : MonoBehaviour
         clickListener = GetComponentsInChildren<ButtonClickListener>();
 
         for (int i = 0; i < clickListener.Length; ++i)
-            clickListener[i].AddClickCallback(TaskAction);
+            clickListener[i].AddClickCallback(Interaction);
     }
 
     // Update is called once per frame
@@ -21,11 +21,11 @@ public class TaskButtonEvent : MonoBehaviour
 
     }
 
-    void TaskAction(TaskType taskType)
+    void Interaction(InteractionType interactionType)
     {
-        switch (taskType)
+        switch (interactionType)
         {
-            case TaskType.MESSAGE:
+            case InteractionType.MESSAGE:
                 AndroidToastManager.instance.ShowToast("Message Button");
                 // FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
 
@@ -35,18 +35,18 @@ public class TaskButtonEvent : MonoBehaviour
 
                 break;
 
-            case TaskType.TELEPORT:
+            case InteractionType.TELEPORT:
                 AndroidToastManager.instance.ShowToast("Teleport Button");
                 GameManager.instance.TeleportPlayer();
                 GameManager.instance.joystickRange.SetActive(true);
                 break;
 
-            case TaskType.APPLY:
+            case InteractionType.APPLY:
                 AndroidToastManager.instance.ShowToast("Apply Button");
                 UIManager.instance.ShowApplyPanel();
                 break;
 
-            case TaskType.ETC:
+            case InteractionType.ETC:
                 AndroidToastManager.instance.ShowToast("ETC Button");
                 break;
 

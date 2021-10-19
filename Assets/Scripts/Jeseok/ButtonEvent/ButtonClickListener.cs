@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class ButtonClickListener : MonoBehaviour
 {
-    public TaskType taskType;
-    Action<TaskType> onClickCallback;
+    public InteractionType interactionType;
+    Action<InteractionType> onClickCallback;
 
 
-    public void SetTaskType(TaskType type)
+    public void SetInteractionType(InteractionType type)
     {
-        taskType = type;
+        interactionType = type;
     }
 
-    public void AddClickCallback(Action<TaskType> callback)
+    public void AddClickCallback(Action<InteractionType> callback)
     {
         onClickCallback += callback;
     }
@@ -24,6 +24,6 @@ public class ButtonClickListener : MonoBehaviour
         if (onClickCallback == null)
             return;
 
-        onClickCallback(taskType);
+        onClickCallback(interactionType);
     }
 }

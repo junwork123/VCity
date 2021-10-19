@@ -161,6 +161,10 @@ PrefabInstance:
       propertyPath: taskType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: interactionType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
       value: Task Button (1)
@@ -265,6 +269,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: taskType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: interactionType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
@@ -403,6 +411,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: taskType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: interactionType
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}

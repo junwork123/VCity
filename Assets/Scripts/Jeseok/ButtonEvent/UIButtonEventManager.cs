@@ -11,6 +11,7 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
 
     public void OnClickMenuButton()
     {
+        
     }
 
     public void OnClickActionButton()
@@ -20,18 +21,25 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
         print("click action button");
     }
 
-    public void OnClickSettingButton()
-    {
-    }
-
-    public void OnClickMapButton()
-    {
-    }
-
     // Interactionable 외부에서 Action 버튼 입력했을 때 한 프레임 이후에 해제
     IEnumerator CheckAction()
     {
         yield return null;
         activeActionButton = false;
+    }
+
+    public void OnClickSettingButton()
+    {
+
+    }
+
+    public void OnClickMapButton()
+    {
+
+    }
+
+    public void OnClickApplyButton()
+    {
+        
     }
 }

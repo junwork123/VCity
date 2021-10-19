@@ -8,7 +8,6 @@ public class UIManager : Singleton<UIManager>
     public TMPro.TextMeshPro nameTextUI;
 
     public GameObject actionButton;
-
     public GameObject applyPanel;
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum TaskType
+public enum InteractionType
 {
     ETC, 
     MESSAGE,
