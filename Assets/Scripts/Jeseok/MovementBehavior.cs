@@ -21,10 +21,6 @@ public class MovementBehavior : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void Update()
-    {
-    }
-
     private void FixedUpdate()
     {
         rigidbody.MovePosition(rigidbody.position + velocity * Time.deltaTime);
@@ -48,6 +44,7 @@ public class MovementBehavior : MonoBehaviour
     {
         velocity = transform.forward * dir.z * moveForce;
 
-        lookVector = new Vector3(0, dir.x, 0);
+        int sign = dir.z >= 0 ? 1 : -1;
+        lookVector = new Vector3(0, dir.x * sign, 0);
     }
 }
