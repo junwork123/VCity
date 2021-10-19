@@ -45,15 +45,10 @@ public class DataManager : MonoBehaviour, IChatClientListener
         // 없다면 유저를 새로 생성한다
         try
         {
-             udc = await GetUser(_id);
+            udc = await GetUser(_id);
+            Debug.Log("[Database] " + "이미 UDC 인스턴스가 생성되어 있습니다. : " + udc.Email);
         }
         catch (System.Exception)
-        {
-            Debug.Log("[Database] " + "이미 UDC 인스턴스가 생성되어 있습니다. : " + udc.Email);
-            throw;
-        }
-        
-        if (udc == null)
         {
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
             // users 콜렉션 지정
@@ -95,7 +90,8 @@ public class DataManager : MonoBehaviour, IChatClientListener
         });
         return null;
     }
-    public UserDataContainer GetCurrentUser(){
+    public UserDataContainer GetCurrentUser()
+    {
         return udc;
     }
     // CRUD Operation @PUT
@@ -261,7 +257,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                         string Sender = "";
                         string Text = "";
                         string Time = "";
-                        
+
 
                         item.TryGetValue("Sender", out Sender);
                         item.TryGetValue("Text", out Text);
