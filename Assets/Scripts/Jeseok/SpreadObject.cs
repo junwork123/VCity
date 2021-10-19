@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /// <summary>
 /// 오브젝트가 생성되었을 때 Button 오브젝트들을 균일한 각도로 배치
 /// </summary>
@@ -14,6 +13,14 @@ public class SpreadObject : MonoBehaviour
     [Range(1, 100)]
     public float paddingPercent = 10f;
 
+
+    private void Awake()
+    {
+        for (int i = 0; i < transform.childCount; ++i)
+        {
+            childTransforms.Add(transform.GetChild(i));
+        }
+    }
 
     void OnEnable()
     {

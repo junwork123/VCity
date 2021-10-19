@@ -4,21 +4,15 @@ using UnityEngine;
 
 public class InteractionButtonEvent : MonoBehaviour
 {
-    public ButtonClickListener[] clickListener;
+    public InteractionButtonClickListener[] clickListener;
 
     // Start is called before the first frame update
     void Start()
     {
-        clickListener = GetComponentsInChildren<ButtonClickListener>();
+        clickListener = GetComponentsInChildren<InteractionButtonClickListener>();
 
         for (int i = 0; i < clickListener.Length; ++i)
             clickListener[i].AddClickCallback(Interaction);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     void Interaction(InteractionType interactionType)

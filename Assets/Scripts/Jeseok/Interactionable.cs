@@ -7,7 +7,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     ObjectType _objectType;
     public ObjectType objectType { get => _objectType; set => _objectType = value; }
     public bool enable { get; set; }
-    bool isOpenTaskMenu;
+    bool isOpenInteractionMenu;
 
     [SerializeField]
     GameObject interactionTextUI;
@@ -111,11 +111,11 @@ public class Interactionable : MonoBehaviour, IInteraction
 
 
         // 상호작용하는 동안 조이스틱 비활성화
-        GameManager.instance.joystickRange.SetActive(isOpenTaskMenu);
+        GameManager.instance.joystickRange.SetActive(isOpenInteractionMenu);
 
         #region Close Task Menu
         /// 이미 열려있는 Task 메뉴를 닫음
-        if (isOpenTaskMenu == true)
+        if (isOpenInteractionMenu == true)
         {
             ShowInter();
             HideInteractionMenu();
@@ -138,13 +138,13 @@ public class Interactionable : MonoBehaviour, IInteraction
     public void ShowInteractionMenu()
     {
         interactionMenuUI.SetActive(true);
-        isOpenTaskMenu = true;
+        isOpenInteractionMenu = true;
     }
 
     public void HideInteractionMenu()
     {
         interactionMenuUI.SetActive(false);
-        isOpenTaskMenu = false;
+        isOpenInteractionMenu = false;
 
         if (UIManager.instance.applyPanel.activeSelf == true)
             UIManager.instance.HideApplyPanel();

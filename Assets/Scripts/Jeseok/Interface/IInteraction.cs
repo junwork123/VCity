@@ -2,13 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ObjectType
-{
-    NPC,
-    UNMANNED,
-    ETC,
-}
-
 /// <summary>
 /// Interaction 인터페이스.
 /// </summary>

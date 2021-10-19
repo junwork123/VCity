@@ -33,10 +33,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8872505236866384625}
-  - {fileID: 5495089815820305047}
-  - {fileID: 1450649509260726654}
-  - {fileID: 4319230836643379319}
+  - {fileID: 7437630038270154886}
+  - {fileID: 5039536253413602810}
+  - {fileID: 6939855426880803701}
+  - {fileID: 7450874282074065048}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -118,11 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a282f9acd9f89b4f8297b85995895a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  childTransforms:
-  - {fileID: 8872505236866384625}
-  - {fileID: 5495089815820305047}
-  - {fileID: 1450649509260726654}
-  - {fileID: 4319230836643379319}
+  childTransforms: []
   radiusRange: 1.5
   paddingPercent: 10
 --- !u!114 &7831463280034817009
@@ -150,24 +146,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickListener: []
---- !u!1001 &2134076040453093248
+--- !u!1001 &1454590443715903725
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
-    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: taskType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: interactionType
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Task Button (1)
+      value: Interaction Button (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -239,7 +227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -253,63 +241,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6164340959759076060, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: _buttonType
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
---- !u!224 &5495089815820305047 stripped
+--- !u!224 &5039536253413602810 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-  m_PrefabInstance: {fileID: 2134076040453093248}
+  m_PrefabInstance: {fileID: 1454590443715903725}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &3098126116259379174
+--- !u!1001 &3571610094753474146
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
-    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: taskType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: interactionType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 5088090280799550508, guid: ab3881cc5fd3df648adc5a30871ec120, type: 3}
-    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: OpenChatMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: Photon.Chat.PanelSelector, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271632, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Task Button (0)
+      value: Interaction Button (2)
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -321,7 +273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -381,7 +333,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -395,31 +347,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6164340959759076060, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: _buttonType
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
---- !u!224 &8872505236866384625 stripped
+--- !u!224 &6939855426880803701 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-  m_PrefabInstance: {fileID: 3098126116259379174}
+  m_PrefabInstance: {fileID: 3571610094753474146}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &5043477163297367145
+--- !u!1001 &3943301035562941839
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
-    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: taskType
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: interactionType
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Task Button (2)
+      value: Interaction Button (3)
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -431,7 +379,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -491,7 +439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -507,25 +455,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
---- !u!224 &1450649509260726654 stripped
+--- !u!224 &7450874282074065048 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-  m_PrefabInstance: {fileID: 5043477163297367145}
+  m_PrefabInstance: {fileID: 3943301035562941839}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7651409363981847904
+--- !u!1001 &3956549530335899025
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
-    - target: {fileID: 2651148343716867240, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: taskType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Task Button (3)
+      value: Interaction Button
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -537,7 +481,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -611,10 +555,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6164340959759076060, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: _buttonType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
---- !u!224 &4319230836643379319 stripped
+--- !u!224 &7437630038270154886 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-  m_PrefabInstance: {fileID: 7651409363981847904}
+  m_PrefabInstance: {fileID: 3956549530335899025}
   m_PrefabAsset: {fileID: 0}
