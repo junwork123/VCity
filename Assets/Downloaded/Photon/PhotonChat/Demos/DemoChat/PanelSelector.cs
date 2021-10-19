@@ -25,14 +25,15 @@ namespace Photon.Chat
         public GameObject ChannelBarPanel;
         public GameObject ChatOutputPanel;
         public GameObject InputBarPanel;
-#region @Test
-        private void Update() {
-            if(Input.GetKeyDown(KeyCode.Tab))
+        #region @Test
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
             {
                 OpenChatMenu((int)ChatMenu.ChannelBar);
             }
         }
-#endregion
+        #endregion
         public void OpenMenu()
         {
             ChatPanel.SetActive(true);
@@ -51,6 +52,9 @@ namespace Photon.Chat
             switch ((ChatMenu)_menu)
             {
                 case ChatMenu.ChannelBar:
+
+                    //Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
+                    //chatManager.ShowChannel(DataManager.REGION_CHANNEL_ID);
                     ChannelBarPanel.SetActive(true);
                     break;
                 case ChatMenu.ChatOutput:

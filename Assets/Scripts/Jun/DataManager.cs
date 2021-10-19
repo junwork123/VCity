@@ -8,6 +8,9 @@ using ExitGames.Client.Photon;
 using Firebase.Firestore;
 using Firebase.Extensions;
 using System;
+using System.Threading.Tasks;
+
+
 
 // 네트워크 매니저가 넘겨준 아이디를 받아서, 
 // 사용자 정보(이름, 프로필, 대화내역 등)을 불러오기, 저장하기를 수행
@@ -18,6 +21,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     FirebaseFirestore db;
     // 데이터 매니저는 싱글톤으로 존재
     public UserDataContainer udc { get; set; }
+    public Dictionary<string, List<CustomMsg>> channels;
     void Awake()
     {
         if (instance == null) instance = new DataManager();
@@ -35,12 +39,16 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     }
     // CRUD Operation @POST
-    public void AddUser(string _id, string _email, string _name)
+    public async void AddUser(string _id, string _email, string _name)
     {
         // 유저를 먼저 불러오도록 요청한 뒤
         // 없다면 유저를 새로 생성한다
-        udc = GetUser(_id);
-        if (udc == null)
+        try
+        {
+            udc = await GetUser(_id);
+            Debug.Log("[Database] " + "이미 UDC 인스턴스가 생성되어 있습니다. : " + udc.Email);
+        }
+        catch (System.Exception)
         {
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
             // users 콜렉션 지정
@@ -49,19 +57,16 @@ public class DataManager : MonoBehaviour, IChatClientListener
             udc = new UserDataContainer(_id, _email, _name);
             DocumentReference docRef = db.Collection("Users").Document(_id);
             Dictionary<string, object> userData = udc.ToDictionary();
+            channels = new Dictionary<string, List<CustomMsg>>();
 
-            docRef.SetAsync(userData).ContinueWithOnMainThread(task =>
+            await docRef.SetAsync(userData).ContinueWithOnMainThread(task =>
             {
                 Debug.Log("[Database] " + "사용자 정보를 새로 생성했습니다. : " + udc.Email);
             });
         }
-        else
-        {
-            Debug.Log("[Database] " + "이미 UDC 인스턴스가 생성되어 있습니다. : " + udc.Email);
-        }
     }
     // CRUD Operation about 'users' collection @GET
-    public UserDataContainer GetUser(string _id)
+    public Task<UserDataContainer> GetUser(string _id)
     {
         db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
         Debug.Log("[Database] " + "사용자 정보 불러오기 시작");
@@ -73,6 +78,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             {
                 Debug.Log("[Database] " + "등록된 사용자 정보가 있습니다.");
                 udc = snapshot.ConvertTo<UserDataContainer>();
+                channels = new Dictionary<string, List<CustomMsg>>();
                 Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + udc.Email);
             }
             else
@@ -84,8 +90,12 @@ public class DataManager : MonoBehaviour, IChatClientListener
         });
         return null;
     }
+    public UserDataContainer GetCurrentUser()
+    {
+        return udc;
+    }
     // CRUD Operation @PUT
-    public void UpdateUser()
+    public async void UpdateUser()
     {
         if (udc != null)
         {
@@ -94,7 +104,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             Debug.Log("[Database] " + "사용자 정보 업데이트 요청 : " + udc.Id);
             DocumentReference userRef = db.Collection("Users").Document(udc.Id);
             Dictionary<string, object> userData = udc.ToDictionary();
-            userRef.SetAsync(userData).ContinueWithOnMainThread(task =>
+            await userRef.SetAsync(userData).ContinueWithOnMainThread(task =>
             {
                 Debug.Log("[Database] " + "사용자 정보 업데이트 성공");
             });
@@ -106,7 +116,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     }
     // CRUD Operation @PUT
-    public void CreateChannel(string _channelName)
+    public async void CreateChannel(string _channelName)
     {
         if (udc != null && udc.Channels != null)
         {
@@ -120,7 +130,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
             if (_channelName.Equals("Region"))
                 REGION_CHANNEL_ID = channelRef.Id;
-            channelRef.SetAsync(channelData).ContinueWithOnMainThread(task =>
+            await channelRef.SetAsync(channelData).ContinueWithOnMainThread(task =>
             {
                 if (task.IsCompleted)
                 {
@@ -150,7 +160,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             // });
         }
     }
-    public void SubscribeChannel(string _channelId)
+    public async void SubscribeChannel(string _channelId)
     {
         if (udc != null && udc.Channels != null)
         {
@@ -162,7 +172,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
             Debug.Log("[Database] " + "채널 가져오기 요청 시작");
             DocumentReference channelRef = db.Collection("Channels").Document(_channelId);
-            channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            await channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
 
                 DocumentSnapshot snapshot = task.Result;
@@ -194,7 +204,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
     }
     // CRUD Operation @GET
-    public DocumentSnapshot GetChannel(string _channelId)
+    public async Task<DocumentSnapshot> GetChannel(string _channelId)
     {
         if (udc != null && udc.Channels != null)
         {
@@ -206,7 +216,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 return null;
             }
             DocumentReference channelRef = db.Collection("Channels").Document(_channelId);
-            channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            await channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
                 DocumentSnapshot snapshot = task.Result;
                 if (snapshot.Exists)
@@ -223,7 +233,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
         return null;
     }
-    public async System.Threading.Tasks.Task<List<CustomMsg>> GetChatContents(string _channelId)
+    public async void LoadMessages(string _channelId)
     {
         if (udc != null && udc.Channels != null)
         {
@@ -232,34 +242,42 @@ public class DataManager : MonoBehaviour, IChatClientListener
             if (!udc.Channels.Contains(_channelId))
             {
                 Debug.Log("[Database] " + "해당 채널에 속해있지 않습니다 : " + udc.Channels);
-                return null;
             }
             CollectionReference channelRef = db.Collection("Channels").Document(_channelId).Collection("ChatContents");
-            await channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            await channelRef.GetSnapshotAsync().ContinueWith(task =>
             {
 
                 if (task.IsCompleted)
                 {
                     QuerySnapshot snapshots = task.Result;
-                    List<CustomMsg> result = new List<CustomMsg>();
+                    channels[_channelId] = new List<CustomMsg>();
                     Debug.Log("[Database] " + "채널 메시지 가져오기 시작");
                     foreach (DocumentSnapshot item in snapshots.Documents)
                     {
-                        result.Add(item.ConvertTo<CustomMsg>());
+                        string Sender = "";
+                        string Text = "";
+                        string Time = "";
+
+
+                        item.TryGetValue("Sender", out Sender);
+                        item.TryGetValue("Text", out Text);
+                        item.TryGetValue("Time", out Time);
+                        Debug.Log(Time + " " + Sender + " : " + Text);
+                        CustomMsg msg = new CustomMsg(Sender, Time, Text);
+
+                        channels[_channelId].Add(msg);
                     }
                     Debug.Log("[Database] " + "채널 메시지 가져오기 성공");
-                    return result;
                 }
                 else
                 {
                     Debug.Log("[Database] " + "채널 메시지 가져오기 실패");
-                    return null;
+
                 }
             });
         }
-        return null;
     }
-    public void UpdateChannel(Channel _channel)
+    public async void UpdateChannel(Channel _channel)
     {
         if (udc != null)
         {
@@ -269,7 +287,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             DocumentReference channelRef = db.Collection("Channels").Document(_channel.Id);
             Dictionary<string, object> channelData = _channel.ToDictionary();
             Debug.Log("[Database] " + "채널 정보 업데이트 요청");
-            channelRef.UpdateAsync(channelData).ContinueWithOnMainThread(task =>
+            await channelRef.UpdateAsync(channelData).ContinueWithOnMainThread(task =>
             {
                 Debug.Log("[Database] " + "사용자 정보 업데이트 성공");
             });
@@ -280,7 +298,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
 
     }
-    public void AppendMsg(string _channelId, CustomMsg _msg)
+    public async void AppendMsg(string _channelId, CustomMsg _msg)
     {
         if (udc != null)
         {
@@ -288,10 +306,11 @@ public class DataManager : MonoBehaviour, IChatClientListener
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
 
             CollectionReference msgRef = db.Collection("Channels").Document(_channelId).Collection("ChatContents");
-            msgRef.AddAsync(_msg.ToDictionary()).ContinueWith(task =>
+            await msgRef.AddAsync(_msg.ToDictionary()).ContinueWith(task =>
             {
                 if (task.IsCompleted)
                 {
+                    LoadMessages(_channelId);
                     Debug.Log("[Database] " + "메시지 추가 성공 : " + _msg.Text);
                 }
                 else
