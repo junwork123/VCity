@@ -16,7 +16,7 @@ public class Interactionable : MonoBehaviour, IInteraction
 
     public KeyCode InteractionKeyCode;
     public float interactionRadius = 3f;
-    new SphereCollider collider;
+    SphereCollider collider;
     Outline outline;
 
 
