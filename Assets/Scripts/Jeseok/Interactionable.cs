@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Outline))]
 public class Interactionable : MonoBehaviour, IInteraction
 {
     [SerializeField]
@@ -17,7 +16,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     public KeyCode InteractionKeyCode;
     public float interactionRadius = 3f;
     SphereCollider collider;
-    Outline outline;
+    public Outline outline;
 
 
     // Start is called before the first frame update
@@ -28,7 +27,7 @@ public class Interactionable : MonoBehaviour, IInteraction
         collider = GetComponent<SphereCollider>();
         collider.radius = interactionRadius;
 
-        outline = GetComponent<Outline>();
+        // outline = GetComponent<Outline>();
 
         InitOutline();
     }
