@@ -1217,6 +1217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e05019f3bf1a123468ad55ca8990911f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickListener: []
   activeActionButton: 0
   minimap: {fileID: 866915324}
 --- !u!1 &505246797
@@ -2044,7 +2045,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 800}
+  m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &866915326
 MonoBehaviour:
@@ -2885,7 +2886,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 1
+    height: 0.75
   near clip plane: 0.3
   far clip plane: 100
   field of view: 60
