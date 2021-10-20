@@ -38,7 +38,7 @@ public class SpreadObject : MonoBehaviour
         // atan(y/x) : 버튼이 인접했을 때 각의 절반
         float buttonRadius = childTransforms[0].transform.localScale.x * 0.5f;
         // 10f padding 추가
-        angle = Mathf.Atan2(buttonRadius, radiusRange) * Mathf.Rad2Deg * 2 * 1 + paddingPercent * 0.01f;
+        angle = Mathf.Atan2(buttonRadius, radiusRange) * Mathf.Rad2Deg * 2 * (1 + paddingPercent * 0.01f);
 
         int count = childTransforms.Count;
         for (int i = 0; i < count; ++i)
