@@ -571,9 +571,9 @@ MonoBehaviour:
   m_YDamping: 1
   m_ZDamping: 1
   m_AngularDampingMode: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
+  m_PitchDamping: 1
+  m_YawDamping: 1
+  m_RollDamping: 1
   m_AngularDamping: 0
 --- !u!114 &149865120
 MonoBehaviour:
