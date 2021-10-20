@@ -15,6 +15,8 @@ public class MovementBehavior : MonoBehaviour
     Quaternion lookDir;
     Vector3 lookVector;
 
+    bool isMove;
+
 
     private void Start()
     {
@@ -23,16 +25,23 @@ public class MovementBehavior : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isMove == false)
+            return;
+
         rigidbody.MovePosition(rigidbody.position + velocity * Time.deltaTime);
         velocity = Vector3.zero;
 
         lookDir = Quaternion.Euler(lookVector * rotateSpeed * Time.fixedDeltaTime);
         rigidbody.MoveRotation(rigidbody.rotation * lookDir);
         lookVector = Vector3.zero;
+
+        isMove = false;
     }
 
     public void Move(Vector3 dir)
     {
+        isMove = true;
+
         velocity = dir * moveForce;
 
         lookDir = Quaternion.LookRotation(dir);
@@ -42,6 +51,8 @@ public class MovementBehavior : MonoBehaviour
     // First Person Point of view
     public void MoveFPS(Vector3 dir)
     {
+        isMove = true;
+        
         velocity = transform.forward * dir.z * moveForce;
 
         int sign = dir.z >= 0 ? 1 : -1;
