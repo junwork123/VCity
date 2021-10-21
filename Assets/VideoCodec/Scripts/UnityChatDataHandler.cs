@@ -9,11 +9,15 @@ using System.Runtime.Serialization.Formatters.Binary;
 /// Processing audio and video codec logic
 /// See more: https://github.com/ShanguUncle/UnityChatSDK
 /// </summary>
-public class UnityChatDataHandler : MonoBehaviour {
+public class UnityChatDataHandler : MonoBehaviour
+{
 
     //this uid used for testing, set your uid in specific application
     public int TestUid = 1001;
     public bool IsStartChat { get; set; }
+
+    public MySimpleServer server;
+    public MySimpleClient client;
 
     Queue<VideoPacket> videoPacketQueue = new Queue<VideoPacket>();
 
@@ -30,7 +34,7 @@ public class UnityChatDataHandler : MonoBehaviour {
     /// </summary>
     public void StartVideoChat()
     {
-       OnStartChat(ChatType.Video);
+        OnStartChat(ChatType.Video);
     }
     /// <summary>
     /// start audio chat
@@ -47,13 +51,13 @@ public class UnityChatDataHandler : MonoBehaviour {
             UnityChatSDK.Instance.ChatType = type;
 
             CaptureResult result = UnityChatSDK.Instance.StartCapture();
-            print("StartChat:" + result);
+            Debug.Log("StartChat:" + result);
             IsStartChat = true;
-            print("OnStartChat");
+            Debug.Log("[Record] : " + "OnStartChat");
         }
         catch (Exception e)
         {
-            print("OnStartChat error:" + e.Message);
+            Debug.Log("[Record] : " + "OnStartChat error:" + e.Message);
         }
     }
 
@@ -75,11 +79,11 @@ public class UnityChatDataHandler : MonoBehaviour {
             ReceivedAudioDataQueue.Clear();
             ReceivedVideoDataQueue.Clear();
             IsStartChat = false;
-            print("OnStopChat");
+            Debug.Log("[Record] : " + "OnStopChat");
         }
         catch (Exception e)
         {
-            print("OnStopChat error:" + e.Message);
+            Debug.Log("[Record] : " + "OnStopChat error:" + e.Message);
         }
     }
 
@@ -104,13 +108,13 @@ public class UnityChatDataHandler : MonoBehaviour {
                 break;
         }
     }
-    private void Update() 
+    private void Update()
     {
         lock (ReceivedAudioDataQueue)
         {
             if (ReceivedAudioDataQueue.Count > 0)
             {
-               OnReceiveAudio(ReceivedAudioDataQueue.Dequeue());
+                OnReceiveAudio(ReceivedAudioDataQueue.Dequeue());
             }
         }
         lock (ReceivedVideoDataQueue)
@@ -121,7 +125,7 @@ public class UnityChatDataHandler : MonoBehaviour {
             }
         }
     }
-//==================send data========================
+    //==================send data========================
     /// <summary>
     /// send audio data
     /// </summary>
@@ -180,13 +184,27 @@ public class UnityChatDataHandler : MonoBehaviour {
         //On receiving video data,just for testing
         ReceivedVideoDataQueue.Enqueue(video);
     }
-    byte[] GetVideoPacketData(VideoPacket packet) 
+    byte[] GetVideoPacketData(VideoPacket packet)
     {
         //you can codec packet by google.protobuf/protobufNet...(the demo used google.protobuf)
         return ObjectToBytes(packet);
     }
+    // @여기에욧!!!!
     void SendDataByYourNetwork(byte[] data)
     {
+        if (server.isActiveAndEnabled && !client.isActiveAndEnabled)
+        {
+            server.SendBytes(data);
+        }
+        else if (!server.isActiveAndEnabled && client.isActiveAndEnabled)
+        {
+            client.SendBytes(data);
+        }
+        else
+        {
+            Debug.Log("[Recore] : " + "서버 혹은 클라이언트가 동작하지 않습니다.");
+        }
+
         //you need to do
     }
     //==================onReceive data========================
@@ -194,7 +212,7 @@ public class UnityChatDataHandler : MonoBehaviour {
     /// called when audio data is received
     /// </summary>
     /// <param name="data"></param>
-    public void OnReceiveAudio(byte[] data) 
+    public void OnReceiveAudio(byte[] data)
     {
         //decode audio data and playback
         AudioPacket packet = DecodeAudioPacket(data);
@@ -210,7 +228,7 @@ public class UnityChatDataHandler : MonoBehaviour {
     /// called when video data is received
     /// </summary>
     /// <param name="data"></param>
-    public void OnReceiveVideo(byte[] data) 
+    public void OnReceiveVideo(byte[] data)
     {
         //decode video data and render video
         VideoPacket packet = DecodeVideoPacket(data);

@@ -41,29 +41,21 @@ public class DataManager : MonoBehaviour, IChatClientListener
     // CRUD Operation @POST
     public async void AddUser(string _id, string _email, string _name)
     {
-        // 유저를 먼저 불러오도록 요청한 뒤
-        // 없다면 유저를 새로 생성한다
-        try
-        {
-            udc = await GetUser(_id);
-            Debug.Log("[Database] " + "이미 UDC 인스턴스가 생성되어 있습니다. : " + udc.Email);
-        }
-        catch (System.Exception)
-        {
-            db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
-            // users 콜렉션 지정
-            CollectionReference usersRef = db.Collection("Users");
-            // 기본적인 유저 데이터 컨테이너 생성
-            udc = new UserDataContainer(_id, _email, _name);
-            DocumentReference docRef = db.Collection("Users").Document(_id);
-            Dictionary<string, object> userData = udc.ToDictionary();
-            channels = new Dictionary<string, List<CustomMsg>>();
 
-            await docRef.SetAsync(userData).ContinueWithOnMainThread(task =>
-            {
-                Debug.Log("[Database] " + "사용자 정보를 새로 생성했습니다. : " + udc.Email);
-            });
-        }
+        db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
+        // users 콜렉션 지정
+        CollectionReference usersRef = db.Collection("Users");
+        // 기본적인 유저 데이터 컨테이너 생성
+        udc = new UserDataContainer(_id, _email, _name);
+        DocumentReference docRef = db.Collection("Users").Document(_id);
+        Dictionary<string, object> userData = udc.ToDictionary();
+        channels = new Dictionary<string, List<CustomMsg>>();
+
+        await docRef.SetAsync(userData).ContinueWithOnMainThread(task =>
+        {
+            Debug.Log("[Database] " + "사용자 정보를 새로 생성했습니다. : " + udc.Email);
+        });
+
     }
     // CRUD Operation about 'users' collection @GET
     public Task<UserDataContainer> GetUser(string _id)
@@ -78,6 +70,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             {
                 Debug.Log("[Database] " + "등록된 사용자 정보가 있습니다.");
                 udc = snapshot.ConvertTo<UserDataContainer>();
+                udc.IpAddress = NetServer.GetExternalIPAddress();
                 channels = new Dictionary<string, List<CustomMsg>>();
                 Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + udc.Email);
             }

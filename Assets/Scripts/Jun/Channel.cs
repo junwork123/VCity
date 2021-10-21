@@ -13,8 +13,9 @@ public class Channel
 
     [FirestoreProperty] public List<string> Members { get; set; }
 
+
     //[FirestoreDocumentId] public CollectionReference ChatContents { get; set; }
-    public Channel(){}
+    public Channel() { }
     public Channel(string _channelId, string _channelName, List<string> _memberList)
     {
         Id = _channelId;
@@ -31,11 +32,10 @@ public class Channel
         result["Name"] = Name;
         result["Kind"] = Kind;
         result["Members"] = Members;
-        //result["ChatContents"] = ChatContents;
 
         return result;
     }
-    public string DisplayName()
+    public string Set()
     {
         return Name;
     }
