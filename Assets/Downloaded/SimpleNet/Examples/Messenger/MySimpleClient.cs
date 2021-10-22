@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 public class MySimpleClient : NetClient
 {
     public string userId;
-
+    public string serverIP;
+    public GameObject recordManager;
     private Dictionary<int, string> idToName = new Dictionary<int, string>();
 
     // Start is called before the first frame update
@@ -33,14 +35,13 @@ public class MySimpleClient : NetClient
         this.idToName.Add(networkId, userId);
     }
 
-    public override void OnMessageReceive(string message)
+    public override void OnMessageReceive(byte[] message)
     {
-
-        base.OnMessageReceive(message);
-
-        string formattedMessage = message;
-        if (message.Contains("Message"))
-            formattedMessage = message.Remove(0, 8);
+        recordManager.GetComponent<UnityChatDataHandler>().ReceivedVideoDataQueue.Enqueue(message);
+        //base.OnMessageReceive(message);
+        // string formattedMessage = message;
+        // if (message.Contains("Message"))
+        //     formattedMessage = message.Remove(0, 8);
 
     }
 

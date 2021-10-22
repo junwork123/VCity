@@ -16,8 +16,8 @@ public class UnityChatDataHandler : MonoBehaviour
     public int TestUid = 1001;
     public bool IsStartChat { get; set; }
 
-    public MySimpleServer server;
-    public MySimpleClient client;
+    public GameObject server;
+    public GameObject client;
 
     Queue<VideoPacket> videoPacketQueue = new Queue<VideoPacket>();
 
@@ -192,13 +192,13 @@ public class UnityChatDataHandler : MonoBehaviour
     // @여기에욧!!!!
     void SendDataByYourNetwork(byte[] data)
     {
-        if (server.isActiveAndEnabled && !client.isActiveAndEnabled)
+        if (server.activeSelf && !client.activeSelf)
         {
-            server.SendBytes(data);
+            server.GetComponent<MySimpleServer>().SendBytes(data);
         }
-        else if (!server.isActiveAndEnabled && client.isActiveAndEnabled)
+        else if (!server.activeSelf && client.activeSelf)
         {
-            client.SendBytes(data);
+            client.GetComponent<MySimpleClient>().SendBytes(data);
         }
         else
         {

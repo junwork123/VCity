@@ -29,7 +29,7 @@ public class NetClient : MonoBehaviour
     public bool debug = false;
 
     [Header("Connection:")]
-    public string ipAddress  = "localhost";
+    public string ipAddress = "localhost";
     public int port = 8052;
 
     [HideInInspector]
@@ -40,11 +40,11 @@ public class NetClient : MonoBehaviour
     public int networkID;
 
     [HideInInspector]
-    private List<string> incomingBuffer = new List<string>();
+    private List<byte[]> incomingBuffer = new List<byte[]>();
 
     private bool clientStarted = false;
     public bool beginClientOnStart = true;
-    private string incomingTotal = "";
+    private byte[] incomingTotal;
     #endregion
     // Use this for initialization  
     void Start()
@@ -72,41 +72,41 @@ public class NetClient : MonoBehaviour
         }
         while (this.HasMessage())
         {
-            string serverMessage = this.GetNextMessage();
+            byte[] serverMessage = this.GetNextMessage();
             if (serverMessage != null)
             {
-                if (incomingTotal.Length >= NetParser.splitter.Length)
-                {
-                    print(incomingTotal.Substring(0, NetParser.splitter.Length));
-                    if (incomingTotal.Substring(0, NetParser.splitter.Length) == NetParser.splitter)
-                    {
+                // if (incomingTotal.Length >= NetParser.splitter.Length)
+                // {
+                //     print(incomingTotal.Substring(0, NetParser.splitter.Length));
+                //     if (incomingTotal.Substring(0, NetParser.splitter.Length) == NetParser.splitter)
+                //     {
 
-                        incomingTotal = incomingTotal.Remove(0, NetParser.splitter.Length);
+                //         incomingTotal = incomingTotal.Remove(0, NetParser.splitter.Length);
 
-                    }
-                }
+                //     }
+                // }
 
+                // incomingTotal += serverMessage;
+                ReadIncomingMessage(serverMessage);
+                // if (NetParser.Split(incomingTotal).Length > 1 || incomingTotal.Contains(NetParser.splitter))
+                // {
+                //     ReadIncomingMessage(incomingTotal);
+                //     //ReadIncomingMessage(NetParser.Split(incomingTotal)[0].Replace(NetParser.splitter, ""), true);
+                //     if (NetParser.Split(incomingTotal)[0].Contains(NetParser.splitter))
+                //     {
+                //         incomingTotal = incomingTotal.Remove(0, NetParser.Split(incomingTotal)[0].Length + NetParser.splitter.Length);
 
-                incomingTotal += serverMessage;
-                if (NetParser.Split(incomingTotal).Length > 1 || incomingTotal.Contains(NetParser.splitter))
-                {
+                //     }
+                //     else
+                //     {
+                //         incomingTotal = incomingTotal.Remove(0, NetParser.Split(incomingTotal)[0].Length);
 
-                    ReadIncomingMessage(NetParser.Split(incomingTotal)[0].Replace(NetParser.splitter, ""), true);
-                    if (NetParser.Split(incomingTotal)[0].Contains(NetParser.splitter))
-                    {
-                        incomingTotal = incomingTotal.Remove(0, NetParser.Split(incomingTotal)[0].Length + NetParser.splitter.Length);
-
-                    }
-                    else
-                    {
-                        incomingTotal = incomingTotal.Remove(0, NetParser.Split(incomingTotal)[0].Length);
-
-                    }
-                }
-                else
-                {
-                    ReadIncomingMessage(serverMessage);
-                }
+                //     }
+                // }
+                // else
+                // {
+                //     //ReadIncomingMessage(serverMessage);
+                // }
 
 
             }
@@ -117,33 +117,34 @@ public class NetClient : MonoBehaviour
 
     }
 
-    void ReadIncomingMessage(string serverMessage, bool checkIfComplete = false)
+    void ReadIncomingMessage(byte[] serverMessage, bool checkIfComplete = false)
     {
-        print("incoming:" + serverMessage);
+        OnMessageReceive(serverMessage);
+        //print("incoming:" + serverMessage);
 
-        if (serverMessage.Contains(":") || true && serverMessage.Length > 0)
-        {
+        // if (serverMessage.Contains(":") || true && serverMessage.Length > 0)
+        // {
 
-            if (NetParser.Split(serverMessage)[0].Equals("Initialization") ||
-            NetParser.Parse(serverMessage)[0].Equals("Initialization"))
-            {
+        //     if (NetParser.Split(serverMessage)[0].Equals("Initialization") ||
+        //     NetParser.Parse(serverMessage)[0].Equals("Initialization"))
+        //     {
 
-            }
-            else if (NetParser.Split(serverMessage)[0].Split(':')[0].Equals("dcx1234##"))
-            {
-                int networkId = int.Parse(NetParser.Split(serverMessage)[0].Split(':')[1]);
-                OnUserDisconnectFromServer(networkId);
-            }
-            else
-            {
+        //     }
+        //     else if (NetParser.Split(serverMessage)[0].Split(':')[0].Equals("dcx1234##"))
+        //     {
+        //         int networkId = int.Parse(NetParser.Split(serverMessage)[0].Split(':')[1]);
+        //         OnUserDisconnectFromServer(networkId);
+        //     }
+        //     else
+        //     {
 
-                this.OnMessageReceive(serverMessage);
-            }
-        }
-        else
-        {
-            this.OnMessageReceive(serverMessage);
-        }
+        //         this.OnMessageReceive(serverMessage);
+        //     }
+        // }
+        // else
+        // {
+        //     this.OnMessageReceive(serverMessage);
+        // }
     }
 
     // Update is called once per frame
@@ -205,23 +206,23 @@ public class NetClient : MonoBehaviour
                         string serverMessage = Encoding.ASCII.GetString(incommingData);
                         if (debug)
                             Debug.Log("server message received as: " + serverMessage);
-                        Debug.Log("initialized?:" + initializedOnNetwork);
+                        //Debug.Log("initialized?:" + initializedOnNetwork);
 
+                        incomingBuffer.Add(bytes);
+                        // foreach (string msg in NetParser.Split(serverMessage))
+                        // {
+                        //     if (!initializedOnNetwork)
+                        //     {
+                        //         CheckForNetIdAssignment(msg);
 
-                        foreach (string msg in NetParser.Split(serverMessage))
-                        {
-                            if (!initializedOnNetwork)
-                            {
-                                CheckForNetIdAssignment(msg);
+                        //     }
+                        //     else
+                        //     {
 
-                            }
-                            else
-                            {
+                        //         incomingBuffer.Add(msg);
 
-                                incomingBuffer.Add(msg);
-
-                            }
-                        }
+                        //     }
+                        // }
 
 
                     }
@@ -346,15 +347,15 @@ public class NetClient : MonoBehaviour
     /// Gets the next message in the buffer.
     /// </summary>
     /// <returns>The next message in the buffer.</returns>
-    public string GetNextMessage()
+    public byte[] GetNextMessage()
     {
         if (HasMessage())
         {
-            string message = this.incomingBuffer[0];
+            byte[] message = this.incomingBuffer[0];
             this.incomingBuffer.RemoveAt(0);
             return message;
         }
-        return "";
+        return null;
     }
 
     /// <summary>
@@ -370,7 +371,7 @@ public class NetClient : MonoBehaviour
     /// Method run when a message from the server is recieved.
     /// </summary>
     /// <param name="message">Message from server.</param>
-    public virtual void OnMessageReceive(string message)
+    public virtual void OnMessageReceive(byte[] message)
     {
         return;
     }

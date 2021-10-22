@@ -123,11 +123,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 if (task.IsCompleted)
                 {
                     user = task.Result;
+                    
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
                     DataManager.instance.GetUser(user.UserId);
                     #region @Test용
-                    //DataManager.instance.CreateChannel("Region");
+                    DataManager.instance.CreateChannel("Region");
                     DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
                     #endregion
                     PhotonNetwork.NickName = UserNameInputField.text;

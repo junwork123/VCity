@@ -48,12 +48,12 @@ public class LobbyClient : NetClient
     }
 
     //method which is run when the client recieves a message from the server.
-    public override void OnMessageReceive(string message)
-    {
-        base.OnMessageReceive(message);
-        ParseMessage(message);
+    // public override void OnMessageReceive(string message)
+    // {
+    //     base.OnMessageReceive(message);
+    //     ParseMessage(message);
 
-    }
+    // }
 
     //Parses the message into a usable format. 
     private void ParseMessage(string message)

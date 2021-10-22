@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager instance;
-    public static string REGION_CHANNEL_ID = "E4rS7LlqF1UHzpMTEO1U";
+    public static string REGION_CHANNEL_ID = "s1r8QUWh1cOxFm0RUGmV";
     FirebaseFirestore db;
     // 데이터 매니저는 싱글톤으로 존재
     public UserDataContainer udc { get; set; }
@@ -70,7 +70,6 @@ public class DataManager : MonoBehaviour, IChatClientListener
             {
                 Debug.Log("[Database] " + "등록된 사용자 정보가 있습니다.");
                 udc = snapshot.ConvertTo<UserDataContainer>();
-                udc.IpAddress = NetServer.GetExternalIPAddress();
                 channels = new Dictionary<string, List<CustomMsg>>();
                 Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + udc.Email);
             }
@@ -121,7 +120,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             Channel channel = new Channel(channelRef.Id, _channelName, memberList);
             Dictionary<string, object> channelData = channel.ToDictionary();
 
-            if (_channelName.Equals("Region"))
+            if (_channelName.Equals("Region") && REGION_CHANNEL_ID == "")
                 REGION_CHANNEL_ID = channelRef.Id;
             await channelRef.SetAsync(channelData).ContinueWithOnMainThread(task =>
             {

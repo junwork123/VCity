@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class RecordGUI : MonoBehaviour
+public class RecordUI : MonoBehaviour
 {
-    public MySimpleServer server;
-    public MySimpleClient client;
+    public GameObject server;
+    public GameObject client;
     public GameObject myRecord;
     public GameObject componentRecord;
 
+    public Text iptext;
+    void Awake() {
+        DontDestroyOnLoad(this);
+        gameObject.SetActive(false);
+    }
     // Start is called before the first frame update
     void Start()
     {
-        CloseConnection();
+        
+        Debug.Log("[Record] : " + NetServer.GetExternalIPAddress());
+        //CloseConnection();
     }
     public void OpenRecordUI()
     {
@@ -26,21 +34,26 @@ public class RecordGUI : MonoBehaviour
     }
     public void SetAsServer()
     {
-        server.enabled = true;
-        client.enabled = false;
-
+        Debug.Log("SetAsServer");
+        server.SetActive(true);
+        client.SetActive(false);
+        //server.GetComponent<MySimpleServer>().StartServer();
+        // GetComponent<UnityChatSet>().CaptureCamera = Camera.main;
+        // GetComponent<UnityChatSet>().SetUnityCam();
+        GetComponent<UnityChatSet>().SetDeciveCam();
+        GetComponent<UnityChatDataHandler>().StartVideoChat();
+        iptext.text = NetServer.GetExternalIPAddress();
     }
     public void SetAsClient(string _serverAddress)
     {
-        server.enabled = false;
-        client.enabled = true;
-        client.ipAddress = _serverAddress;
-    }
-    public void CloseConnection()
-    {
-        server.enabled = false;
-        client.enabled = false;
-        CloseRecordUI();
+        Debug.Log("SetAsClient");
+        server.SetActive(false);
+        client.SetActive(true);
+        GetComponent<UnityChatSet>().CaptureCamera = Camera.main;
+        GetComponent<UnityChatSet>().SetUnityCam();
+        client.GetComponent<MySimpleClient>().serverIP = _serverAddress;
+        //client.GetComponent<MySimpleClient>().StartClient();
+        GetComponent<UnityChatDataHandler>().StartVideoChat();
     }
     // Update is called once per frame
     void Update()
