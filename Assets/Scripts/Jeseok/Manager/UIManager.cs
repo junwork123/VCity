@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : Singleton<UIManager>
 {
-    public TMPro.TextMeshPro nameTextUI;
+    public TextMeshPro nameTextUI;
 
     public GameObject actionButton;
+    public GameObject dialog;
+    public TextMeshProUGUI dialogText;
     public GameObject applyPanel;
 
 
@@ -39,5 +42,21 @@ public class UIManager : Singleton<UIManager>
     public void InactiveActionButton()
     {
         actionButton.GetComponent<Button>().interactable = false;
+    }
+
+    public void ShowDialog()
+    {
+        dialog.SetActive(true);
+    }
+
+    public void HideDialog()
+    {
+        dialog.SetActive(false);
+        SetDialogMessage("");
+    }
+
+    public void SetDialogMessage(string message)
+    {
+        dialogText.text = message;
     }
 }

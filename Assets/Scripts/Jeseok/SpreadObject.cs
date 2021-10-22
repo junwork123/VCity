@@ -24,10 +24,11 @@ public class SpreadObject : MonoBehaviour
 
     void OnEnable()
     {
+        InitPosition();
         Spread();
     }
 
-    void Spread()
+    void InitPosition()
     {
         // 위치 초기화 (0, radiusRange)
         for (int i = 0; i < childTransforms.Count; ++i)
@@ -35,6 +36,10 @@ public class SpreadObject : MonoBehaviour
             childTransforms[i].localPosition = Vector3.up * radiusRange;
         }
 
+    }
+
+    void Spread()
+    {
         // atan(y/x) : 버튼이 인접했을 때 각의 절반
         float buttonRadius = childTransforms[0].transform.localScale.x * 0.5f;
         // 10f padding 추가

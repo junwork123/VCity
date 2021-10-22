@@ -15,7 +15,7 @@ public interface IInteraction
     /// 플레이어가 이 오브젝트를 사용할 수 있는지 여부.
     /// </summary>
     bool enable { get; set; }
-    // string InterString { get; set; }
+    string interString { get; set; }
     // string sInterPlayerAni { get; }
 
 

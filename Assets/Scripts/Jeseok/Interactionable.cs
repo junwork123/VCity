@@ -6,6 +6,10 @@ public class Interactionable : MonoBehaviour, IInteraction
     ObjectType _objectType;
     public ObjectType objectType { get => _objectType; set => _objectType = value; }
     public bool enable { get; set; }
+    [SerializeField]
+    string _interString;
+    public string interString { get => _interString; set => _interString = value; }
+
     bool isOpenInteractionMenu;
 
     [SerializeField]
@@ -53,11 +57,6 @@ public class Interactionable : MonoBehaviour, IInteraction
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-
-    }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
@@ -75,7 +74,10 @@ public class Interactionable : MonoBehaviour, IInteraction
     #region Interaciton
     public void ShowInter()
     {
-        interactionTextUI.SetActive(true);
+        // interactionTextUI.SetActive(true);
+        print(interString);
+        UIManager.instance.SetDialogMessage(interString);
+        UIManager.instance.ShowDialog();
 
         SetOutline();
 
@@ -85,7 +87,8 @@ public class Interactionable : MonoBehaviour, IInteraction
 
     public void EndInter()
     {
-        interactionTextUI.SetActive(false);
+        // interactionTextUI.SetActive(false);
+        UIManager.instance.HideDialog();
 
         UnsetOutline();
         HideInteractionMenu();

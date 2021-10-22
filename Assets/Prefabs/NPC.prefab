@@ -765,6 +765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 0
+  _interString: Press <sprite name=Chat> to interact
   interactionTextUI: {fileID: 6762193697205757453}
   interactionMenuUI: {fileID: 1523399776112433340}
   InteractionKeyCode: 120

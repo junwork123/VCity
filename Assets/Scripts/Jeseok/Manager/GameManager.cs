@@ -68,7 +68,6 @@ public class GameManager : Singleton<GameManager>
         // else
         //     joystickRange.SetActive(true);
         #endregion
-
     }
 
     public void SetInteractionKey(KeyCode keyCode)
