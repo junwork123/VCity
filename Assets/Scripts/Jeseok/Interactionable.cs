@@ -31,8 +31,6 @@ public class Interactionable : MonoBehaviour, IInteraction
         collider = GetComponent<SphereCollider>();
         collider.radius = interactionRadius;
 
-        // outline = GetComponent<Outline>();
-
         InitOutline();
     }
 

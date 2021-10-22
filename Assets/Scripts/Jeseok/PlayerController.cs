@@ -46,6 +46,6 @@ public class PlayerController : MonoBehaviour
 
     public void Interaction()
     {
-        UIButtonEventManager.instance.OnClickActionButton();
+        UIButtonEventManager.instance.OnClickAction();
     }
 }

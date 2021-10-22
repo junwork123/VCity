@@ -24,8 +24,11 @@ public class GameManager : Singleton<GameManager>
     bool isQuitWait;
 
 
-    private void Start()
+    protected void Start()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        SetResolution();
+
         UIManager.instance.SetPlayerName();
     }
 
@@ -49,25 +52,18 @@ public class GameManager : Singleton<GameManager>
 #endif
             }
         }
+    }
 
-        #region joystick
-        // /// 조이스틱을 사용중일 때 커서가 버튼 위로 이동하면 조이스틱을 비활성화함
-        // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        // RaycastHit hit;
-        // LayerMask layerMask = LayerMask.GetMask("UI");
-        // if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-        // {
-        //     // DEBUG
-        //     // AndroidToastManager.instance.ShowToast("Disable Joystick");
-        //     joystickRange.SetActive(false);
+    void SetResolution()
+    {
+        int setWidth = 1080;
+        int setHeight = 1920;
 
+        int deviceWidth = Screen.width;
+        int deviceHeight = Screen.height;
 
-        //     // if (Input.GetMouseButton(0))
-        //     //     hit.collider.GetComponent<ButtonClickListener>().OnClick();
-        // }
-        // else
-        //     joystickRange.SetActive(true);
-        #endregion
+        Screen.SetResolution(deviceWidth, (int)(((float)deviceHeight / deviceWidth) * setWidth), true);
+        print(deviceWidth + ", " + (int)(((float)deviceHeight / deviceWidth) * setWidth));
     }
 
     public void SetInteractionKey(KeyCode keyCode)

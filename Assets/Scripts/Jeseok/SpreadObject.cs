@@ -35,7 +35,6 @@ public class SpreadObject : MonoBehaviour
         {
             childTransforms[i].localPosition = Vector3.up * radiusRange;
         }
-
     }
 
     void Spread()

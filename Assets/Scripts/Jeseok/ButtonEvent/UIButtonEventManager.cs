@@ -10,8 +10,6 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
     [HideInInspector]
     public bool activeActionButton;
 
-    public GameObject minimap;
-
 
     void Start()
     {
@@ -26,21 +24,21 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
         switch (uIButtonType)
         {
             case UIButtonType.ACTION:
-                OnClickActionButton();
+                OnClickAction();
                 break;
             case UIButtonType.SETTING:
-                ToggleSettingUI();
+                OnClickSetting();
                 break;
             case UIButtonType.MESSAGE:
-                OnMessage();
+                OnClickMessage();
                 break;
             case UIButtonType.MAP:
-                ToggleMinimapUI();
+                OnClickMap();
                 break;
         }
     }
 
-    public void OnClickActionButton()
+    public void OnClickAction()
     {
         activeActionButton = true;
         StartCoroutine(CheckAction());
@@ -54,20 +52,18 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
         activeActionButton = false;
     }
 
-    public void ToggleSettingUI()
+    public void OnClickSetting()
     {
         AndroidToastManager.instance.ShowToast(System.Reflection.MethodBase.GetCurrentMethod().ToString());
-        throw new System.NotImplementedException();
     }
 
-    void OnMessage()
+    void OnClickMessage()
     {
         AndroidToastManager.instance.ShowToast(System.Reflection.MethodBase.GetCurrentMethod().ToString());
-        throw new System.NotImplementedException();
     }
 
-    void ToggleMinimapUI()
+    void OnClickMap()
     {
-        minimap.SetActive(!minimap.activeSelf);
+        UIManager.instance.ToggleMinimap();
     }
 }
