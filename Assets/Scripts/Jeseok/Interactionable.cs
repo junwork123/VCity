@@ -75,14 +75,10 @@ public class Interactionable : MonoBehaviour, IInteraction
     public void ShowInter()
     {
         // interactionTextUI.SetActive(true);
-        print(interString);
         UIManager.instance.SetDialogMessage(interString);
         UIManager.instance.ShowDialog();
 
         SetOutline();
-
-        // 액션 버튼 활성화
-        // ButtonEventManager.instance.ActionButton
     }
 
     public void EndInter()
@@ -92,8 +88,6 @@ public class Interactionable : MonoBehaviour, IInteraction
 
         UnsetOutline();
         HideInteractionMenu();
-
-        // 액션 버튼 비활성화
     }
 
     public void NonShowInter()

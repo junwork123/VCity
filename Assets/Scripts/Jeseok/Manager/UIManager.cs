@@ -17,6 +17,7 @@ public class UIManager : Singleton<UIManager>
     void Start()
     {
         HideApplyPanel();
+        HideDialog();
     }
 
     public void SetPlayerName()
