@@ -49,7 +49,7 @@ public class TaskButtonEvent : MonoBehaviour
 
             case TaskType.ETC:
                 AndroidToastManager.instance.ShowToast("ETC Button");
-                FindObjectOfType<RecordUI>().SetAsClient(FindObjectOfType<RecordUI>().client.GetComponent<MySimpleClient>().serverIP);
+                
                 break;
 
             default:

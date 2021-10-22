@@ -51,7 +51,7 @@ public class RecordUI : MonoBehaviour
         client.SetActive(true);
         GetComponent<UnityChatSet>().CaptureCamera = Camera.main;
         GetComponent<UnityChatSet>().SetUnityCam();
-        client.GetComponent<MySimpleClient>().serverIP = _serverAddress;
+        client.GetComponent<MySimpleClient>().ipAddress = _serverAddress;
         //client.GetComponent<MySimpleClient>().StartClient();
         GetComponent<UnityChatDataHandler>().StartVideoChat();
     }

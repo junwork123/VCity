@@ -4,6 +4,11 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
 
 /// <summary>
 /// Processing audio and video codec logic
@@ -16,15 +21,84 @@ public class UnityChatDataHandler : MonoBehaviour
     public int TestUid = 1001;
     public bool IsStartChat { get; set; }
 
-    public GameObject server;
-    public GameObject client;
+    public string componentIp = "";
 
     Queue<VideoPacket> videoPacketQueue = new Queue<VideoPacket>();
 
     //temp save the data received from the your server and handler in update
     public Queue<byte[]> ReceivedAudioDataQueue = new Queue<byte[]>();
     public Queue<byte[]> ReceivedVideoDataQueue = new Queue<byte[]>();
+    public static string GetInternalIPAddress()
+    {
+        var host = Dns.GetHostEntry(Dns.GetHostName());
 
+        foreach (var ip in host.AddressList)
+        {
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            {
+                return ip.ToString();
+            }
+        }
+
+        throw new Exception("No network adapters with an IPv4 address in the system!");
+    }
+
+    public static string GetExternalIPAddress()
+    {
+        string externalip = new WebClient().DownloadString("http://ipinfo.io/ip").Trim(); //http://icanhazip.com
+
+        if (String.IsNullOrWhiteSpace(externalip))
+        {
+            externalip = GetInternalIPAddress();//null경우 Get Internal IP를 가져오게 한다.
+        }
+
+        return externalip;
+    }
+
+    public void SetAsServer()
+    {
+        // IPv4, 스트림, TCP --> TCP는 스트림으로, UDP는 데이터그램으로
+        using (Socket svrSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
+        {
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(GetExternalIPAddress()), 9999);
+
+            svrSocket.Bind(endPoint);
+
+            byte[] recvBytes = new byte[1024];
+            EndPoint cltEP = new IPEndPoint(IPAddress.Parse(componentIp), 0);
+
+
+            while (true)
+            {
+                int nRecv = svrSocket.ReceiveFrom(recvBytes, ref cltEP); // 받은 문자 바이트
+                string text = Encoding.UTF8.GetString(recvBytes, 0, nRecv);
+
+                Console.WriteLine(text);
+                byte[] sendBytes = Encoding.UTF8.GetBytes("Hello: " + text); // 전송
+
+                svrSocket.SendTo(sendBytes, cltEP);
+            }
+
+        }
+    }
+    public void SetAsClient()
+    {
+        using (Socket cltSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
+        {
+            EndPoint ServerPoint = new IPEndPoint(IPAddress.Parse(componentIp), 9999);
+            EndPoint SendPoint = new IPEndPoint(IPAddress.Parse(GetExternalIPAddress()), 0);
+
+            byte[] sendByte = Encoding.UTF8.GetBytes("I'm udp client");
+
+            cltSocket.SendTo(sendByte, ServerPoint);
+            byte[] recvBytes = new byte[1024];
+            int nRecv = cltSocket.ReceiveFrom(recvBytes, ref SendPoint);
+
+            string text = Encoding.UTF8.GetString(recvBytes, 0, nRecv);
+            Console.WriteLine(text);
+            cltSocket.Close(); // 세션 종료
+        }
+    }
     void Start()
     {
 
@@ -144,7 +218,7 @@ public class UnityChatDataHandler : MonoBehaviour
                 SendDataByYourNetwork(audio);
 
                 //On receiving audio data,just for testing
-                ReceivedAudioDataQueue.Enqueue(audio);
+                //ReceivedAudioDataQueue.Enqueue(audio);
             }
         }
     }
@@ -182,31 +256,14 @@ public class UnityChatDataHandler : MonoBehaviour
         SendDataByYourNetwork(video);
 
         //On receiving video data,just for testing
-        ReceivedVideoDataQueue.Enqueue(video);
+        //ReceivedVideoDataQueue.Enqueue(video);
     }
     byte[] GetVideoPacketData(VideoPacket packet)
     {
         //you can codec packet by google.protobuf/protobufNet...(the demo used google.protobuf)
         return ObjectToBytes(packet);
     }
-    // @여기에욧!!!!
-    void SendDataByYourNetwork(byte[] data)
-    {
-        if (server.activeSelf && !client.activeSelf)
-        {
-            server.GetComponent<MySimpleServer>().SendBytes(data);
-        }
-        else if (!server.activeSelf && client.activeSelf)
-        {
-            client.GetComponent<MySimpleClient>().SendBytes(data);
-        }
-        else
-        {
-            Debug.Log("[Recore] : " + "서버 혹은 클라이언트가 동작하지 않습니다.");
-        }
 
-        //you need to do
-    }
     //==================onReceive data========================
     /// <summary>
     /// called when audio data is received
