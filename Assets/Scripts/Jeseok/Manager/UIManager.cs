@@ -27,6 +27,7 @@ public class UIManager : Singleton<UIManager>
     public void SetPlayerName()
     {
         nameText.text = GameManager.instance.playerName;
+        nameTextUI.text = GameManager.instance.playerName;
     }
 
     public void AtciveActionButton()
