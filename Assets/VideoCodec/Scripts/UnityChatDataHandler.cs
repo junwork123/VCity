@@ -1,14 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using Photon.Pun;
 
 /// <summary>
 /// Processing audio and video codec logic
@@ -20,8 +19,17 @@ public class UnityChatDataHandler : MonoBehaviour
     //this uid used for testing, set your uid in specific application
     public int TestUid = 1001;
     public bool IsStartChat { get; set; }
-
     public string componentIp = "";
+    public string myIp = "";
+
+
+    PhotonStream photonStream;
+
+    Socket socket;
+    EndPoint myPoint;
+    EndPoint componentPoint;
+    public TMP_Text textIp;
+    bool isServer = true;
 
     Queue<VideoPacket> videoPacketQueue = new Queue<VideoPacket>();
 
@@ -54,50 +62,38 @@ public class UnityChatDataHandler : MonoBehaviour
 
         return externalip;
     }
-
+    public void SetIP()
+    {
+        componentIp = textIp.text;
+    }
     public void SetAsServer()
     {
         // IPv4, 스트림, TCP --> TCP는 스트림으로, UDP는 데이터그램으로
-        using (Socket svrSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
+        using (socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(GetExternalIPAddress()), 9999);
-
-            svrSocket.Bind(endPoint);
-
-            byte[] recvBytes = new byte[1024];
-            EndPoint cltEP = new IPEndPoint(IPAddress.Parse(componentIp), 0);
-
-
-            while (true)
-            {
-                int nRecv = svrSocket.ReceiveFrom(recvBytes, ref cltEP); // 받은 문자 바이트
-                string text = Encoding.UTF8.GetString(recvBytes, 0, nRecv);
-
-                Console.WriteLine(text);
-                byte[] sendBytes = Encoding.UTF8.GetBytes("Hello: " + text); // 전송
-
-                svrSocket.SendTo(sendBytes, cltEP);
-            }
-
+            isServer = true;
+            myIp = GetExternalIPAddress();
+            myPoint = new IPEndPoint(IPAddress.Parse(myIp), 9999);
+            componentPoint = new IPEndPoint(IPAddress.Parse("121.169.110.132"), 9999);
+            socket.Bind(myPoint);
+            GetComponent<UnityChatSet>().SetDeciveCam();
         }
     }
     public void SetAsClient()
     {
-        using (Socket cltSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
+        using (socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp))
         {
-            EndPoint ServerPoint = new IPEndPoint(IPAddress.Parse(componentIp), 9999);
-            EndPoint SendPoint = new IPEndPoint(IPAddress.Parse(GetExternalIPAddress()), 0);
-
-            byte[] sendByte = Encoding.UTF8.GetBytes("I'm udp client");
-
-            cltSocket.SendTo(sendByte, ServerPoint);
-            byte[] recvBytes = new byte[1024];
-            int nRecv = cltSocket.ReceiveFrom(recvBytes, ref SendPoint);
-
-            string text = Encoding.UTF8.GetString(recvBytes, 0, nRecv);
-            Console.WriteLine(text);
-            cltSocket.Close(); // 세션 종료
+            isServer = false;
+            myIp = GetExternalIPAddress();
+            myPoint = new IPEndPoint(IPAddress.Parse(myIp), 9999);
+            SetIP();
+            componentPoint = new IPEndPoint(IPAddress.Parse("39.7.24.130"), 9999);
+            GetComponent<UnityChatSet>().SetUnityCam();
         }
+    }
+    void Awake()
+    {
+        DontDestroyOnLoad(this);
     }
     void Start()
     {
@@ -184,20 +180,45 @@ public class UnityChatDataHandler : MonoBehaviour
     }
     private void Update()
     {
+        if (socket != null)
+        {
+            byte[] recvBytes = new byte[1024];
+            socket.ReceiveFrom(recvBytes, ref componentPoint); // 받은 문자 바이트
+            ReceivedAudioDataQueue.Enqueue(recvBytes);
+        }
+
         lock (ReceivedAudioDataQueue)
         {
             if (ReceivedAudioDataQueue.Count > 0)
             {
-                OnReceiveAudio(ReceivedAudioDataQueue.Dequeue());
+                try
+                {
+                    OnReceiveAudio(ReceivedAudioDataQueue.Dequeue());
+                }
+                catch (System.Exception)
+                {
+                    Debug.Log("오디오 시불쟝!!!!");
+                    throw;
+                }
+
             }
         }
         lock (ReceivedVideoDataQueue)
         {
             if (ReceivedVideoDataQueue.Count > 0)
             {
-                OnReceiveVideo(ReceivedVideoDataQueue.Dequeue());
+                try
+                {
+                    OnReceiveAudio(ReceivedVideoDataQueue.Dequeue());
+                }
+                catch (System.Exception)
+                {
+                    Debug.Log("비디오 시불쟝!!!!");
+                    throw;
+                }
             }
         }
+
     }
     //==================send data========================
     /// <summary>
@@ -215,11 +236,12 @@ public class UnityChatDataHandler : MonoBehaviour
             if (audio != null)
             {
                 //send data through your own network,such as TCP，UDP，P2P,Webrct，Unet,Photon...,the demo uses UDP for testing.
-                SendDataByYourNetwork(audio);
-
-                //On receiving audio data,just for testing
-                //ReceivedAudioDataQueue.Enqueue(audio);
+                //SendDataByYourNetwork(audio);
+                socket.SendTo(audio, componentPoint);
             }
+
+            //On receiving audio data,just for testing
+            //ReceivedAudioDataQueue.Enqueue(audio);
         }
     }
     byte[] GetAudioPacketData(AudioPacket packet)
@@ -253,7 +275,12 @@ public class UnityChatDataHandler : MonoBehaviour
 
         packet.Id = TestUid;//use your userID
         byte[] video = GetVideoPacketData(packet);
-        SendDataByYourNetwork(video);
+        if (video != null)
+        {
+            //send data through your own network,such as TCP，UDP，P2P,Webrct，Unet,Photon...,the demo uses UDP for testing.
+            //SendDataByYourNetwork(audio);
+            socket.SendTo(video, componentPoint);
+        }
 
         //On receiving video data,just for testing
         //ReceivedVideoDataQueue.Enqueue(video);

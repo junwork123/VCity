@@ -401,6 +401,7 @@ namespace Photon.Chat
         public void OnConnected()
         {
             recordUI.SetActive(true);
+            recordUI.GetComponent<RecordUI>().DisplayIp();
             if (DataManager.instance.udc != null && DataManager.instance.udc.Channels != null)
             {
                 foreach (string channelId in DataManager.instance.udc.Channels)

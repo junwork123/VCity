@@ -43,12 +43,13 @@ public class TaskButtonEvent : MonoBehaviour
 
             case TaskType.APPLY:
                 AndroidToastManager.instance.ShowToast("Apply Button");
-                FindObjectOfType<RecordUI>().SetAsServer();
+                FindObjectOfType<UnityChatDataHandler>().SetAsServer();
                 UIManager.instance.ShowApplyPanel();
                 break;
 
             case TaskType.ETC:
                 AndroidToastManager.instance.ShowToast("ETC Button");
+                FindObjectOfType<UnityChatDataHandler>().SetAsClient();
                 
                 break;
 
