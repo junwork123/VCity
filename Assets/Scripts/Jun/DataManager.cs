@@ -417,7 +417,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     }
     private void OnApplicationQuit()
     {
-        SaveAsFile<UserDataContainer>(udc, udc.Email);
+        //SaveAsFile<UserDataContainer>(udc, udc.Email);
     }
 
     #region useless

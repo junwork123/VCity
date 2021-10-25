@@ -45,6 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UserIdInputField: {fileID: 0}
   UserPwInputField: {fileID: 0}
+  UserNameInputField: {fileID: 0}
   roomNameInputField: {fileID: 0}
   roomListContent: {fileID: 0}
   roomListItemPrefab: {fileID: 998110447359786807, guid: 0be71690483151c418ddc8b8ed17f2bb, type: 3}
+  loadingPanel: {fileID: 0}

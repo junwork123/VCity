@@ -5,7 +5,6 @@ using UnityEngine;
 public class TaskButtonEvent : MonoBehaviour
 {
     public ButtonClickListener[] clickListener;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -43,14 +42,13 @@ public class TaskButtonEvent : MonoBehaviour
 
             case TaskType.APPLY:
                 AndroidToastManager.instance.ShowToast("Apply Button");
-                FindObjectOfType<UnityChatDataHandler>().SetAsServer();
                 UIManager.instance.ShowApplyPanel();
                 break;
 
             case TaskType.ETC:
+                FindObjectOfType<UnityChatDataHandler>().gameObject.SetActive(true);
                 AndroidToastManager.instance.ShowToast("ETC Button");
-                FindObjectOfType<UnityChatDataHandler>().SetAsClient();
-                
+
                 break;
 
             default:

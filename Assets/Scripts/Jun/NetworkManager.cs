@@ -261,8 +261,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
             Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
             chatManager.Connect(UserNameInputField.text);
-            SceneManager.LoadScene("PlayerControl");
 
+            SceneManager.LoadScene("PlayerControl");
+            
             Debug.Log("[Network] " + "룸에 입장!");
         }
     }

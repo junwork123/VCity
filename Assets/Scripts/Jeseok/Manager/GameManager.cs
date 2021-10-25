@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -27,6 +28,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         UIManager.instance.SetPlayerName();
+        //PhotonNetwork.Instantiate("RecordManager", Vector3.zero, Quaternion.identity, 0);
     }
 
     void Update()
