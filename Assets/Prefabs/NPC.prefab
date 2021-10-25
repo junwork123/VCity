@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press X to interact
+  m_text: Press <sprite=4> to Interact
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -765,7 +765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 0
-  _interString: Press <sprite name=Chat> to interact
+  _interString: Press <sprite=4> to Interact
   interactionTextUI: {fileID: 6762193697205757453}
   interactionMenuUI: {fileID: 1523399776112433340}
   InteractionKeyCode: 120
