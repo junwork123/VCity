@@ -4,37 +4,37 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -672388805594007808
-    second: css_sprites_0
+    second: action
   - first:
       213: 5235422611135308836
-    second: css_sprites_1
+    second: apply
   - first:
       213: -4926200799941007580
-    second: css_sprites_2
+    second: log
   - first:
       213: 7661745356945916966
-    second: css_sprites_3
+    second: cam
   - first:
       213: -3606930599765828121
-    second: css_sprites_4
+    second: mic
   - first:
       213: -4163785779886709575
     second: css_sprites_5
   - first:
       213: -1711397009976522164
-    second: css_sprites_6
+    second: exit
   - first:
       213: 7043440737417154663
-    second: css_sprites_7
+    second: help
   - first:
       213: -7133306558639800082
-    second: css_sprites_8
+    second: map
   - first:
       213: -8700938016656857204
-    second: css_sprites_9
+    second: setting
   - first:
       213: 3988973718903696860
-    second: css_sprites_10
+    second: sound
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -136,7 +136,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: css_sprites_0
+      name: action
       rect:
         serializedVersion: 2
         x: 10
@@ -157,7 +157,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: css_sprites_1
+      name: apply
       rect:
         serializedVersion: 2
         x: 399
@@ -178,7 +178,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: css_sprites_2
+      name: log
       rect:
         serializedVersion: 2
         x: 680
@@ -199,7 +199,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: css_sprites_3
+      name: cam
       rect:
         serializedVersion: 2
         x: 679
@@ -220,7 +220,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: css_sprites_4
+      name: mic
       rect:
         serializedVersion: 2
         x: 752
@@ -241,10 +241,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: css_sprites_6
+      name: exit
       rect:
         serializedVersion: 2
-        x: 11
+        x: 12
         y: 10
         width: 259
         height: 259
@@ -262,7 +262,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: css_sprites_7
+      name: help
       rect:
         serializedVersion: 2
         x: 290
@@ -283,7 +283,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: css_sprites_8
+      name: map
       rect:
         serializedVersion: 2
         x: 570
@@ -304,7 +304,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: css_sprites_9
+      name: setting
       rect:
         serializedVersion: 2
         x: 705
@@ -325,7 +325,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: css_sprites_10
+      name: sound
       rect:
         serializedVersion: 2
         x: 570

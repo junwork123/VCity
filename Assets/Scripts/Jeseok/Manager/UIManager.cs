@@ -7,7 +7,8 @@ using TMPro;
 public class UIManager : Singleton<UIManager>
 {
     public TextMeshPro nameText;
-    public TextMeshPro nameTextUI;
+    public TextMeshProUGUI typeTextUI;
+    public TextMeshProUGUI nameTextUI;
 
     public GameObject actionButton;
     public GameObject dialog;
@@ -24,10 +25,16 @@ public class UIManager : Singleton<UIManager>
         HideDialog();
     }
 
-    public void SetPlayerName()
+    public void InitPlayerInfo()
     {
+        typeTextUI.text = GameManager.instance.playerType;
         nameText.text = GameManager.instance.playerName;
         nameTextUI.text = GameManager.instance.playerName;
+
+    }
+
+    public void SetPlayerName()
+    {
     }
 
     public void AtciveActionButton()

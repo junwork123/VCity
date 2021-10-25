@@ -12,6 +12,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Player")]
     public GameObject player;
     public GameObject joystickRange;
+    public string playerType;
     public string playerName;
 
     [Header("Task")]
