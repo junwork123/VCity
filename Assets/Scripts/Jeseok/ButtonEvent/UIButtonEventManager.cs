@@ -54,7 +54,9 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
 
     public void OnClickSetting()
     {
-        AndroidToastManager.instance.ShowToast(System.Reflection.MethodBase.GetCurrentMethod().ToString());
+        // AndroidToastManager.instance.ShowToast(System.Reflection.MethodBase.GetCurrentMethod().ToString());
+
+        GameManager.instance.SetResolution();
     }
 
     void OnClickMessage()

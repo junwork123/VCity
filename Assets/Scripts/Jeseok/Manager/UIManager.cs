@@ -30,11 +30,6 @@ public class UIManager : Singleton<UIManager>
         typeTextUI.text = GameManager.instance.playerType;
         nameText.text = GameManager.instance.playerName;
         nameTextUI.text = GameManager.instance.playerName;
-
-    }
-
-    public void SetPlayerName()
-    {
     }
 
     public void AtciveActionButton()

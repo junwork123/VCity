@@ -30,7 +30,7 @@ public class GameManager : Singleton<GameManager>
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         SetResolution();
 
-        UIManager.instance.SetPlayerName();
+        UIManager.instance.InitPlayerInfo();
     }
 
     void Update()
@@ -55,17 +55,36 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    void SetResolution()
+    public void SetResolution()
     {
-        int setWidth = 1080;
-        int setHeight = 1920;
+        AndroidToastManager.instance.ShowToast(System.Reflection.MethodBase.GetCurrentMethod().ToString());
+        float setWidth = 1080;
+        float setHeight = 1920;
 
         int deviceWidth = Screen.width;
         int deviceHeight = Screen.height;
 
-        Screen.SetResolution(deviceWidth, (int)(((float)deviceHeight / deviceWidth) * setWidth), true);
-        print(deviceWidth + ", " + (int)(((float)deviceHeight / deviceWidth) * setWidth));
+        // Screen.SetResolution(deviceWidth, (int)((deviceWidth * setHeight) / setWidth), true);
+
+        Rect rect = Camera.main.rect;
+        float scaleHeight = ((float)Screen.width / Screen.height) / ((float)9 / 16);
+        float scaleWidth = 1f / scaleHeight;
+
+        if (scaleHeight < 1)
+        {
+            rect.height = scaleHeight;
+            rect.y = (1f - scaleHeight) / 2f;
+        }
+        else
+        {
+            rect.width = scaleWidth;
+            rect.x = (1f - scaleWidth) / 2f;
+        }
+
+        Camera.main.rect = rect;
     }
+
+    void OnPreCul() => GL.Clear(true, true, Color.black);
 
     public void SetInteractionKey(KeyCode keyCode)
     {
