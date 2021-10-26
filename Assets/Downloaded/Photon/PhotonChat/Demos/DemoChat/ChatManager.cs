@@ -206,7 +206,8 @@ namespace Photon.Chat
                 return;
             }
 
-            this.StateText.gameObject.SetActive(this.ShowState); // this could be handled more elegantly, but for the demo it's ok.
+            //this.StateText.gameObject.SetActive(this.ShowState); // this could be handled more elegantly, but for the demo it's ok.
+            this.StateText.gameObject.SetActive(false);
         }
 
 
@@ -402,6 +403,9 @@ namespace Photon.Chat
             
             if (DataManager.instance.udc != null && DataManager.instance.udc.Channels != null)
             {
+                if(DataManager.instance.udc.Channels.Count == 0){
+                    DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
+                }
                 foreach (string channelId in DataManager.instance.udc.Channels)
                 {
                     this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);

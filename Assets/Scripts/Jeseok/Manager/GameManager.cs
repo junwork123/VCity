@@ -28,7 +28,7 @@ public class GameManager : Singleton<GameManager>
     protected void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        SetResolution();
+        // SetResolution();
 
         UIManager.instance.InitPlayerInfo();
     }

@@ -123,7 +123,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 if (task.IsCompleted)
                 {
                     user = task.Result;
-                    
+
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
                     DataManager.instance.GetUser(user.UserId);
@@ -152,7 +152,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 }
             }
         );
-        loadingPanel.SetActive(false);
+
+        //CreateRoom("Room 1");
+        //loadingPanel.SetActive(false);
     }
     public void Logout()
     {
@@ -218,14 +220,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         else
             return null;
     }
-    public void CreateRoom()//방만들기
+    public void CreateRoom(string _roomName = "")//방만들기
     {
-        if (string.IsNullOrEmpty(roomNameInputField.text))
+        if (_roomName == "")
         {
-            return;//방 이름이 빈값이면 방 안만들어짐
+            if (string.IsNullOrEmpty(roomNameInputField.text))
+            {
+                return;//방 이름이 빈값이면 방 안만들어짐
+            }
+            PhotonNetwork.CreateRoom(roomNameInputField.text, new RoomOptions { MaxPlayers = (byte)maxPlayer, IsVisible = true });//포톤 네트워크기능으로 roomNameInputField.text의 이름으로 방을 만든다.
+                                                                                                                                  //MenuManager.Instance.OpenMenu("loading");//로딩창 열기
         }
-        PhotonNetwork.CreateRoom(roomNameInputField.text, new RoomOptions { MaxPlayers = (byte)maxPlayer, IsVisible = true });//포톤 네트워크기능으로 roomNameInputField.text의 이름으로 방을 만든다.
-        //MenuManager.Instance.OpenMenu("loading");//로딩창 열기
+        else
+        {
+            PhotonNetwork.CreateRoom(_roomName, new RoomOptions { MaxPlayers = (byte)maxPlayer, IsVisible = true });
+        }
+
     }
 
     public void JoinRoom(RoomInfo info)
@@ -246,6 +256,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public override void OnJoinedLobby()
     {
         Debug.Log("[Network] " + "로비에 접속 완료!");
+        PhotonNetwork.JoinOrCreateRoom("Room 1", new RoomOptions { MaxPlayers = (byte)maxPlayer, IsVisible = true }, TypedLobby.Default);
     }
 
     public override void OnJoinedRoom()
@@ -263,7 +274,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
             chatManager.Connect(UserNameInputField.text);
 
             SceneManager.LoadScene("PlayerControl");
-            
+            loadingPanel.SetActive(false);
+
             Debug.Log("[Network] " + "룸에 입장!");
         }
     }
