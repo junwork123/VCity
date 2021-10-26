@@ -49,6 +49,7 @@ public class UserDataContainer
         result["Profile"] = Profile;
         result["Friends"] = Friends;
         result["Channels"] = Channels;
+        
         //result["IpAddress"] = IpAddress;
 
         return result;

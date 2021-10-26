@@ -397,13 +397,12 @@ namespace Photon.Chat
 
 
         }
-
-        public void OnConnected()
+        public void UpdateRooms()
         {
-            
             if (DataManager.instance.udc != null && DataManager.instance.udc.Channels != null)
             {
-                if(DataManager.instance.udc.Channels.Count == 0){
+                if (DataManager.instance.udc.Channels.Count == 0)
+                {
                     DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
                 }
                 foreach (string channelId in DataManager.instance.udc.Channels)
@@ -412,7 +411,11 @@ namespace Photon.Chat
                     DataManager.instance.LoadMessages(channelId);
                 }
             }
+        }
 
+        public void OnConnected()
+        {
+            UpdateRooms();
             // if (this.ChannelsToJoinOnConnect != null && this.ChannelsToJoinOnConnect.Length > 0)
             // {
             //     this.chatClient.Subscribe(this.ChannelsToJoinOnConnect, this.HistoryLengthToFetch);
