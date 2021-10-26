@@ -155,7 +155,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Interaction Button (1)
+      value: Log Interaction Button
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -261,7 +261,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Interaction Button (2)
+      value: Help Interaction Button
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -367,7 +367,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Interaction Button (3)
+      value: Exit Interaction Button
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -469,7 +469,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Interaction Button
+      value: Apply Interaction Button
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x

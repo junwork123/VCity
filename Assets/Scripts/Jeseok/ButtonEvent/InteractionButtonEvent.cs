@@ -19,8 +19,13 @@ public class InteractionButtonEvent : MonoBehaviour
     {
         switch (interactionType)
         {
-            case InteractionType.MESSAGE:
-                AndroidToastManager.instance.ShowToast("Message Button");
+            case InteractionType.APPLY:
+                AndroidToastManager.instance.ShowToast("APPLY");
+                UIManager.instance.ShowApplyPanel();
+                break;
+
+            case InteractionType.LOG:
+                AndroidToastManager.instance.ShowToast("LOG");
                 // FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
 
                 #region 메시지 호출부
@@ -29,16 +34,19 @@ public class InteractionButtonEvent : MonoBehaviour
 
                 break;
 
-            case InteractionType.TELEPORT:
-                AndroidToastManager.instance.ShowToast("Teleport Button");
-                GameManager.instance.TeleportPlayer();
-                GameManager.instance.joystickRange.SetActive(true);
+            case InteractionType.HELP:
+                AndroidToastManager.instance.ShowToast("HELP");
+                break;
+            case InteractionType.EXIT:
+                AndroidToastManager.instance.ShowToast("EXIT");
                 break;
 
-            case InteractionType.APPLY:
-                AndroidToastManager.instance.ShowToast("Apply Button");
-                UIManager.instance.ShowApplyPanel();
-                break;
+            // case InteractionType.TELEPORT:
+            //     AndroidToastManager.instance.ShowToast("Teleport Button");
+            //     GameManager.instance.TeleportPlayer();
+            //     GameManager.instance.joystickRange.SetActive(true);
+            //     break;
+
 
             case InteractionType.ETC:
                 AndroidToastManager.instance.ShowToast("ETC Button");

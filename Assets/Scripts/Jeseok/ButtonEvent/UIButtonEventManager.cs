@@ -35,6 +35,12 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
             case UIButtonType.MAP:
                 OnClickMap();
                 break;
+            case UIButtonType.CAM:
+                OnClickMic();
+                break;
+            case UIButtonType.MIC:
+                OnClickCam();
+                break;
         }
     }
 
@@ -55,8 +61,6 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
     public void OnClickSetting()
     {
         // AndroidToastManager.instance.ShowToast(System.Reflection.MethodBase.GetCurrentMethod().ToString());
-
-        GameManager.instance.SetResolution();
     }
 
     void OnClickMessage()
@@ -67,5 +71,15 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
     void OnClickMap()
     {
         UIManager.instance.ToggleMinimap();
+    }
+
+    void OnClickMic()
+    {
+
+    }
+
+    void OnClickCam()
+    {
+
     }
 }

@@ -8,7 +8,9 @@ using UnityEngine;
 public class SpreadObject : MonoBehaviour
 {
     public List<Transform> childTransforms;
+    
     public float radiusRange = 1.5f;
+    public float centerAxis = 0f;
     float angle;
     [Range(1, 100)]
     public float paddingPercent = 10f;

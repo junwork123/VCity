@@ -782,10 +782,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPCInteractionMenuCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 524974705121343508, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 524974705121343512, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -868,46 +864,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 524974705121343512, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 788103587618926390, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 788103588044167942, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2457556412278648612, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2457556412943031060, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134480556754932612, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5134480556866594740, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8578764221163890838, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8578764221324729510, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8760895002973684239, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8760895003918874175, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
-      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

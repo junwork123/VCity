@@ -13,8 +13,6 @@ public class Interactionable : MonoBehaviour, IInteraction
     bool isOpenInteractionMenu;
 
     [SerializeField]
-    GameObject interactionTextUI;
-    [SerializeField]
     GameObject interactionMenuUI;
 
     public KeyCode InteractionKeyCode;
@@ -72,7 +70,6 @@ public class Interactionable : MonoBehaviour, IInteraction
     #region Interaciton
     public void ShowInter()
     {
-        // interactionTextUI.SetActive(true);
         UIManager.instance.SetDialogMessage(interString);
         UIManager.instance.ShowDialog();
 
@@ -81,7 +78,6 @@ public class Interactionable : MonoBehaviour, IInteraction
 
     public void EndInter()
     {
-        // interactionTextUI.SetActive(false);
         UIManager.instance.HideDialog();
 
         UnsetOutline();

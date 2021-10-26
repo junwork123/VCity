@@ -4,4 +4,6 @@ public enum UIButtonType
     SETTING, 
     MESSAGE,
     MAP,
+    CAM,
+    MIC,
 }

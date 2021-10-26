@@ -36,7 +36,6 @@ RectTransform:
   - {fileID: 5134480556866594741}
   - {fileID: 2457556412943031061}
   - {fileID: 788103588044167943}
-  - {fileID: 8578764221324729511}
   - {fileID: 8760895003918874174}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -154,9 +153,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
+    - target: {fileID: 5899638309184271633, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 896afa1e8a3625844b240b127d95c58c, type: 3}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Interaction Button
+      value: Apply Interaction Button
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -253,16 +256,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
   m_PrefabInstance: {fileID: 1630002985274184354}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &2797400932798884272
+--- !u!1001 &2903496154054574889
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
+    - target: {fileID: 5899638309184271633, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fa1fe9a40944aa1468bb5099dd6283d3, type: 3}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Interaction Button (3)
+      value: Exit Interaction Button
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -348,107 +355,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
---- !u!224 &8578764221324729511 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-  m_PrefabInstance: {fileID: 2797400932798884272}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &2903496154054574889
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 524974705121343512}
-    m_Modifications:
-    - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_Name
-      value: Interaction Button (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_RootOrder
+    - target: {fileID: 6164340959759076060, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: _buttonType
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
@@ -464,9 +373,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
+    - target: {fileID: 5899638309184271633, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b9d90cef8de2baa4fb2815caf9da0371, type: 3}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Interaction Button (2)
+      value: Help Interaction Button
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
@@ -570,9 +483,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
+    - target: {fileID: 5899638309184271633, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 77b50d0068118a9409d0368db870b364, type: 3}
     - target: {fileID: 5899638309184271638, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Name
-      value: Interaction Button (1)
+      value: Log Interaction Button
       objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271639, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Pivot.x
