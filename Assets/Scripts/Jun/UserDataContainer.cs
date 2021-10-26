@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Firebase.Firestore;
 
 [FirestoreData]
-public class UserDataContainer
+public class UserData
 {
     [FirestoreProperty] public string Id { get; set; }
     [FirestoreProperty] public string Email { get; set; }
@@ -18,7 +18,7 @@ public class UserDataContainer
 
     //[FirestoreProperty] public string IpAddress { get; set; }
 
-    public UserDataContainer()
+    public UserData()
     {
         Id = null;
         Email = null;
@@ -33,7 +33,7 @@ public class UserDataContainer
         //channels["Guild"] = new List<CustomMsg>();
     }
 
-    public UserDataContainer(string _userId, string _userEmail, string _userName = "Ms.temp")
+    public UserData(string _userId, string _userEmail, string _userName = "Ms.temp")
     {
         Id = _userId;
         Email = _userEmail;

@@ -49,7 +49,7 @@ namespace Photon.Chat
 
         public string UserName { get; set; }
 
-        private string selectedChannelName; // mainly used for GUI/input
+        private string selectedChannelId; // mainly used for GUI/input
 
         public ChatClient chatClient;
 
@@ -187,7 +187,7 @@ namespace Photon.Chat
                 previousMsg = previousMsg + msg.Sender + " : " + msg.Text
                                           + " " + msg.Time + "\n";
             }
-            this.CurrentChannelName.text = _channelId;
+            this.CurrentChannelName.text = DataManager.instance.userCache.MyChannels[_channelId];
             this.CurrentChannelText.text = previousMsg;
             Debug.Log("[Chat] " + "메시지 불러오기 성공 : ");
 
@@ -253,14 +253,14 @@ namespace Photon.Chat
             }
 
 
-            bool doingPrivateChat = this.chatClient.PrivateChannels.ContainsKey(this.selectedChannelName);
+            bool doingPrivateChat = this.chatClient.PrivateChannels.ContainsKey(this.selectedChannelId);
             string privateChatTarget = string.Empty;
             if (doingPrivateChat)
             {
                 // the channel name for a private conversation is (on the client!!) always composed of both user's IDs: "this:remote"
                 // so the remote ID is simple to figure out
 
-                string[] splitNames = this.selectedChannelName.Split(new char[] { ':' });
+                string[] splitNames = this.selectedChannelId.Split(new char[] { ':' });
                 privateChatTarget = splitNames[1];
             }
             //UnityEngine.Debug.Log("selectedChannelName: " + selectedChannelName + " doingPrivateChat: " + doingPrivateChat + " privateChatTarget: " + privateChatTarget);
@@ -307,12 +307,12 @@ namespace Photon.Chat
                 {
                     if (doingPrivateChat)
                     {
-                        this.chatClient.PrivateChannels.Remove(this.selectedChannelName);
+                        this.chatClient.PrivateChannels.Remove(this.selectedChannelId);
                     }
                     else
                     {
                         ChatChannel channel;
-                        if (this.chatClient.TryGetChannel(this.selectedChannelName, doingPrivateChat, out channel))
+                        if (this.chatClient.TryGetChannel(this.selectedChannelId, doingPrivateChat, out channel))
                         {
                             channel.ClearMessages();
                         }
@@ -354,7 +354,7 @@ namespace Photon.Chat
                 }
                 else
                 {
-                    this.chatClient.PublishMessage(this.selectedChannelName, inputLine);
+                    this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
                 }
             }
         }
@@ -399,13 +399,14 @@ namespace Photon.Chat
         }
         public void UpdateRooms()
         {
-            if (DataManager.instance.userCache != null && DataManager.instance.userCache.Channels != null)
+            UserData userCache = DataManager.instance.userCache;
+            if (userCache != null && userCache.MyChannels != null)
             {
-                if (DataManager.instance.userCache.Channels.Count == 0)
+                if (userCache.MyChannels.Count == 0)
                 {
                     DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
                 }
-                foreach (string channelId in DataManager.instance.userCache.Channels)
+                foreach (string channelId in userCache.MyChannels.Keys)
                 {
                     this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
                     DataManager.instance.LoadMessages(channelId);
@@ -513,9 +514,9 @@ namespace Photon.Chat
             Debug.LogFormat("OnSubscribed: {0}, users.Count: {1} Channel-props: {2}.", channel, users.Length, properties.ToStringFull());
         }
 
-        private void InstantiateChannelButton(string channelName)
+        private void InstantiateChannelButton(string channelId)
         {
-            if (this.channelToggles.ContainsKey(channelName))
+            if (this.channelToggles.ContainsKey(channelId))
             {
                 Debug.Log("[Chat] " + "Skipping creation for an existing channel toggle.");
                 return;
@@ -523,10 +524,10 @@ namespace Photon.Chat
 
             Toggle cbtn = (Toggle)Instantiate(this.ChannelToggleToInstantiate);
             cbtn.gameObject.SetActive(true);
-            cbtn.GetComponentInChildren<ChannelSelector>().SetChannel(channelName);
+            cbtn.GetComponentInChildren<ChannelSelector>().SetChannel(channelId);
             cbtn.transform.SetParent(this.ChannelToggleToInstantiate.transform.parent, false);
-
-            this.channelToggles.Add(channelName, cbtn);
+            cbtn.GetComponentInChildren<Text>().text = DataManager.instance.userCache.MyChannels[channelId];
+            this.channelToggles.Add(channelId, cbtn);
         }
 
         private void InstantiateFriendButton(string friendId)
@@ -545,19 +546,19 @@ namespace Photon.Chat
 
         public void OnUnsubscribed(string[] channels)
         {
-            foreach (string channelName in channels)
+            foreach (string channelId in channels)
             {
-                if (this.channelToggles.ContainsKey(channelName))
+                if (this.channelToggles.ContainsKey(channelId))
                 {
-                    Toggle t = this.channelToggles[channelName];
+                    Toggle t = this.channelToggles[channelId];
                     Destroy(t.gameObject);
 
-                    this.channelToggles.Remove(channelName);
+                    this.channelToggles.Remove(channelId);
 
-                    Debug.Log("[Chat] " + "Unsubscribed from channel '" + channelName + "'.");
+                    Debug.Log("[Chat] " + "Unsubscribed from channel '" + channelId + "'.");
 
                     // Showing another channel if the active channel is the one we unsubscribed from before
-                    if (channelName == this.selectedChannelName && this.channelToggles.Count > 0)
+                    if (channelId == this.selectedChannelId && this.channelToggles.Count > 0)
                     {
                         IEnumerator<KeyValuePair<string, Toggle>> firstEntry = this.channelToggles.GetEnumerator();
                         firstEntry.MoveNext();
@@ -569,12 +570,12 @@ namespace Photon.Chat
                 }
                 else
                 {
-                    Debug.Log("[Chat] " + "Can't unsubscribe from channel '" + channelName + "' because you are currently not subscribed to it.");
+                    Debug.Log("[Chat] " + "Can't unsubscribe from channel '" + channelId + "' because you are currently not subscribed to it.");
                 }
             }
         }
 
-        public void OnGetMessages(string channelName, string[] senders, object[] messages)
+        public void OnGetMessages(string channelId, string[] senders, object[] messages)
         {
 
             string time = "";
@@ -595,30 +596,30 @@ namespace Photon.Chat
                     time = timeFormat;
                     text = msg;
                 }
-                DataManager.instance.AppendMsg(channelName, new CustomMsg(senders[i], time, text));
+                DataManager.instance.AppendMsg(channelId, new CustomMsg(senders[i], time, text));
 
             }
 
             // update text
-            this.ShowChannel(this.selectedChannelName);
+            this.ShowChannel(this.selectedChannelId);
 
             //throw new System.NotImplementedException();
         }
 
-        public void OnPrivateMessage(string sender, object message, string channelName)
+        public void OnPrivateMessage(string sender, object message, string channelId)
         {
             // as the ChatClient is buffering the messages for you, this GUI doesn't need to do anything here
             // you also get messages that you sent yourself. in that case, the channelName is determinded by the target of your msg
-            this.InstantiateChannelButton(channelName);
+            this.InstantiateChannelButton(channelId);
 
             byte[] msgBytes = message as byte[];
             if (msgBytes != null)
             {
                 Debug.Log("[Chat] " + "Message with byte[].Length: " + msgBytes.Length);
             }
-            if (this.selectedChannelName.Equals(channelName))
+            if (this.selectedChannelId.Equals(channelId))
             {
-                this.ShowChannel(channelName);
+                this.ShowChannel(channelId);
             }
         }
 
@@ -672,10 +673,10 @@ namespace Photon.Chat
         public void AddMessageToSelectedChannel(string msg)
         {
             ChatChannel channel = null;
-            bool found = this.chatClient.TryGetChannel(this.selectedChannelName, out channel);
+            bool found = this.chatClient.TryGetChannel(this.selectedChannelId, out channel);
             if (!found)
             {
-                Debug.Log("[Chat] " + "AddMessageToSelectedChannel failed to find channel: " + this.selectedChannelName);
+                Debug.Log("[Chat] " + "AddMessageToSelectedChannel failed to find channel: " + this.selectedChannelId);
                 return;
             }
 
@@ -702,11 +703,11 @@ namespace Photon.Chat
                 return;
             }
 
-            this.selectedChannelName = channelId;
+            this.selectedChannelId = channelId;
             LoadChat(channelId);
 
             //this.CurrentChannelText.text = channel.ToStringMessages();
-            Debug.Log("[Chat] " + "ShowChannel: " + this.selectedChannelName);
+            Debug.Log("[Chat] " + "ShowChannel: " + this.selectedChannelId);
 
             foreach (KeyValuePair<string, Toggle> pair in this.channelToggles)
             {
