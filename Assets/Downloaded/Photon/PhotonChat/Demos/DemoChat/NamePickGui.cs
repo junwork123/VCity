@@ -15,16 +15,27 @@ namespace Photon.Chat
     [RequireComponent(typeof(ChatManager))]
     public class NamePickGui : MonoBehaviour
     {
-        private const string UserIdPref = "junwork123@gmail.com";
-        private const string UserPwPref = "wnswns95";
-        private const string UserNamePref = "jun";
+
+        string UserIdPref = "junwork123@gmail.com";
+        string UserPwPref = "wnswns95";
+        string UserNamePref = "jun";
 
         public TMP_InputField idInput;
         public TMP_InputField pwInput;
         public TMP_InputField nameInput;
 
+
         public void Start()
         {
+#if UNITY_EDITOR
+            UserIdPref = "junwork123@gmail.com";
+            UserPwPref = "wnswns95";
+            UserNamePref = "jun";
+#else
+        UserIdPref = "sposent7@naver.com";
+        UserPwPref = "wnswns95";
+        UserNamePref = "com";
+#endif
 
             this.idInput.text = UserIdPref;
             this.pwInput.text = UserPwPref;

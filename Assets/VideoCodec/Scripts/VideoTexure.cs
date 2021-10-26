@@ -12,17 +12,22 @@ public class VideoTexure : MonoBehaviour
     Renderer render;
     RawImage rawImage;
     public bool IsSelf;
-    public int ID;
+    public int peerID;
     void Start()
     {
-        render= GetComponent<Renderer>();
+#if UNITY_EDITOR
+        peerID = 2001;
+#else
+        peerID = 1001;
+#endif
+        render = GetComponent<Renderer>();
         rawImage = GetComponent<RawImage>();
         SetBlack();
         lastVideoTime = DateTime.Now;
     }
 
     float updateTime;
-    DateTime lastVideoTime; 
+    DateTime lastVideoTime;
     void Update()
     {
         if (Time.time - updateTime < 0.03f)
@@ -36,9 +41,9 @@ public class VideoTexure : MonoBehaviour
         {
             video = UnityChatSDK.Instance.GetSelfTexture();
         }
-        else 
+        else
         {
-            video = UnityChatSDK.Instance.GetPeerTexture(ID);
+            video = UnityChatSDK.Instance.GetPeerTexture(peerID);
         }
 
         if (video == null)
@@ -49,7 +54,7 @@ public class VideoTexure : MonoBehaviour
             }
             return;
         }
-        else 
+        else
         {
             lastVideoTime = video.LastTime;
         }
@@ -58,7 +63,7 @@ public class VideoTexure : MonoBehaviour
         {
             SetBlack();
         }
-        else 
+        else
         {
             if (render != null)
             {
@@ -75,7 +80,7 @@ public class VideoTexure : MonoBehaviour
     {
         SetBlack();
     }
-    void SetBlack() 
+    void SetBlack()
     {
         if (render != null)
         {

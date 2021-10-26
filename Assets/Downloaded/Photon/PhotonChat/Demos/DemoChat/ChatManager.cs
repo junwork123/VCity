@@ -41,7 +41,6 @@ namespace Photon.Chat
     /// </remarks>
     public class ChatManager : MonoBehaviour, IChatClientListener
     {
-
         public string[] ChannelsToJoinOnConnect; // set in inspector. Demo channels to join automatically.
 
         public string[] FriendsList;
@@ -400,6 +399,7 @@ namespace Photon.Chat
 
         public void OnConnected()
         {
+            
             if (DataManager.instance.udc != null && DataManager.instance.udc.Channels != null)
             {
                 foreach (string channelId in DataManager.instance.udc.Channels)

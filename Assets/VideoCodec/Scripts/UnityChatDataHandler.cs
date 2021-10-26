@@ -4,16 +4,23 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Photon.Pun;
+using UnityEngine.UI;
 
 /// <summary>
 /// Processing audio and video codec logic
 /// See more: https://github.com/ShanguUncle/UnityChatSDK
 /// </summary>
-public class UnityChatDataHandler : MonoBehaviour {
-
+public class UnityChatDataHandler : Photon.Pun.MonoBehaviourPun, IPunObservable
+{
+    UnityChatDataHandler instance;
     //this uid used for testing, set your uid in specific application
-    public int TestUid = 1001;
+    public int myID;
     public bool IsStartChat { get; set; }
+    byte[] sendVideoBytes;
+    byte[] sendAudioBytes;
+    // public Renderer render;
+    // public RawImage rawImage;
 
     Queue<VideoPacket> videoPacketQueue = new Queue<VideoPacket>();
 
@@ -21,6 +28,17 @@ public class UnityChatDataHandler : MonoBehaviour {
     public Queue<byte[]> ReceivedAudioDataQueue = new Queue<byte[]>();
     public Queue<byte[]> ReceivedVideoDataQueue = new Queue<byte[]>();
 
+    void Awake()
+    {
+        if (instance == null) instance = new UnityChatDataHandler();
+        else Destroy(gameObject);
+
+#if UNITY_EDITOR
+        myID = 1001;
+#else
+        myID = 2001;
+#endif
+    }
     void Start()
     {
 
@@ -30,7 +48,8 @@ public class UnityChatDataHandler : MonoBehaviour {
     /// </summary>
     public void StartVideoChat()
     {
-       OnStartChat(ChatType.Video);
+        GetComponent<UnityChatSet>().SetUnityCam();
+        OnStartChat(ChatType.Video);
     }
     /// <summary>
     /// start audio chat
@@ -47,13 +66,13 @@ public class UnityChatDataHandler : MonoBehaviour {
             UnityChatSDK.Instance.ChatType = type;
 
             CaptureResult result = UnityChatSDK.Instance.StartCapture();
-            print("StartChat:" + result);
+            Debug.Log("StartChat:" + result);
             IsStartChat = true;
-            print("OnStartChat");
+            Debug.Log("[Record] : " + "OnStartChat");
         }
         catch (Exception e)
         {
-            print("OnStartChat error:" + e.Message);
+            Debug.Log("[Record] : " + "OnStartChat error:" + e.Message);
         }
     }
 
@@ -75,11 +94,11 @@ public class UnityChatDataHandler : MonoBehaviour {
             ReceivedAudioDataQueue.Clear();
             ReceivedVideoDataQueue.Clear();
             IsStartChat = false;
-            print("OnStopChat");
+            Debug.Log("[Record] : " + "OnStopChat");
         }
         catch (Exception e)
         {
-            print("OnStopChat error:" + e.Message);
+            Debug.Log("[Record] : " + "OnStopChat error:" + e.Message);
         }
     }
 
@@ -90,38 +109,61 @@ public class UnityChatDataHandler : MonoBehaviour {
     {
         if (!IsStartChat)
             return;
-
-        switch (UnityChatSDK.Instance.ChatType)
+        if (photonView.IsMine)
         {
-            case ChatType.Audio:
-                SendAudio();
-                break;
-            case ChatType.Video:
-                SendAudio();
-                SendVideo();
-                break;
-            default:
-                break;
+            switch (UnityChatSDK.Instance.ChatType)
+            {
+                case ChatType.Audio:
+                    SendAudio();
+                    break;
+                case ChatType.Video:
+                    SendAudio();
+                    SendVideo();
+                    break;
+                default:
+                    break;
+            }
         }
+
     }
-    private void Update() 
+    private void Update()
     {
         lock (ReceivedAudioDataQueue)
         {
             if (ReceivedAudioDataQueue.Count > 0)
             {
-               OnReceiveAudio(ReceivedAudioDataQueue.Dequeue());
+                try
+                {
+                    OnReceiveAudio(ReceivedAudioDataQueue.Dequeue());
+                    Debug.Log("오디오 수신에 성공했습니다");
+                }
+                catch (System.Exception)
+                {
+                    Debug.Log("오디오 시불쟝!!!!");
+                    throw;
+                }
+
             }
         }
         lock (ReceivedVideoDataQueue)
         {
             if (ReceivedVideoDataQueue.Count > 0)
             {
-                OnReceiveVideo(ReceivedVideoDataQueue.Dequeue());
+                try
+                {
+                    OnReceiveVideo(ReceivedVideoDataQueue.Dequeue());
+                    Debug.Log("비디오 수신에 성공했습니다");
+                }
+                catch (System.Exception)
+                {
+                    Debug.Log("비디오 시불쟝!!!!");
+                    throw;
+                }
             }
         }
+
     }
-//==================send data========================
+    //==================send data========================
     /// <summary>
     /// send audio data
     /// </summary>
@@ -131,17 +173,11 @@ public class UnityChatDataHandler : MonoBehaviour {
         AudioPacket packet = UnityChatSDK.Instance.GetAudio();
         if (packet != null)
         {
-            packet.Id = TestUid;//use your userID
-            byte[] audio = GetAudioPacketData(packet);
-
-            if (audio != null)
-            {
-                //send data through your own network,such as TCP，UDP，P2P,Webrct，Unet,Photon...,the demo uses UDP for testing.
-                SendDataByYourNetwork(audio);
-
-                //On receiving audio data,just for testing
-                ReceivedAudioDataQueue.Enqueue(audio);
-            }
+            packet.Id = myID;//use your userID
+            sendAudioBytes = GetAudioPacketData(packet);
+            Debug.Log("비디오 패킷 발송 준비중");
+            //On receiving audio data,just for testing
+            ReceivedAudioDataQueue.Enqueue(sendAudioBytes);
         }
     }
     byte[] GetAudioPacketData(AudioPacket packet)
@@ -173,28 +209,50 @@ public class UnityChatDataHandler : MonoBehaviour {
             }
         }
 
-        packet.Id = TestUid;//use your userID
-        byte[] video = GetVideoPacketData(packet);
-        SendDataByYourNetwork(video);
+        packet.Id = myID;//use your userID
+        sendVideoBytes = GetVideoPacketData(packet);
+        Debug.Log("비디오 패킷 발송 준비중");
 
         //On receiving video data,just for testing
-        ReceivedVideoDataQueue.Enqueue(video);
+        ReceivedVideoDataQueue.Enqueue(sendVideoBytes);
+
     }
-    byte[] GetVideoPacketData(VideoPacket packet) 
+    byte[] GetVideoPacketData(VideoPacket packet)
     {
         //you can codec packet by google.protobuf/protobufNet...(the demo used google.protobuf)
         return ObjectToBytes(packet);
     }
-    void SendDataByYourNetwork(byte[] data)
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        //you need to do
+        if (stream.IsWriting)
+        {
+            byte[] temp = { 1, 2, 3, 4, 5 };
+            stream.SendNext(temp);
+            stream.SendNext(sendAudioBytes);
+            stream.SendNext(sendVideoBytes);
+            Debug.Log("비디오 보내는 중");
+        }
+        else
+        {
+            byte[] temp = (byte[])stream.ReceiveNext();
+            ReceivedAudioDataQueue.Enqueue((byte[])stream.ReceiveNext());
+            ReceivedVideoDataQueue.Enqueue((byte[])stream.ReceiveNext());
+
+            foreach (var item in temp)
+            {
+                Debug.Log(item);
+            }
+            Debug.Log("비디오 받는 중");
+        }
     }
+
     //==================onReceive data========================
     /// <summary>
     /// called when audio data is received
     /// </summary>
     /// <param name="data"></param>
-    public void OnReceiveAudio(byte[] data) 
+    public void OnReceiveAudio(byte[] data)
     {
         //decode audio data and playback
         AudioPacket packet = DecodeAudioPacket(data);
@@ -210,11 +268,19 @@ public class UnityChatDataHandler : MonoBehaviour {
     /// called when video data is received
     /// </summary>
     /// <param name="data"></param>
-    public void OnReceiveVideo(byte[] data) 
+    public void OnReceiveVideo(byte[] data)
     {
         //decode video data and render video
         VideoPacket packet = DecodeVideoPacket(data);
-        UnityChatSDK.Instance.DecodeVideoData(packet);
+        Texture2D video = UnityChatSDK.Instance.DecodeVideoData(packet);
+        // if (render != null)
+        // {
+        //     render.material.mainTexture = (Texture) video;
+        // }
+        // if (rawImage != null)
+        // {
+        //     rawImage.texture = (Texture) video; ;
+        // }
     }
     VideoPacket DecodeVideoPacket(byte[] data)
     {

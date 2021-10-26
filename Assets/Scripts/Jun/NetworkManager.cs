@@ -62,7 +62,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         // 어플리케이션의 버전을 설정한다.
         PhotonNetwork.GameVersion = "0.1";
-
     }
 
     void InitializeFirebase()
@@ -124,9 +123,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 if (task.IsCompleted)
                 {
                     user = task.Result;
+                    
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
-                    DataManager.instance.AddUser(user.UserId, UserIdInputField.text, UserNameInputField.text);
+                    DataManager.instance.GetUser(user.UserId);
                     #region @Test용
                     //DataManager.instance.CreateChannel("Region");
                     DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
@@ -261,8 +261,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
             Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
             chatManager.Connect(UserNameInputField.text);
-            SceneManager.LoadScene("PlayerControl");
 
+            SceneManager.LoadScene("PlayerControl");
+            
             Debug.Log("[Network] " + "룸에 입장!");
         }
     }

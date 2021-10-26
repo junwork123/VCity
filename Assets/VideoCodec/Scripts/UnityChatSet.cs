@@ -8,14 +8,15 @@ using UnityEngine.Android;
 /// <summary>
 /// UnityChatSDK parameter settings
 /// </summary>
-public class UnityChatSet: MonoBehaviour {
+public class UnityChatSet : MonoBehaviour
+{
 
     //peer audio playback volume size
-    public float AudioVolume= 1f;
+    public float AudioVolume = 1f;
 
     //Local microphone volume size scale value
-    public float MicVolumeScale= 1f;
-	   
+    public float MicVolumeScale = 1f;
+
     public VideoType VideoType = VideoType.DeviceCamera;
 
     //video resolution
@@ -25,7 +26,7 @@ public class UnityChatSet: MonoBehaviour {
 
     public VideoTextureFormat Format = VideoTextureFormat.BGRA32;
     //video refresh rate
-    [Range(5,25)]
+    [Range(5, 25)]
     public int Framerate = 15;
     //Echo cancellation
     public bool EchoCancellation;
@@ -50,7 +51,7 @@ public class UnityChatSet: MonoBehaviour {
         InitVideo();
     }
     //初始化音频
-    void InitAudio() 
+    void InitAudio()
     {
 #if UNITY_ANDROID
         if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
@@ -58,9 +59,9 @@ public class UnityChatSet: MonoBehaviour {
             Permission.RequestUserPermission(Permission.Microphone);
         }
 #endif
-        UnityChatSDK.Instance.AudioVolume=AudioVolume;
-		UnityChatSDK.Instance.MicVolumeScale= MicVolumeScale;
-        UnityChatSDK.Instance.AudioThreshold= 0.002f;
+        UnityChatSDK.Instance.AudioVolume = AudioVolume;
+        UnityChatSDK.Instance.MicVolumeScale = MicVolumeScale;
+        UnityChatSDK.Instance.AudioThreshold = 0.002f;
         UnityChatSDK.Instance.AudioFrequency = 8000;
         UnityChatSDK.Instance.AudioSample = 2;
         UnityChatSDK.Instance.AudioLatency = 500;
@@ -71,7 +72,7 @@ public class UnityChatSet: MonoBehaviour {
     }
 
     //初始化视频
-    void InitVideo() 
+    void InitVideo()
     {
         UnityChatSDK.Instance.Framerate = Framerate;
         UnityChatSDK.Instance.EnableDetection = EnableDetection;
@@ -79,7 +80,7 @@ public class UnityChatSet: MonoBehaviour {
         UnityChatSDK.Instance.SetAndroidCompatible(AndroidEncodeCompatible);
         UnityChatSDK.Instance.SetTextureFormat(Format);
 #if UNITY_ANDROID
-        if (!Permission.HasUserAuthorizedPermission(Permission.Camera)) 
+        if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
         {
             Permission.RequestUserPermission(Permission.Camera);
         }
@@ -91,45 +92,47 @@ public class UnityChatSet: MonoBehaviour {
         switch (VideoType)
         {
             case VideoType.DeviceCamera:
-                SetVideoCaptureType(VideoType.DeviceCamera, CaptureCamera);
+                //SetVideoCaptureType(VideoType.DeviceCamera, CaptureCamera);
                 SetFrontCam();
                 break;
             case VideoType.UnityCamera:
-                SetVideoCaptureType(VideoType.UnityCamera, CaptureCamera);
+                //SetVideoCaptureType(VideoType.UnityCamera, CaptureCamera);
+                SetUnityCam();
                 break;
             case VideoType.CustomTexture:
                 SetVideoCaptureType(VideoType.CustomTexture, CaptureCamera);
                 break;
             default:
+                SetUnityCam();
                 break;
         }
         print("InitVideo OK [" + "VideoRes:" + VideoResolution + ",Quality:" + VideoQuality
-            + ",Framerate:" + Framerate+"]");
+            + ",Framerate:" + Framerate + "]");
     }
 
     public void SetVideoCaptureType(VideoType type, Camera captureCamera)
     {
         VideoType = type;
-        bool result= UnityChatSDK.Instance.SetVideoCaptureType(type, captureCamera);
+        bool result = UnityChatSDK.Instance.SetVideoCaptureType(type, captureCamera);
         if (result == false)
         {
             print("SetVideoCaptureType Failed!");
         }
     }
-    public void OnResolutionValueChanged(Dropdown dp) 
+    public void OnResolutionValueChanged(Dropdown dp)
     {
         SetResolution((VideoResolution)dp.value);
     }
-    public void SetResolution(VideoResolution r) 
+    public void SetResolution(VideoResolution r)
     {
         VideoResolution = r;
         UnityChatSDK.Instance.SetResolution(r);
     }
-    public void OnVideoQualityValueChanged(Dropdown dp) 
+    public void OnVideoQualityValueChanged(Dropdown dp)
     {
         SetVideoQuality((VideoQuality)dp.value);
     }
-    public void SetVideoQuality(VideoQuality q)  
+    public void SetVideoQuality(VideoQuality q)
     {
         VideoQuality = q;
         UnityChatSDK.Instance.SetVideoQuality(q);
@@ -137,7 +140,7 @@ public class UnityChatSet: MonoBehaviour {
 
     public void SetAudioEnable(Toggle tog)
     {
-        print("audioEnable:"+ tog.isOn);
+        print("audioEnable:" + tog.isOn);
         UnityChatSDK.Instance.SetAudioEnable(tog.isOn);
     }
     public void SetVideoEnable(Toggle tog)
@@ -148,14 +151,14 @@ public class UnityChatSet: MonoBehaviour {
     /// <summary>
     /// Switch camera when the number of device cameras available>2
     /// </summary>
-    public void SwitchCam() 
+    public void SwitchCam()
     {
-        if (VideoType == VideoType.DeviceCamera) 
+        if (VideoType == VideoType.DeviceCamera)
         {
             UnityChatSDK.Instance.SwitchCam();
         }
     }
-    public void SetFrontCam() 
+    public void SetFrontCam()
     {
         if (VideoType == VideoType.DeviceCamera)
         {
@@ -175,6 +178,7 @@ public class UnityChatSet: MonoBehaviour {
     /// </summary>
     public void SetUnityCam()
     {
+        CaptureCamera = Camera.main;
         SetVideoCaptureType(VideoType.UnityCamera, CaptureCamera);
     }
     /// <summary>
