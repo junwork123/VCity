@@ -24,11 +24,14 @@ public class GameManager : Singleton<GameManager>
 
     bool isQuitWait;
 
+    public void SetPlayerInfo()
+    {
+        UIManager.instance.InitPlayerInfo();
+    }
+
     protected void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
-        UIManager.instance.InitPlayerInfo();
     }
 
     void Update()

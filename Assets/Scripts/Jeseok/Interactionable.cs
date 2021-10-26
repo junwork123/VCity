@@ -10,6 +10,8 @@ public class Interactionable : MonoBehaviour, IInteraction
     string _interString;
     public string interString { get => _interString; set => _interString = value; }
 
+    GameObject player;
+
     bool isOpenInteractionMenu;
 
     [SerializeField]
@@ -46,6 +48,7 @@ public class Interactionable : MonoBehaviour, IInteraction
         if (other.tag == "Player")
         {
             enable = true;
+            player = other.attachedRigidbody.gameObject;
 
             ShowInter();
 
@@ -58,6 +61,7 @@ public class Interactionable : MonoBehaviour, IInteraction
         if (other.tag == "Player")
         {
             enable = false;
+            player = null;
 
             EndInter();
             NonShowInter();
@@ -114,6 +118,9 @@ public class Interactionable : MonoBehaviour, IInteraction
         #region Open Task Menu
         else
         {
+            // 상호작용할 때 플레이어가 오브젝트를 바라봄
+            player.transform.forward = transform.position - player.transform.position;
+
             EndInter();
             ShowInteractionMenu();
         }
