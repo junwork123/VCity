@@ -1413,7 +1413,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409793224}
-  m_LocalRotation: {x: 0.07088902, y: 0.000000004290773, z: -3.0493585e-10, w: 0.9974842}
+  m_LocalRotation: {x: 0.070889026, y: -0.0000000042907735, z: 3.049359e-10, w: 0.9974842}
   m_LocalPosition: {x: 0, y: 4.5, z: -10.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2680,7 +2680,7 @@ GameObject:
   m_Component:
   - component: {fileID: 916237576}
   m_Layer: 0
-  m_Name: TeleportPosition
+  m_Name: TeleportPosition (0)
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -4108,7 +4108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1391700450}
   m_Layer: 0
-  m_Name: Teleport
+  m_Name: TeleportPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6271,7 +6271,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904815386}
-  m_LocalRotation: {x: 0.07088902, y: 0.000000004290773, z: -3.0493585e-10, w: 0.9974842}
+  m_LocalRotation: {x: 0.070889026, y: -0.0000000042907735, z: 3.049359e-10, w: 0.9974842}
   m_LocalPosition: {x: 0, y: 4.5, z: -10.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

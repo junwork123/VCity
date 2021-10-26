@@ -120,6 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   childTransforms: []
   radiusRange: 2
+  centerAxis: 30
   paddingPercent: 10
 --- !u!114 &-4311720817414552497
 MonoBehaviour:

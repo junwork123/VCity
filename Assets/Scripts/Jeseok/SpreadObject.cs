@@ -8,8 +8,9 @@ using UnityEngine;
 public class SpreadObject : MonoBehaviour
 {
     public List<Transform> childTransforms;
-    
+
     public float radiusRange = 1.5f;
+    [Range(-90, 90)]
     public float centerAxis = 0f;
     float angle;
     [Range(1, 100)]
@@ -51,8 +52,9 @@ public class SpreadObject : MonoBehaviour
         {
             // N개일 때 초기위치 (N - 1) * angle * 0.5
             // 중심을 기준으로 angle만큼 회전하면서 배치
-            childTransforms[i].transform.RotateAround(transform.position, Camera.main.transform.forward, (count - 1) * angle * 0.5f);
-            childTransforms[i].transform.RotateAround(transform.position, Camera.main.transform.forward * (-1), angle * i);
+            // centerAxis 만큼 추가로 이동
+            childTransforms[i].transform.RotateAround(transform.position, Camera.main.transform.forward, (count - 1) * angle * 0.5f + centerAxis - (angle * i));
+            // childTransforms[i].transform.RotateAround(transform.position, Camera.main.transform.forward * (-1), angle * i);
             childTransforms[i].transform.localEulerAngles = Vector3.zero;
         }
     }
