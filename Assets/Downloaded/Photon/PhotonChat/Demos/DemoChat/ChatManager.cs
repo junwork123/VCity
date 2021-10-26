@@ -168,7 +168,7 @@ namespace Photon.Chat
         {
             //Debug.Log("시이이이발" + DataManager.instance.udc.Id);
 
-            List<CustomMsg> msgs = DataManager.instance.channels[_channelId];
+            List<CustomMsg> msgs = DataManager.instance.chatCache[_channelId];
 
             string previousMsg = "";
             // [yyyy-MM-dd HH:mm] 
@@ -399,13 +399,13 @@ namespace Photon.Chat
         }
         public void UpdateRooms()
         {
-            if (DataManager.instance.udc != null && DataManager.instance.udc.Channels != null)
+            if (DataManager.instance.userCache != null && DataManager.instance.userCache.Channels != null)
             {
-                if (DataManager.instance.udc.Channels.Count == 0)
+                if (DataManager.instance.userCache.Channels.Count == 0)
                 {
                     DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
                 }
-                foreach (string channelId in DataManager.instance.udc.Channels)
+                foreach (string channelId in DataManager.instance.userCache.Channels)
                 {
                     this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
                     DataManager.instance.LoadMessages(channelId);
