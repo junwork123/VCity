@@ -14,6 +14,7 @@ public class UserDataContainer
     [FirestoreProperty] public List<string> Friends { get; set; }
     // <채널명, 채널명에 대한 Firestore 참조값>
     [FirestoreProperty] public List<string> Channels { get; set; }
+    [FirestoreProperty] public Dictionary<string, string> temp { get; set; }
 
     //[FirestoreProperty] public string IpAddress { get; set; }
 
@@ -25,6 +26,8 @@ public class UserDataContainer
         Profile = null;
         Friends = new List<string>();
         Channels = new List<string>();
+        temp = new Dictionary<string, string>();
+        
         //IpAddress = "localhost";
 
         //channels["Guild"] = new List<CustomMsg>();
@@ -38,6 +41,7 @@ public class UserDataContainer
         Profile = null;
         Friends = new List<string>();
         Channels = new List<string>();
+        temp = new Dictionary<string, string>();
         //IpAddress = "localhost";
     }
     public Dictionary<string, object> ToDictionary()
@@ -49,6 +53,7 @@ public class UserDataContainer
         result["Profile"] = Profile;
         result["Friends"] = Friends;
         result["Channels"] = Channels;
+        result["temp"] = temp;
         
         //result["IpAddress"] = IpAddress;
 
