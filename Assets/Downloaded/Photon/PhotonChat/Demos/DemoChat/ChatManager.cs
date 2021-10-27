@@ -61,7 +61,6 @@ namespace Photon.Chat
 
         public GameObject ConnectingLabel;
         public GameObject ChatOutputPanel;
-        public GameObject UserIdFormPanel;
         public TMP_InputField InputFieldChat;   // set in inspector
         public TMP_Text CurrentChannelText;     // set in inspector
         public TMP_Text CurrentChannelName;     // set in inspector
@@ -76,7 +75,6 @@ namespace Photon.Chat
 
         public bool ShowState = true;
         public Text StateText; // set in inspector
-        public Text UserIdText; // set in inspector
 
 
         // private static string WelcomeText = "Welcome to chat. Type \\help to list commands.";
@@ -117,10 +115,8 @@ namespace Photon.Chat
         {
             DontDestroyOnLoad(this.gameObject);
 
-            this.UserIdText.text = "";
             this.StateText.text = "";
-            this.StateText.gameObject.SetActive(true);
-            //this.UserIdText.gameObject.SetActive(true);
+            this.StateText.gameObject.SetActive(false);
             this.ChatOutputPanel.gameObject.SetActive(false);
             this.ConnectingLabel.SetActive(false);
 
@@ -135,7 +131,6 @@ namespace Photon.Chat
 
             bool appIdPresent = !string.IsNullOrEmpty(this.chatAppSettings.AppIdChat);
 
-            //this.UserIdFormPanel.gameObject.SetActive(appIdPresent);
 
             if (!appIdPresent)
             {
@@ -203,7 +198,7 @@ namespace Photon.Chat
             }
 
             //this.StateText.gameObject.SetActive(this.ShowState); // this could be handled more elegantly, but for the demo it's ok.
-            this.StateText.gameObject.SetActive(false);
+            
         }
 
 
@@ -378,7 +373,6 @@ namespace Photon.Chat
         public void Connect(string _id)
         {
             this.UserName = _id;
-            this.UserIdFormPanel.gameObject.SetActive(false);
 
             this.chatClient = new ChatClient(this);
 #if !UNITY_WEBGL
@@ -419,7 +413,6 @@ namespace Photon.Chat
             // }
 
             this.ConnectingLabel.SetActive(false);
-            this.UserIdText.text = "Connected as " + this.UserName;
             // 기본으로 열리는 채널
             //LoadChat(DataManager.REGION_CHANNEL_ID);
             //this.ChatPanel.gameObject.SetActive(true);
