@@ -26,12 +26,14 @@ public class GameManager : Singleton<GameManager>
 
     public void SetPlayerInfo()
     {
-        UIManager.instance.InitPlayerInfo();
+        UIManager.instance.UpdatePlayerInfo();
     }
 
     protected void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
+        SetPlayerInfo();
     }
 
     void Update()

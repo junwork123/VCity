@@ -25,7 +25,7 @@ public class UIManager : Singleton<UIManager>
         HideDialog();
     }
 
-    public void InitPlayerInfo()
+    public void UpdatePlayerInfo()
     {
         typeTextUI.text = GameManager.instance.playerType;
         nameText.text = GameManager.instance.playerName;

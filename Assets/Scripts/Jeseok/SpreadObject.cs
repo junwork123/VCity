@@ -25,7 +25,7 @@ public class SpreadObject : MonoBehaviour
         }
     }
 
-    void OnEnable()
+    void Start()
     {
         InitPosition();
         Spread();
@@ -53,8 +53,7 @@ public class SpreadObject : MonoBehaviour
             // N개일 때 초기위치 (N - 1) * angle * 0.5
             // 중심을 기준으로 angle만큼 회전하면서 배치
             // centerAxis 만큼 추가로 이동
-            childTransforms[i].transform.RotateAround(transform.position, Camera.main.transform.forward, (count - 1) * angle * 0.5f + centerAxis - (angle * i));
-            // childTransforms[i].transform.RotateAround(transform.position, Camera.main.transform.forward * (-1), angle * i);
+            childTransforms[i].transform.RotateAround(transform.position, transform.forward, (count - 1) * angle * 0.5f + centerAxis - (angle * i));
             childTransforms[i].transform.localEulerAngles = Vector3.zero;
         }
     }
