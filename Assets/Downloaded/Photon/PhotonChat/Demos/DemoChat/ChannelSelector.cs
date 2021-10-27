@@ -8,6 +8,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 
 namespace Photon.Chat
@@ -19,7 +20,7 @@ namespace Photon.Chat
         public void SetChannel(string channel)
         {
             this.Channel = channel;
-            Text t = this.GetComponentInChildren<Text>();
+            TMP_Text t = this.GetComponentInChildren<TMP_Text>();
             t.text = this.Channel;
         }
 

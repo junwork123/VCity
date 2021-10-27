@@ -16,6 +16,7 @@ using UnityEngine.SceneManagement;
 using AuthenticationValues = Photon.Chat.AuthenticationValues;
 #if PHOTON_UNITY_NETWORKING
 using Photon.Pun;
+using TMPro;
 #endif
 
 // 채팅 서버에 연결하고 대화를 동기화, 보내기, 받기 수행
@@ -58,14 +59,12 @@ namespace Photon.Chat
 #endif
         protected internal ChatAppSettings chatAppSettings;
 
-
-        public GameObject missingAppIdErrorPanel;
         public GameObject ConnectingLabel;
         public GameObject ChatOutputPanel;
         public GameObject UserIdFormPanel;
-        public InputField InputFieldChat;   // set in inspector
-        public Text CurrentChannelText;     // set in inspector
-        public Text CurrentChannelName;     // set in inspector
+        public TMP_InputField InputFieldChat;   // set in inspector
+        public TMP_Text CurrentChannelText;     // set in inspector
+        public TMP_Text CurrentChannelName;     // set in inspector
         public Toggle ChannelToggleToInstantiate; // set in inspector
 
 
@@ -121,7 +120,7 @@ namespace Photon.Chat
             this.UserIdText.text = "";
             this.StateText.text = "";
             this.StateText.gameObject.SetActive(true);
-            this.UserIdText.gameObject.SetActive(true);
+            //this.UserIdText.gameObject.SetActive(true);
             this.ChatOutputPanel.gameObject.SetActive(false);
             this.ConnectingLabel.SetActive(false);
 
@@ -136,7 +135,6 @@ namespace Photon.Chat
 
             bool appIdPresent = !string.IsNullOrEmpty(this.chatAppSettings.AppIdChat);
 
-            this.missingAppIdErrorPanel.SetActive(!appIdPresent);
             //this.UserIdFormPanel.gameObject.SetActive(appIdPresent);
 
             if (!appIdPresent)
@@ -166,8 +164,6 @@ namespace Photon.Chat
         }
         public void LoadChat(string _channelId)
         {
-            //Debug.Log("시이이이발" + DataManager.instance.udc.Id);
-
             List<CustomMsg> msgs = DataManager.instance.chatCache[_channelId];
 
             string previousMsg = "";
@@ -388,7 +384,7 @@ namespace Photon.Chat
 #if !UNITY_WEBGL
             this.chatClient.UseBackgroundWorkerForSending = true;
 #endif
-            this.chatClient.AuthValues = new AuthenticationValues(this.UserName);
+            this.chatClient.AuthValues = new AuthenticationValues(_id);
             this.chatClient.ConnectUsingSettings(this.chatAppSettings);
 
             this.ChannelToggleToInstantiate.gameObject.SetActive(false);
@@ -526,7 +522,7 @@ namespace Photon.Chat
             cbtn.gameObject.SetActive(true);
             cbtn.GetComponentInChildren<ChannelSelector>().SetChannel(channelId);
             cbtn.transform.SetParent(this.ChannelToggleToInstantiate.transform.parent, false);
-            cbtn.GetComponentInChildren<Text>().text = DataManager.instance.userCache.MyChannels[channelId];
+            cbtn.GetComponentInChildren<TMP_Text>().text = DataManager.instance.userCache.MyChannels[channelId];
             this.channelToggles.Add(channelId, cbtn);
         }
 
