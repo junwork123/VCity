@@ -20,9 +20,13 @@ public class ApplyButtonEvent : MonoBehaviour
         print(applyType);
         switch (applyType)
         {
-            case ApplyType.RESIDENT_REGISTRATION:
+            case ApplyType.ISSUANCE_RESIDENT_REGISTRATION:
                 break;
-            case ApplyType.BIRTH_REGISTRATION:
+            case ApplyType.ISSUANCE_CERTIFIED_RESIDENT_REGISTRATION:
+                break;
+            case ApplyType.COUNSEL:
+                break;
+            case ApplyType.ETC:
                 break;
         }
     }

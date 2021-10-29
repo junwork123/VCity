@@ -26,7 +26,6 @@ public class InteractionButtonEvent : MonoBehaviour
 
             case InteractionType.LOG:
                 AndroidToastManager.instance.ShowToast("LOG");
-                // FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
 
                 #region 메시지 호출부
                 FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);

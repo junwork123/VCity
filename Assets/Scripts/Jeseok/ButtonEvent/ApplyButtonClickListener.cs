@@ -3,28 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ApplyButtonClickListener : MonoBehaviour, IButtonClickListener<ApplyType>
+public class ApplyButtonClickListener : ButtonClickListener<ApplyType>
 {
-    [SerializeField]
-    ApplyType _buttonType;
-    public ApplyType buttonType { get => _buttonType; set => _buttonType = value; }
-    public Action<ApplyType> onClickCallback { get; set; }
+    ButtonDescSetter descSetter;
 
-    public void AddClickCallback(Action<ApplyType> callback)
+    private void Start()
     {
-        onClickCallback += callback;
-    }
+        descSetter = GetComponent<ButtonDescSetter>();
 
-    public void OnClick()
-    {
-        if (onClickCallback == null)
-            return;
-
-        onClickCallback(buttonType);
-    }
-
-    public void SetButtonType(ApplyType type)
-    {
-        buttonType = type;
+        descSetter.SetDesc(buttonType.ToString());
     }
 }

@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 524974705121343514}
   - component: {fileID: 524974705121343509}
   - component: {fileID: 524974705121343513}
+  - component: {fileID: 6326403819354025153}
   - component: {fileID: -4311720817414552497}
   - component: {fileID: 4625791241358125243}
-  - component: {fileID: 6326403819354025153}
   m_Layer: 5
   m_Name: NPCInteractionMenuCanvas
   m_TagString: Untagged
@@ -122,7 +122,19 @@ MonoBehaviour:
   childTransforms: []
   radiusRange: 2
   centerAxis: 30
-  paddingPercent: 20
+  paddingPercent: 50
+--- !u!114 &6326403819354025153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524974705121343508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce30fe739df1f4c4db2052cd60105d72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-4311720817414552497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,18 +160,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickListener: []
---- !u!114 &6326403819354025153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 524974705121343508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce30fe739df1f4c4db2052cd60105d72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1630002985274184354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -277,6 +277,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 524974705121343512}
     m_Modifications:
+    - target: {fileID: 3106012338627886244, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: descColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106012338627886244, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: descColor.g
+      value: 0.47450984
+      objectReference: {fileID: 0}
+    - target: {fileID: 3106012338627886244, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
+      propertyPath: descColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5899638309184271633, guid: 11d87b7dbbd40b1489124f2c6e75a03d, type: 3}
       propertyPath: m_Sprite
       value: 

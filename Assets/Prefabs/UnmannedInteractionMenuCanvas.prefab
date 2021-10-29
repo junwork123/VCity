@@ -122,7 +122,7 @@ MonoBehaviour:
   childTransforms: []
   radiusRange: 1.5
   centerAxis: 30
-  paddingPercent: 20
+  paddingPercent: 50
 --- !u!114 &7831463280034817009
 MonoBehaviour:
   m_ObjectHideFlags: 0
