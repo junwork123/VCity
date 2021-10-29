@@ -27,7 +27,6 @@ namespace Photon.Chat
         public void OnPointerClick(PointerEventData eventData)
         {
             ChatManager handler = FindObjectOfType<ChatManager>();
-            handler.LoadChat(this.Channel);
             handler.ShowChannel(this.Channel);
 
             PanelSelector ps = FindObjectOfType<PanelSelector>();

@@ -6,7 +6,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -75,6 +75,9 @@ namespace Photon.Chat
 
         public bool ShowState = true;
         public Text StateText; // set in inspector
+
+        public GameObject MyMsgFactory;
+        public GameObject OpMsgFactory;
 
 
         // private static string WelcomeText = "Welcome to chat. Type \\help to list commands.";
@@ -160,13 +163,21 @@ namespace Photon.Chat
         public void LoadChat(string _channelId)
         {
             List<CustomMsg> msgs = DataManager.instance.chatCache[_channelId];
-
-            string previousMsg = "";
-            // [yyyy-MM-dd HH:mm] 
-            string day = "";
-            // TODO : 메시지 생성 및 좌우 정렬
-            //GameObject msg = Instantiate<GameObject>();
-            foreach (var msg in msgs)
+            if (msgs == null && CurrentChannelText.transform.childCount == msgs.Count)
+            {
+                return;
+            }
+            Transform[] childList = CurrentChannelText.GetComponentsInChildren<Transform>(true);
+            if (childList != null)
+            {
+                for (int i = 1; i < childList.Length; i++)
+                {
+                    if (childList[i] != transform)
+                        Destroy(childList[i].gameObject);
+                }
+            }
+            //string previousMsg = "";
+            foreach (var msg in msgs.OrderBy(x => x.Time))
             {
                 // //날짜가 다를 경우에만
                 // //채팅내역에 한번 표시되도록 한다
@@ -175,13 +186,28 @@ namespace Photon.Chat
                 //     day = msg.Time.Substring(1, "yyyy-MM-dd".Length);
                 //     previousMsg = previousMsg + "> " + day + '\n';
                 // }
-                previousMsg = previousMsg + msg.Sender + " : " + msg.Text
-                                          + " " + msg.Time + "\n";
+                AppendMsg(msg);
+
+                //previousMsg = previousMsg + msg.Sender + " : " + msg.Text + " " + msg.Time + "\n";
             }
             this.CurrentChannelName.text = DataManager.instance.userCache.MyChannels[_channelId];
-            this.CurrentChannelText.text = previousMsg;
+            //this.CurrentChannelText.text = previousMsg;
             Debug.Log("[Chat] " + "메시지 불러오기 성공 : ");
 
+        }
+        public void AppendMsg(CustomMsg _msg)
+        {
+            GameObject mBox = null;
+            if (_msg.Sender == this.UserName)
+            {
+                mBox = Instantiate(MyMsgFactory);
+            }
+            else
+            {
+                mBox = Instantiate(OpMsgFactory);
+            }
+            mBox.GetComponent<MsgFactory>().SetMsg(_msg);
+            mBox.transform.SetParent(this.CurrentChannelText.transform);
         }
         public void Update()
         {
@@ -198,7 +224,7 @@ namespace Photon.Chat
             }
 
             //this.StateText.gameObject.SetActive(this.ShowState); // this could be handled more elegantly, but for the demo it's ok.
-            
+
         }
 
 
@@ -207,9 +233,8 @@ namespace Photon.Chat
             if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
             {
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
-                this.SendChatMessage(nowtime + this.InputFieldChat.text);
+                this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
-
             }
         }
 
@@ -218,7 +243,7 @@ namespace Photon.Chat
             if (this.InputFieldChat != null)
             {
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
-                this.SendChatMessage(nowtime + this.InputFieldChat.text);
+                this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
             }
         }
@@ -227,7 +252,7 @@ namespace Photon.Chat
         public int TestLength = 2048;
         private byte[] testBytes = new byte[2048];
 
-        private void SendChatMessage(string inputLine)
+        private void SendChatMessage(string inputLine, string time = "")
         {
             if (string.IsNullOrEmpty(inputLine))
             {
@@ -342,10 +367,14 @@ namespace Photon.Chat
                 if (doingPrivateChat)
                 {
                     this.chatClient.SendPrivateMessage(privateChatTarget, inputLine);
+                    DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
+                    //AppendMsg(new CustomMsg(UserName, time, inputLine));
                 }
                 else
                 {
                     this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
+                    DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
+                    //AppendMsg(new CustomMsg(UserName, time, inputLine));
                 }
             }
         }
