@@ -62,7 +62,9 @@ namespace Photon.Chat
         public GameObject ConnectingLabel;
         public GameObject ChatOutputPanel;
         public TMP_InputField InputFieldChat;   // set in inspector
-        public TMP_Text CurrentChannelText;     // set in inspector
+
+        public ScrollRect scroll;
+        public RectTransform CurrentChannelText;     // set in inspector
         public TMP_Text CurrentChannelName;     // set in inspector
         public Toggle ChannelToggleToInstantiate; // set in inspector
 
@@ -167,7 +169,7 @@ namespace Photon.Chat
             {
                 return;
             }
-            Transform[] childList = CurrentChannelText.GetComponentsInChildren<Transform>(true);
+            Transform[] childList = CurrentChannelText.GetComponentsInChildren<RectTransform>(true);
             if (childList != null)
             {
                 for (int i = 1; i < childList.Length; i++)
@@ -235,6 +237,7 @@ namespace Photon.Chat
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
                 this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
+                scroll.verticalNormalizedPosition = 1;
             }
         }
 
@@ -245,6 +248,7 @@ namespace Photon.Chat
                 string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
                 this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
+                scroll.verticalNormalizedPosition = 1;
             }
         }
 
@@ -368,12 +372,14 @@ namespace Photon.Chat
                 {
                     this.chatClient.SendPrivateMessage(privateChatTarget, inputLine);
                     DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
+                    scroll.verticalNormalizedPosition = 1;
                     //AppendMsg(new CustomMsg(UserName, time, inputLine));
                 }
                 else
                 {
                     this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
                     DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
+                    scroll.verticalNormalizedPosition = 1;
                     //AppendMsg(new CustomMsg(UserName, time, inputLine));
                 }
             }
@@ -381,7 +387,7 @@ namespace Photon.Chat
 
         public void PostHelpToCurrentChannel()
         {
-            this.CurrentChannelText.text += HelpText;
+            //this.CurrentChannelText.text += HelpText;
         }
 
         public void DebugReturn(ExitGames.Client.Photon.DebugLevel level, string message)
@@ -620,7 +626,7 @@ namespace Photon.Chat
 
             // update text
             this.ShowChannel(this.selectedChannelId);
-
+            scroll.verticalNormalizedPosition = 1;
             //throw new System.NotImplementedException();
         }
 
