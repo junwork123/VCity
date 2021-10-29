@@ -26,6 +26,9 @@ namespace Photon.Chat
         public GameObject ChatOutputPanel;
         public GameObject InputBarPanel;
         #region @Test
+        private void Start() {
+            CloseMenu();
+        }
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Tab))
@@ -45,6 +48,9 @@ namespace Photon.Chat
             GetComponentInChildren<Canvas>().sortingOrder = 0;
             BackgroundPanel.SetActive(false);
             ChatPanel.SetActive(false);
+            ChannelBarPanel.SetActive(false);
+            ChatOutputPanel.SetActive(false);
+            InputBarPanel.SetActive(false);
         }
         public void OpenChatMenu(int _menu)
         {
