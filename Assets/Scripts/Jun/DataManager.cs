@@ -22,6 +22,8 @@ public class DataManager : MonoBehaviour, IChatClientListener
     // 데이터 매니저는 싱글톤으로 존재
     public UserData userCache { get; set; }
     public Dictionary<string, List<CustomMsg>> chatCache;
+
+    public static string TimeFormat = "[yyyy년 MM월 dd일 HH:mm]";
     void Awake()
     {
         if (instance == null) instance = new DataManager();
@@ -130,7 +132,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         {
             if (task.IsCompleted)
             {
-                string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
+                string nowtime = DateTime.Now.ToString((TimeFormat));
                 channelRef.Collection("ChatContents").AddAsync(new CustomMsg("System", nowtime, "Hello, World!"));
                 Debug.Log("[Database] " + "채널 추가 성공");
             }
@@ -346,50 +348,12 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
-        string time = "";
-        string text = "";
-        string timeFormat = "[yyyy-MM-dd HH:mm]";
-        for (int i = 0; i < senders.Length; i++)
-        {
-            string msg = messages[i].ToString();
-            if (msg.Length >= timeFormat.Length)
-            {
-                time = msg.Substring(0, timeFormat.Length);
-                text = msg.Substring(timeFormat.Length);
 
-            }
-            else
-            {
-                Debug.Log("Can't Find timeFormat in received text");
-                time = timeFormat;
-                text = msg;
-            }
-            //AppendMsg(channelName, new CustomMsg(senders[i], time, text));
-        }
-
-        throw new System.NotImplementedException();
     }
 
     public void OnPrivateMessage(string sender, object message, string channelName)
     {
-        // string frontMsg = "";
-        // string rearMsg = "";
-        // string fulltext = "";
-        // string datetime = "[yyyy-MM-dd HH:mm]";
-        // string msg = message.ToString();
-        // if (msg.Length >= datetime.Length)
-        // {
-        //     frontMsg = msg.Substring(0, datetime.Length);
-        //     rearMsg = msg.Substring(datetime.Length);
-        //     fulltext = fulltext + frontMsg + " " + sender + " : " + rearMsg + "\n";
-        // }
-        // else
-        //     fulltext = message + "\n";
 
-        // udc.channels[channelName].Add(new CustomMsg(sender, frontMsg, rearMsg));
-        // SaveAsFile(udc, udc.userId);
-
-        throw new System.NotImplementedException();
     }
     string ObjectToJson(object obj)
     {

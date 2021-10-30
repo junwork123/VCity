@@ -234,7 +234,7 @@ namespace Photon.Chat
         {
             if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
             {
-                string nowtime = DateTime.Now.ToString(("[yyyy년 MM월 dd일 HH:mm]"));
+                string nowtime = DateTime.Now.ToString((DataManager.TimeFormat));
                 this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
                 scroll.verticalNormalizedPosition = 1;
@@ -245,7 +245,7 @@ namespace Photon.Chat
         {
             if (this.InputFieldChat != null)
             {
-                string nowtime = DateTime.Now.ToString(("[yyyy년 MM월 dd일 HH:mm]"));
+                string nowtime = DateTime.Now.ToString((DataManager.TimeFormat));
                 this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
                 scroll.verticalNormalizedPosition = 1;
@@ -602,27 +602,27 @@ namespace Photon.Chat
         public void OnGetMessages(string channelId, string[] senders, object[] messages)
         {
 
-            string time = "";
-            string text = "";
-            string timeFormat = "[yyyy-MM-dd HH:mm]";
-            for (int i = 0; i < senders.Length; i++)
-            {
-                string msg = messages[i].ToString();
-                if (msg.Length >= timeFormat.Length)
-                {
-                    time = msg.Substring(0, timeFormat.Length);
-                    text = msg.Substring(timeFormat.Length);
+            // string time = "";
+            // string text = "";
+            // string timeFormat = "[yyyy-MM-dd HH:mm]";
+            // for (int i = 0; i < senders.Length; i++)
+            // {
+            //     string msg = messages[i].ToString();
+            //     if (msg.Length >= DataManager.TimeFormat.Length)
+            //     {
+            //         time = msg.Substring(0, DataManager.TimeFormat.Length);
+            //         text = msg.Substring(DataManager.TimeFormat.Length);
 
-                }
-                else
-                {
-                    Debug.Log("[Chat] " + "Can't Find timeFormat in received text");
-                    time = timeFormat;
-                    text = msg;
-                }
-                DataManager.instance.AppendMsg(channelId, new CustomMsg(senders[i], time, text));
+            //     }
+            //     else
+            //     {
+            //         Debug.Log("[Chat] " + "Can't Find timeFormat in received text");
+            //         time = timeFormat;
+            //         text = msg;
+            //     }
+            //     DataManager.instance.AppendMsg(channelId, new CustomMsg(senders[i], time, text));
 
-            }
+            // }
 
             // update text
             this.ShowChannel(this.selectedChannelId);
