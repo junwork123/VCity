@@ -23,7 +23,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     public UserData userCache { get; set; }
     public Dictionary<string, List<CustomMsg>> chatCache;
 
-    public static string TimeFormat = "[yyyy년 MM월 dd일 HH:mm]";
+    public static string TimeFormat = "[yyyy년 MM월 dd일 HH:mm:ss]";
     void Awake()
     {
         if (instance == null) instance = new DataManager();
@@ -237,7 +237,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
         return null;
     }
-    public async void LoadMessages(string _channelId)
+    public async void LoadAllMessages(string _channelId)
     {
         if (userCache != null && userCache.MyChannels != null)
         {
@@ -314,7 +314,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             {
                 if (task.IsCompleted)
                 {
-                    LoadMessages(_channelId);
+                    LoadAllMessages(_channelId);
                     Debug.Log("[Database] " + "메시지 추가 성공 : " + _msg.Text);
                 }
                 else

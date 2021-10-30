@@ -17,4 +17,8 @@ public class MsgFactory : MonoBehaviour
         dateText.text = _msg.Time;
         chatText.text = _msg.Text;
     }
+
+    public bool Equals(CustomMsg _msg){
+        return _msg.Sender == nameText.text && _msg.Time == dateText.text && _msg.Text == chatText.text;
+    }
 }

@@ -80,7 +80,7 @@ namespace Photon.Chat
 
         public GameObject MyMsgFactory;
         public GameObject OpMsgFactory;
-
+        public string lastMsgId = "";
 
         // private static string WelcomeText = "Welcome to chat. Type \\help to list commands.";
         private static string HelpText = "\n    -- HELP --\n" +
@@ -164,13 +164,19 @@ namespace Photon.Chat
         }
         public void LoadChat(string _channelId)
         {
+            // 현재 메시지 갯수와 Firestore의 메시지 갯수가 같다면
+            // 갱신할 것이 없으므로 종료한다.
             List<CustomMsg> msgs = DataManager.instance.chatCache[_channelId];
+            msgs.Sort((a, b) => a.Time.CompareTo(b.Time));
             if (msgs == null && CurrentChannelText.transform.childCount == msgs.Count)
             {
                 return;
             }
+
+            // 이미 메시지가 있는 상태에서
+            // 현재 채널과 다른 채널이라면 메시지 내역을 비운다
             Transform[] childList = CurrentChannelText.GetComponentsInChildren<RectTransform>(true);
-            if (childList != null)
+            if (childList != null && _channelId != selectedChannelId)
             {
                 for (int i = 1; i < childList.Length; i++)
                 {
@@ -178,20 +184,27 @@ namespace Photon.Chat
                         Destroy(childList[i].gameObject);
                 }
             }
-            //string previousMsg = "";
-            foreach (var msg in msgs.OrderBy(x => x.Time))
+            // 오프라인이 메시지가 더 적은 경우
+            // 다른 부분만 추가될 수 있도록 함
+            if (childList.Length < msgs.Count)
             {
-                // //날짜가 다를 경우에만
-                // //채팅내역에 한번 표시되도록 한다
-                // if (day != msg.Time.Substring(1, "yyyy-MM-dd".Length))
-                // {
-                //     day = msg.Time.Substring(1, "yyyy-MM-dd".Length);
-                //     previousMsg = previousMsg + "> " + day + '\n';
-                // }
-                AppendMsg(msg);
+                for (int i = childList.Length; i < msgs.Count; i++)
+                {
+                    AppendMsg(msgs[i]);
+                }
+            } // 온라인이 메시지가 더 적은 경우(아직 보내지 못한 상태?)
+            else
+            {
 
-                //previousMsg = previousMsg + msg.Sender + " : " + msg.Text + " " + msg.Time + "\n";
             }
+
+            
+
+            // foreach (var msg in msgs.OrderBy(x => x.Time))
+            // {
+            //     childList[i];
+            // }
+            // 채널 이름을 유저가 설정해놓은 채널 이름으로 변경
             this.CurrentChannelName.text = DataManager.instance.userCache.MyChannels[_channelId];
             //this.CurrentChannelText.text = previousMsg;
             Debug.Log("[Chat] " + "메시지 불러오기 성공 : ");
@@ -237,7 +250,6 @@ namespace Photon.Chat
                 string nowtime = DateTime.Now.ToString((DataManager.TimeFormat));
                 this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
-                scroll.verticalNormalizedPosition = 1;
             }
         }
 
@@ -248,7 +260,6 @@ namespace Photon.Chat
                 string nowtime = DateTime.Now.ToString((DataManager.TimeFormat));
                 this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
-                scroll.verticalNormalizedPosition = 1;
             }
         }
 
@@ -371,16 +382,15 @@ namespace Photon.Chat
                 if (doingPrivateChat)
                 {
                     this.chatClient.SendPrivateMessage(privateChatTarget, inputLine);
+                    AppendMsg(new CustomMsg(UserName, time, inputLine));
                     DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
-                    scroll.verticalNormalizedPosition = 1;
-                    //AppendMsg(new CustomMsg(UserName, time, inputLine));
+
                 }
                 else
                 {
                     this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
+                    AppendMsg(new CustomMsg(UserName, time, inputLine));
                     DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
-                    scroll.verticalNormalizedPosition = 1;
-                    //AppendMsg(new CustomMsg(UserName, time, inputLine));
                 }
             }
         }
@@ -434,7 +444,7 @@ namespace Photon.Chat
                 foreach (string channelId in userCache.MyChannels.Keys)
                 {
                     this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
-                    DataManager.instance.LoadMessages(channelId);
+                    DataManager.instance.LoadAllMessages(channelId);
                 }
             }
         }
@@ -625,8 +635,9 @@ namespace Photon.Chat
             // }
 
             // update text
+            Debug.Log("[Chat] : " + messages.ToString());
             this.ShowChannel(this.selectedChannelId);
-            scroll.verticalNormalizedPosition = 1;
+            scroll.verticalNormalizedPosition = 0;
             //throw new System.NotImplementedException();
         }
 
@@ -727,10 +738,10 @@ namespace Photon.Chat
                 return;
             }
 
-            this.selectedChannelId = channelId;
             LoadChat(channelId);
+            this.selectedChannelId = channelId;
+            scroll.verticalNormalizedPosition = 0;
 
-            //this.CurrentChannelText.text = channel.ToStringMessages();
             Debug.Log("[Chat] " + "ShowChannel: " + this.selectedChannelId);
 
             foreach (KeyValuePair<string, Toggle> pair in this.channelToggles)
