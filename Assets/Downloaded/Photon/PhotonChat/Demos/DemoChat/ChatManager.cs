@@ -234,7 +234,7 @@ namespace Photon.Chat
         {
             if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
             {
-                string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
+                string nowtime = DateTime.Now.ToString(("[yyyy년 MM월 dd일 HH:mm]"));
                 this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
                 scroll.verticalNormalizedPosition = 1;
@@ -245,7 +245,7 @@ namespace Photon.Chat
         {
             if (this.InputFieldChat != null)
             {
-                string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
+                string nowtime = DateTime.Now.ToString(("[yyyy년 MM월 dd일 HH:mm]"));
                 this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
                 scroll.verticalNormalizedPosition = 1;
