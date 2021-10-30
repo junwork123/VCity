@@ -81,7 +81,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
             {
                 Debug.Log("[Network] " + "Signed out " + user.UserId);
             }
-            user = auth.CurrentUser;
+            // @TODO : 자동 로그인 시 여기 수정
+            // user = auth.CurrentUser;
             if (signedIn == true && user != null)
             {
                 Debug.Log("[Network] " + "Signed in " + user.UserId);

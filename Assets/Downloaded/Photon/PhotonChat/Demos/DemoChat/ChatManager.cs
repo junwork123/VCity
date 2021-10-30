@@ -6,7 +6,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +16,7 @@ using UnityEngine.SceneManagement;
 using AuthenticationValues = Photon.Chat.AuthenticationValues;
 #if PHOTON_UNITY_NETWORKING
 using Photon.Pun;
+using TMPro;
 #endif
 
 // 채팅 서버에 연결하고 대화를 동기화, 보내기, 받기 수행
@@ -49,7 +50,7 @@ namespace Photon.Chat
 
         public string UserName { get; set; }
 
-        private string selectedChannelName; // mainly used for GUI/input
+        private string selectedChannelId; // mainly used for GUI/input
 
         public ChatClient chatClient;
 
@@ -58,14 +59,13 @@ namespace Photon.Chat
 #endif
         protected internal ChatAppSettings chatAppSettings;
 
-
-        public GameObject missingAppIdErrorPanel;
         public GameObject ConnectingLabel;
         public GameObject ChatOutputPanel;
-        public GameObject UserIdFormPanel;
-        public InputField InputFieldChat;   // set in inspector
-        public Text CurrentChannelText;     // set in inspector
-        public Text CurrentChannelName;     // set in inspector
+        public TMP_InputField InputFieldChat;   // set in inspector
+
+        public ScrollRect scroll;
+        public RectTransform CurrentChannelText;     // set in inspector
+        public TMP_Text CurrentChannelName;     // set in inspector
         public Toggle ChannelToggleToInstantiate; // set in inspector
 
 
@@ -77,8 +77,10 @@ namespace Photon.Chat
 
         public bool ShowState = true;
         public Text StateText; // set in inspector
-        public Text UserIdText; // set in inspector
 
+        public GameObject MyMsgFactory;
+        public GameObject OpMsgFactory;
+        public string lastMsgId = "";
 
         // private static string WelcomeText = "Welcome to chat. Type \\help to list commands.";
         private static string HelpText = "\n    -- HELP --\n" +
@@ -118,10 +120,8 @@ namespace Photon.Chat
         {
             DontDestroyOnLoad(this.gameObject);
 
-            this.UserIdText.text = "";
             this.StateText.text = "";
-            this.StateText.gameObject.SetActive(true);
-            this.UserIdText.gameObject.SetActive(true);
+            this.StateText.gameObject.SetActive(false);
             this.ChatOutputPanel.gameObject.SetActive(false);
             this.ConnectingLabel.SetActive(false);
 
@@ -136,8 +136,6 @@ namespace Photon.Chat
 
             bool appIdPresent = !string.IsNullOrEmpty(this.chatAppSettings.AppIdChat);
 
-            this.missingAppIdErrorPanel.SetActive(!appIdPresent);
-            //this.UserIdFormPanel.gameObject.SetActive(appIdPresent);
 
             if (!appIdPresent)
             {
@@ -166,31 +164,65 @@ namespace Photon.Chat
         }
         public void LoadChat(string _channelId)
         {
-            //Debug.Log("시이이이발" + DataManager.instance.udc.Id);
-
-            List<CustomMsg> msgs = DataManager.instance.channels[_channelId];
-
-            string previousMsg = "";
-            // [yyyy-MM-dd HH:mm] 
-            string day = "";
-            // TODO : 메시지 생성 및 좌우 정렬
-            //GameObject msg = Instantiate<GameObject>();
-            foreach (var msg in msgs)
+            // 현재 메시지 갯수와 Firestore의 메시지 갯수가 같다면
+            // 갱신할 것이 없으므로 종료한다.
+            List<CustomMsg> msgs = DataManager.instance.chatCache[_channelId];
+            msgs.Sort((a, b) => a.Time.CompareTo(b.Time));
+            if (msgs == null && CurrentChannelText.transform.childCount == msgs.Count)
             {
-                // //날짜가 다를 경우에만
-                // //채팅내역에 한번 표시되도록 한다
-                // if (day != msg.Time.Substring(1, "yyyy-MM-dd".Length))
-                // {
-                //     day = msg.Time.Substring(1, "yyyy-MM-dd".Length);
-                //     previousMsg = previousMsg + "> " + day + '\n';
-                // }
-                previousMsg = previousMsg + msg.Sender + " : " + msg.Text
-                                          + " " + msg.Time + "\n";
+                return;
             }
-            this.CurrentChannelName.text = _channelId;
-            this.CurrentChannelText.text = previousMsg;
+
+            // 이미 메시지가 있는 상태에서
+            // 현재 채널과 다른 채널이라면 메시지 내역을 비운다
+            Transform[] childList = CurrentChannelText.GetComponentsInChildren<RectTransform>(true);
+            if (childList != null && _channelId != selectedChannelId)
+            {
+                for (int i = 1; i < childList.Length; i++)
+                {
+                    if (childList[i] != transform)
+                        Destroy(childList[i].gameObject);
+                }
+            }
+            // 오프라인이 메시지가 더 적은 경우
+            // 다른 부분만 추가될 수 있도록 함
+            if (childList.Length < msgs.Count)
+            {
+                for (int i = childList.Length; i < msgs.Count; i++)
+                {
+                    AppendMsg(msgs[i]);
+                }
+            } // 온라인이 메시지가 더 적은 경우(아직 보내지 못한 상태?)
+            else
+            {
+
+            }
+
+            
+
+            // foreach (var msg in msgs.OrderBy(x => x.Time))
+            // {
+            //     childList[i];
+            // }
+            // 채널 이름을 유저가 설정해놓은 채널 이름으로 변경
+            this.CurrentChannelName.text = DataManager.instance.userCache.MyChannels[_channelId];
+            //this.CurrentChannelText.text = previousMsg;
             Debug.Log("[Chat] " + "메시지 불러오기 성공 : ");
 
+        }
+        public void AppendMsg(CustomMsg _msg)
+        {
+            GameObject mBox = null;
+            if (_msg.Sender == this.UserName)
+            {
+                mBox = Instantiate(MyMsgFactory);
+            }
+            else
+            {
+                mBox = Instantiate(OpMsgFactory);
+            }
+            mBox.GetComponent<MsgFactory>().SetMsg(_msg);
+            mBox.transform.SetParent(this.CurrentChannelText.transform);
         }
         public void Update()
         {
@@ -207,7 +239,7 @@ namespace Photon.Chat
             }
 
             //this.StateText.gameObject.SetActive(this.ShowState); // this could be handled more elegantly, but for the demo it's ok.
-            this.StateText.gameObject.SetActive(false);
+
         }
 
 
@@ -215,10 +247,9 @@ namespace Photon.Chat
         {
             if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
             {
-                string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
-                this.SendChatMessage(nowtime + this.InputFieldChat.text);
+                string nowtime = DateTime.Now.ToString((DataManager.TimeFormat));
+                this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
-
             }
         }
 
@@ -226,8 +257,8 @@ namespace Photon.Chat
         {
             if (this.InputFieldChat != null)
             {
-                string nowtime = DateTime.Now.ToString(("[yyyy-MM-dd HH:mm]"));
-                this.SendChatMessage(nowtime + this.InputFieldChat.text);
+                string nowtime = DateTime.Now.ToString((DataManager.TimeFormat));
+                this.SendChatMessage(this.InputFieldChat.text, nowtime);
                 this.InputFieldChat.text = "";
             }
         }
@@ -236,7 +267,7 @@ namespace Photon.Chat
         public int TestLength = 2048;
         private byte[] testBytes = new byte[2048];
 
-        private void SendChatMessage(string inputLine)
+        private void SendChatMessage(string inputLine, string time = "")
         {
             if (string.IsNullOrEmpty(inputLine))
             {
@@ -253,14 +284,14 @@ namespace Photon.Chat
             }
 
 
-            bool doingPrivateChat = this.chatClient.PrivateChannels.ContainsKey(this.selectedChannelName);
+            bool doingPrivateChat = this.chatClient.PrivateChannels.ContainsKey(this.selectedChannelId);
             string privateChatTarget = string.Empty;
             if (doingPrivateChat)
             {
                 // the channel name for a private conversation is (on the client!!) always composed of both user's IDs: "this:remote"
                 // so the remote ID is simple to figure out
 
-                string[] splitNames = this.selectedChannelName.Split(new char[] { ':' });
+                string[] splitNames = this.selectedChannelId.Split(new char[] { ':' });
                 privateChatTarget = splitNames[1];
             }
             //UnityEngine.Debug.Log("selectedChannelName: " + selectedChannelName + " doingPrivateChat: " + doingPrivateChat + " privateChatTarget: " + privateChatTarget);
@@ -307,12 +338,12 @@ namespace Photon.Chat
                 {
                     if (doingPrivateChat)
                     {
-                        this.chatClient.PrivateChannels.Remove(this.selectedChannelName);
+                        this.chatClient.PrivateChannels.Remove(this.selectedChannelId);
                     }
                     else
                     {
                         ChatChannel channel;
-                        if (this.chatClient.TryGetChannel(this.selectedChannelName, doingPrivateChat, out channel))
+                        if (this.chatClient.TryGetChannel(this.selectedChannelId, doingPrivateChat, out channel))
                         {
                             channel.ClearMessages();
                         }
@@ -351,17 +382,22 @@ namespace Photon.Chat
                 if (doingPrivateChat)
                 {
                     this.chatClient.SendPrivateMessage(privateChatTarget, inputLine);
+                    AppendMsg(new CustomMsg(UserName, time, inputLine));
+                    DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
+
                 }
                 else
                 {
-                    this.chatClient.PublishMessage(this.selectedChannelName, inputLine);
+                    this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
+                    AppendMsg(new CustomMsg(UserName, time, inputLine));
+                    DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
                 }
             }
         }
 
         public void PostHelpToCurrentChannel()
         {
-            this.CurrentChannelText.text += HelpText;
+            //this.CurrentChannelText.text += HelpText;
         }
 
         public void DebugReturn(ExitGames.Client.Photon.DebugLevel level, string message)
@@ -382,13 +418,12 @@ namespace Photon.Chat
         public void Connect(string _id)
         {
             this.UserName = _id;
-            this.UserIdFormPanel.gameObject.SetActive(false);
 
             this.chatClient = new ChatClient(this);
 #if !UNITY_WEBGL
             this.chatClient.UseBackgroundWorkerForSending = true;
 #endif
-            this.chatClient.AuthValues = new AuthenticationValues(this.UserName);
+            this.chatClient.AuthValues = new AuthenticationValues(_id);
             this.chatClient.ConnectUsingSettings(this.chatAppSettings);
 
             this.ChannelToggleToInstantiate.gameObject.SetActive(false);
@@ -397,29 +432,32 @@ namespace Photon.Chat
 
 
         }
+        public void UpdateRooms()
+        {
+            UserData userCache = DataManager.instance.userCache;
+            if (userCache != null && userCache.MyChannels != null)
+            {
+                if (userCache.MyChannels.Count == 0)
+                {
+                    DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
+                }
+                foreach (string channelId in userCache.MyChannels.Keys)
+                {
+                    this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
+                    DataManager.instance.LoadAllMessages(channelId);
+                }
+            }
+        }
 
         public void OnConnected()
         {
-            
-            if (DataManager.instance.udc != null && DataManager.instance.udc.Channels != null)
-            {
-                if(DataManager.instance.udc.Channels.Count == 0){
-                    DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
-                }
-                foreach (string channelId in DataManager.instance.udc.Channels)
-                {
-                    this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
-                    DataManager.instance.LoadMessages(channelId);
-                }
-            }
-
+            UpdateRooms();
             // if (this.ChannelsToJoinOnConnect != null && this.ChannelsToJoinOnConnect.Length > 0)
             // {
             //     this.chatClient.Subscribe(this.ChannelsToJoinOnConnect, this.HistoryLengthToFetch);
             // }
 
             this.ConnectingLabel.SetActive(false);
-            this.UserIdText.text = "Connected as " + this.UserName;
             // 기본으로 열리는 채널
             //LoadChat(DataManager.REGION_CHANNEL_ID);
             //this.ChatPanel.gameObject.SetActive(true);
@@ -510,9 +548,9 @@ namespace Photon.Chat
             Debug.LogFormat("OnSubscribed: {0}, users.Count: {1} Channel-props: {2}.", channel, users.Length, properties.ToStringFull());
         }
 
-        private void InstantiateChannelButton(string channelName)
+        private void InstantiateChannelButton(string channelId)
         {
-            if (this.channelToggles.ContainsKey(channelName))
+            if (this.channelToggles.ContainsKey(channelId))
             {
                 Debug.Log("[Chat] " + "Skipping creation for an existing channel toggle.");
                 return;
@@ -520,10 +558,10 @@ namespace Photon.Chat
 
             Toggle cbtn = (Toggle)Instantiate(this.ChannelToggleToInstantiate);
             cbtn.gameObject.SetActive(true);
-            cbtn.GetComponentInChildren<ChannelSelector>().SetChannel(channelName);
+            cbtn.GetComponentInChildren<ChannelSelector>().SetChannel(channelId);
             cbtn.transform.SetParent(this.ChannelToggleToInstantiate.transform.parent, false);
-
-            this.channelToggles.Add(channelName, cbtn);
+            cbtn.GetComponentInChildren<TMP_Text>().text = DataManager.instance.userCache.MyChannels[channelId];
+            this.channelToggles.Add(channelId, cbtn);
         }
 
         private void InstantiateFriendButton(string friendId)
@@ -542,19 +580,19 @@ namespace Photon.Chat
 
         public void OnUnsubscribed(string[] channels)
         {
-            foreach (string channelName in channels)
+            foreach (string channelId in channels)
             {
-                if (this.channelToggles.ContainsKey(channelName))
+                if (this.channelToggles.ContainsKey(channelId))
                 {
-                    Toggle t = this.channelToggles[channelName];
+                    Toggle t = this.channelToggles[channelId];
                     Destroy(t.gameObject);
 
-                    this.channelToggles.Remove(channelName);
+                    this.channelToggles.Remove(channelId);
 
-                    Debug.Log("[Chat] " + "Unsubscribed from channel '" + channelName + "'.");
+                    Debug.Log("[Chat] " + "Unsubscribed from channel '" + channelId + "'.");
 
                     // Showing another channel if the active channel is the one we unsubscribed from before
-                    if (channelName == this.selectedChannelName && this.channelToggles.Count > 0)
+                    if (channelId == this.selectedChannelId && this.channelToggles.Count > 0)
                     {
                         IEnumerator<KeyValuePair<string, Toggle>> firstEntry = this.channelToggles.GetEnumerator();
                         firstEntry.MoveNext();
@@ -566,56 +604,57 @@ namespace Photon.Chat
                 }
                 else
                 {
-                    Debug.Log("[Chat] " + "Can't unsubscribe from channel '" + channelName + "' because you are currently not subscribed to it.");
+                    Debug.Log("[Chat] " + "Can't unsubscribe from channel '" + channelId + "' because you are currently not subscribed to it.");
                 }
             }
         }
 
-        public void OnGetMessages(string channelName, string[] senders, object[] messages)
+        public void OnGetMessages(string channelId, string[] senders, object[] messages)
         {
 
-            string time = "";
-            string text = "";
-            string timeFormat = "[yyyy-MM-dd HH:mm]";
-            for (int i = 0; i < senders.Length; i++)
-            {
-                string msg = messages[i].ToString();
-                if (msg.Length >= timeFormat.Length)
-                {
-                    time = msg.Substring(0, timeFormat.Length);
-                    text = msg.Substring(timeFormat.Length);
+            // string time = "";
+            // string text = "";
+            // string timeFormat = "[yyyy-MM-dd HH:mm]";
+            // for (int i = 0; i < senders.Length; i++)
+            // {
+            //     string msg = messages[i].ToString();
+            //     if (msg.Length >= DataManager.TimeFormat.Length)
+            //     {
+            //         time = msg.Substring(0, DataManager.TimeFormat.Length);
+            //         text = msg.Substring(DataManager.TimeFormat.Length);
 
-                }
-                else
-                {
-                    Debug.Log("[Chat] " + "Can't Find timeFormat in received text");
-                    time = timeFormat;
-                    text = msg;
-                }
-                DataManager.instance.AppendMsg(channelName, new CustomMsg(senders[i], time, text));
+            //     }
+            //     else
+            //     {
+            //         Debug.Log("[Chat] " + "Can't Find timeFormat in received text");
+            //         time = timeFormat;
+            //         text = msg;
+            //     }
+            //     DataManager.instance.AppendMsg(channelId, new CustomMsg(senders[i], time, text));
 
-            }
+            // }
 
             // update text
-            this.ShowChannel(this.selectedChannelName);
-
+            Debug.Log("[Chat] : " + messages.ToString());
+            this.ShowChannel(this.selectedChannelId);
+            scroll.verticalNormalizedPosition = 0;
             //throw new System.NotImplementedException();
         }
 
-        public void OnPrivateMessage(string sender, object message, string channelName)
+        public void OnPrivateMessage(string sender, object message, string channelId)
         {
             // as the ChatClient is buffering the messages for you, this GUI doesn't need to do anything here
             // you also get messages that you sent yourself. in that case, the channelName is determinded by the target of your msg
-            this.InstantiateChannelButton(channelName);
+            this.InstantiateChannelButton(channelId);
 
             byte[] msgBytes = message as byte[];
             if (msgBytes != null)
             {
                 Debug.Log("[Chat] " + "Message with byte[].Length: " + msgBytes.Length);
             }
-            if (this.selectedChannelName.Equals(channelName))
+            if (this.selectedChannelId.Equals(channelId))
             {
-                this.ShowChannel(channelName);
+                this.ShowChannel(channelId);
             }
         }
 
@@ -669,10 +708,10 @@ namespace Photon.Chat
         public void AddMessageToSelectedChannel(string msg)
         {
             ChatChannel channel = null;
-            bool found = this.chatClient.TryGetChannel(this.selectedChannelName, out channel);
+            bool found = this.chatClient.TryGetChannel(this.selectedChannelId, out channel);
             if (!found)
             {
-                Debug.Log("[Chat] " + "AddMessageToSelectedChannel failed to find channel: " + this.selectedChannelName);
+                Debug.Log("[Chat] " + "AddMessageToSelectedChannel failed to find channel: " + this.selectedChannelId);
                 return;
             }
 
@@ -699,11 +738,11 @@ namespace Photon.Chat
                 return;
             }
 
-            this.selectedChannelName = channelId;
             LoadChat(channelId);
+            this.selectedChannelId = channelId;
+            scroll.verticalNormalizedPosition = 0;
 
-            //this.CurrentChannelText.text = channel.ToStringMessages();
-            Debug.Log("[Chat] " + "ShowChannel: " + this.selectedChannelName);
+            Debug.Log("[Chat] " + "ShowChannel: " + this.selectedChannelId);
 
             foreach (KeyValuePair<string, Toggle> pair in this.channelToggles)
             {

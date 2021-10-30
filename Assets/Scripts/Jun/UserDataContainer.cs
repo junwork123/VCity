@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Firebase.Firestore;
 
 [FirestoreData]
-public class UserDataContainer
+public class UserData
 {
     [FirestoreProperty] public string Id { get; set; }
     [FirestoreProperty] public string Email { get; set; }
@@ -14,10 +14,11 @@ public class UserDataContainer
     [FirestoreProperty] public List<string> Friends { get; set; }
     // <채널명, 채널명에 대한 Firestore 참조값>
     [FirestoreProperty] public List<string> Channels { get; set; }
+    [FirestoreProperty] public Dictionary<string, string> MyChannels { get; set; }
 
     //[FirestoreProperty] public string IpAddress { get; set; }
 
-    public UserDataContainer()
+    public UserData()
     {
         Id = null;
         Email = null;
@@ -25,12 +26,14 @@ public class UserDataContainer
         Profile = null;
         Friends = new List<string>();
         Channels = new List<string>();
+        MyChannels = new Dictionary<string, string>();
+        
         //IpAddress = "localhost";
 
         //channels["Guild"] = new List<CustomMsg>();
     }
 
-    public UserDataContainer(string _userId, string _userEmail, string _userName = "Ms.temp")
+    public UserData(string _userId, string _userEmail, string _userName = "Ms.temp")
     {
         Id = _userId;
         Email = _userEmail;
@@ -38,6 +41,7 @@ public class UserDataContainer
         Profile = null;
         Friends = new List<string>();
         Channels = new List<string>();
+        MyChannels = new Dictionary<string, string>();
         //IpAddress = "localhost";
     }
     public Dictionary<string, object> ToDictionary()
@@ -49,6 +53,8 @@ public class UserDataContainer
         result["Profile"] = Profile;
         result["Friends"] = Friends;
         result["Channels"] = Channels;
+        result["MyChannels"] = MyChannels;
+        
         //result["IpAddress"] = IpAddress;
 
         return result;
