@@ -447,6 +447,7 @@ namespace Photon.Chat
                     DataManager.instance.LoadAllMessages(channelId);
                 }
             }
+            scroll.verticalNormalizedPosition = 0;
         }
 
         public void OnConnected()
@@ -483,7 +484,7 @@ namespace Photon.Chat
                 this.FriendListUiItemtoInstantiate.SetActive(false);
             }
 
-
+            
             this.chatClient.SetOnlineStatus(ChatUserStatus.Online); // You can set your online state (without a mesage).
         }
 
@@ -637,7 +638,7 @@ namespace Photon.Chat
             // update text
             Debug.Log("[Chat] : " + messages.ToString());
             this.ShowChannel(this.selectedChannelId);
-            scroll.verticalNormalizedPosition = 0;
+            
             //throw new System.NotImplementedException();
         }
 
