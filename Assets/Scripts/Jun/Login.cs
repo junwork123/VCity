@@ -11,6 +11,6 @@ public class Login : MonoBehaviour
     [SerializeField] TMP_InputField roomNameInputField;
 
     public void LoginAsync(){
-        NetworkManager.instance.Login()
+        NetworkManager.instance.Login(UserIdInputField.text, UserPwInputField.text);
     }
 }

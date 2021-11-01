@@ -17,8 +17,6 @@ public class Register : MonoBehaviour
     [SerializeField]
     TMP_Text pwCheckText;
     [SerializeField]
-    TMP_InputField emailInput;
-    [SerializeField]
     TMP_InputField addressInput;
     [SerializeField]
     TMP_InputField detailedInput;
@@ -40,7 +38,6 @@ public class Register : MonoBehaviour
             return;
 
         if (CheckPassword()) userPw = pwInput.text; else return;
-        userData.Email = emailInput.text;
         userData.Address = addressInput.text;
         userData.DetailedAddress = detailedInput.text;
         userData.Profile = "";
@@ -60,8 +57,10 @@ public class Register : MonoBehaviour
         Debug.Log("[Register] : " + "정상적인 이름 양식입니다");
         return true;
     }
-    
-
+    public bool CheckId()
+    {
+        return true;
+    }
     public bool CheckPassword()
     {
         if (pwInput.text == doublecheck.text)

@@ -113,7 +113,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         loadingPanel.SetActive(true);
         // 제공되는 함수 : 이메일과 비밀번호로 로그인 시켜 줌
-        await auth.SignInWithEmailAndPasswordAsync(UserIdInputField.text, UserPwInputField.text).ContinueWithOnMainThread(
+        await auth.SignInWithEmailAndPasswordAsync(_userId, _userPw).ContinueWithOnMainThread(
             task =>
             {
                 if (task.IsCompleted)
@@ -154,7 +154,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     public bool CheckIdExist() // 중복 가입 확인
     {
-        auth.is
+        //auth.SignInWithEmailAndPasswordAsync
         return true;
     }
     public void Logout()
@@ -164,7 +164,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     public void Register(string _userId, string _userPw, UserData _userData)
     {
-        auth.sign
         // 제공되는 함수 : 이메일과 비밀번호로 회원가입 시켜 줌
         auth.CreateUserWithEmailAndPasswordAsync(_userId, _userPw).ContinueWith(
             task =>
@@ -192,7 +191,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                         Debug.Log("[Network] " + "User profile updated successfully.");
                     });
-                    user.UpdateEmailAsync(UserIdInputField.text).ContinueWith(task =>
+                    user.UpdateEmailAsync(_userId).ContinueWith(task =>
                     {
                         if (task.IsCanceled)
                         {
@@ -208,7 +207,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         Debug.Log("[Network] " + "User profile updated successfully.");
                     });
 
-                    Debug.Log("[Network] " + UserIdInputField.text + "로 회원가입\n");
+                    Debug.Log("[Network] " + _userId + "로 회원가입\n");
                     DataManager.instance.AddUser(_userData);
                 }
                 else
@@ -226,12 +225,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (_roomName == "")
         {
-            if (string.IsNullOrEmpty(roomNameInputField.text))
-            {
-                return;//방 이름이 빈값이면 방 안만들어짐
-            }
-            PhotonNetwork.CreateRoom(roomNameInputField.text, new RoomOptions { MaxPlayers = (byte)maxPlayer, IsVisible = true });//포톤 네트워크기능으로 roomNameInputField.text의 이름으로 방을 만든다.
-                                                                                                                                  //MenuManager.Instance.OpenMenu("loading");//로딩창 열기
+            PhotonNetwork.CreateRoom("test", new RoomOptions { MaxPlayers = (byte)maxPlayer, IsVisible = true });//포톤 네트워크기능으로 roomNameInputField.text의 이름으로 방을 만든다.
+            //MenuManager.Instance.OpenMenu("loading");//로딩창 열기
         }
         else
         {
