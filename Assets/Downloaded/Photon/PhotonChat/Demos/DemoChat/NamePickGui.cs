@@ -34,7 +34,7 @@ namespace Photon.Chat
 #else
         UserIdPref = "sposent7@naver.com";
         UserPwPref = "wnswns95";
-        UserNamePref = "com";
+        UserNamePref = "junhyeok";
 #endif
 
             this.idInput.text = UserIdPref;

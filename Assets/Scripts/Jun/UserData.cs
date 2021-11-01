@@ -8,6 +8,8 @@ public class UserData
     [FirestoreProperty] public string Id { get; set; }
     [FirestoreProperty] public string Email { get; set; }
     [FirestoreProperty] public string Name { get; set; }
+    [FirestoreProperty] public string Address { get; set; }
+    [FirestoreProperty] public string DetailedAddress { get; set; }
     [FirestoreProperty] public string Profile { get; set; }
 
     // <친구id, 채널명에 대한 Firestore 참조값>
@@ -23,6 +25,8 @@ public class UserData
         Id = null;
         Email = null;
         Name = "Mr.temp";
+        Address = "temp1";
+        DetailedAddress = "temp2";
         Profile = null;
         Friends = new List<string>();
         Channels = new List<string>();
@@ -38,6 +42,8 @@ public class UserData
         Id = _userId;
         Email = _userEmail;
         Name = _userName;
+        Address = "temp1";
+        DetailedAddress = "temp2";
         Profile = null;
         Friends = new List<string>();
         Channels = new List<string>();
@@ -50,6 +56,8 @@ public class UserData
         result["Id"] = Id;
         result["Email"] = Email;
         result["Name"] = Name;
+        result["Address"] = Address;
+        result["DetailedAddress"] = DetailedAddress;
         result["Profile"] = Profile;
         result["Friends"] = Friends;
         result["Channels"] = Channels;

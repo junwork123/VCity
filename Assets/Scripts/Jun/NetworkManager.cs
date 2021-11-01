@@ -8,7 +8,6 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Firebase;
 using Firebase.Auth;
-using Firebase.Database;
 using Firebase.Extensions;
 
 // 1. Firebase에 접속, 아이디를 확인하고, 데이터 매니저(DB)가 값을 불러올 수 있게 함.
@@ -16,10 +15,6 @@ using Firebase.Extensions;
 public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     public static NetworkManager instance;
-    [SerializeField] TMP_InputField UserIdInputField;
-    [SerializeField] TMP_InputField UserPwInputField;
-    [SerializeField] TMP_InputField UserNameInputField;
-    [SerializeField] TMP_InputField roomNameInputField;
     [SerializeField] Transform roomListContent;
     [SerializeField] GameObject roomListItemPrefab;
     public static int maxPlayer = 4;
@@ -102,12 +97,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         //PhotonNetwork.GetCustomRoomList();
     }
-    public async void Login()
+    public async void Login(string _userId, string _userPw)
     {
         //ID, PW가 빈값이면 로그인 불가
-        if (string.IsNullOrEmpty(UserIdInputField.text) && string.IsNullOrEmpty(UserPwInputField.text))
+        if (string.IsNullOrEmpty(_userId) && string.IsNullOrEmpty(_userPw))
         {
-            Debug.LogError("아이디와 PW를 모두 입력해주세요");
+            Debug.LogError("[Network]" + "아이디와 PW를 모두 입력해주세요");
             return;
         }
         // 이미 로그인 되어있는 경우
@@ -132,7 +127,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     //DataManager.instance.CreateChannel("Region");
                     DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
                     #endregion
-                    PhotonNetwork.NickName = UserNameInputField.text;
+                    PhotonNetwork.NickName = DataManager.instance.userCache.Name;
 
                     // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
                     PhotonNetwork.AutomaticallySyncScene = true;
@@ -157,15 +152,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         //CreateRoom("Room 1");
         //loadingPanel.SetActive(false);
     }
+    public bool CheckIdExist() // 중복 가입 확인
+    {
+        auth.is
+        return true;
+    }
     public void Logout()
     {
         Debug.Log("[Network] " + "로그아웃 : " + "(" + user.UserId + ")");
         auth.SignOut();
     }
-    public void Register()
+    public void Register(string _userId, string _userPw, UserData _userData)
     {
+        auth.sign
         // 제공되는 함수 : 이메일과 비밀번호로 회원가입 시켜 줌
-        auth.CreateUserWithEmailAndPasswordAsync(UserIdInputField.text, UserPwInputField.text).ContinueWith(
+        auth.CreateUserWithEmailAndPasswordAsync(_userId, _userPw).ContinueWith(
             task =>
             {
                 if (task.IsCompleted)
@@ -173,8 +174,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     user = task.Result;
                     Firebase.Auth.UserProfile profile = new Firebase.Auth.UserProfile
                     {
-                        DisplayName = UserNameInputField.text,
-                        PhotoUrl = new System.Uri("https://example.com/jane-q-user/profile.jpg"),
+                        DisplayName = _userData.Name,
+                        //PhotoUrl = _userData.Profile,
                     };
                     user.UpdateUserProfileAsync(profile).ContinueWith(task =>
                     {
@@ -208,7 +209,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     });
 
                     Debug.Log("[Network] " + UserIdInputField.text + "로 회원가입\n");
-                    DataManager.instance.AddUser(user.UserId, user.Email, user.DisplayName);
+                    DataManager.instance.AddUser(_userData);
                 }
                 else
                     Debug.Log("[Network] " + "회원가입 실패\n");
@@ -272,7 +273,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
 
             Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
-            chatManager.Connect(UserNameInputField.text);
+            chatManager.Connect(DataManager.instance.userCache.Name);
 
             SceneManager.LoadScene("PlayerControl");
             loadingPanel.SetActive(false);

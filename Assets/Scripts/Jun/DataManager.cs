@@ -41,15 +41,15 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     }
     // CRUD Operation @POST
-    public async void AddUser(string _id, string _email, string _name)
+    public async void AddUser(UserData _userData)
     {
 
         db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
         // users 콜렉션 지정
         CollectionReference usersRef = db.Collection("Users");
         // 기본적인 유저 데이터 컨테이너 생성
-        userCache = new UserData(_id, _email, _name);
-        DocumentReference docRef = db.Collection("Users").Document(_id);
+        userCache = _userData;
+        DocumentReference docRef = db.Collection("Users").Document(userCache.Id);
         Dictionary<string, object> userData = userCache.ToDictionary();
         chatCache = new Dictionary<string, List<CustomMsg>>();
 
