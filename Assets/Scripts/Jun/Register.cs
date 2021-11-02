@@ -13,7 +13,9 @@ public class Register : MonoBehaviour
     [SerializeField] TMP_Text pwCheckText;
     [SerializeField] TMP_InputField addressInput;
     [SerializeField] TMP_InputField detailedInput;
-    [SerializeField] TMP_InputField phoneNumInput;
+    [SerializeField] TMP_InputField phoneNumInput1;
+    [SerializeField] TMP_InputField phoneNumInput2;
+    [SerializeField] TMP_InputField phoneNumInput3;
     [SerializeField] string characterName;
     [SerializeField] TMP_InputField nicknameInput;
     string Sex;
@@ -37,6 +39,7 @@ public class Register : MonoBehaviour
         if (CheckPassword()) userPw = pwInput.text; else return;
         userData.Address = addressInput.text;
         userData.DetailedAddress = detailedInput.text;
+        userData.PhoneNum = CombinePhoneNum();
         userData.Nickname = nicknameInput.text;
         userData.Character = characterName;
         userData.Sex = Sex;
@@ -82,4 +85,17 @@ public class Register : MonoBehaviour
         return "";
     }
 
+    public string CombinePhoneNum()
+    {
+        if (phoneNumInput1.text != "" && phoneNumInput2.text != "" && phoneNumInput3.text != "")
+        {
+            return phoneNumInput1.text + "-" + phoneNumInput2.text + "-" + phoneNumInput3.text;
+        }
+        else
+            return "";
+    }
+
+    public void SetCharacterName(string _name){
+        characterName = _name;
+    }
 }
