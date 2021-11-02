@@ -20,7 +20,7 @@ public class UserDataHandler : MonoBehaviour
     [SerializeField] TMP_InputField nicknameInput;
     [SerializeField] TMP_InputField RegiEndNum_native;
     [SerializeField] TMP_InputField RegiEndNum_foreign;
-    //[SerializeField] Toggle pushBtn;
+    [SerializeField] Toggle pushBtn;
 
     UserData userData;
     string userId;
@@ -45,7 +45,7 @@ public class UserDataHandler : MonoBehaviour
         userData.Nickname = nicknameInput.text;
         userData.Character = characterName;
         userData.Gender = GetGender();
-        //userData.Push = pushBtn.
+        userData.Push = pushBtn.isOn;
         userData.Profile = "";
     }
     public void LoginAsync()
