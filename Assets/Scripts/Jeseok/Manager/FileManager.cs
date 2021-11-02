@@ -50,9 +50,8 @@ public class FileManager : Singleton<FileManager>
                 Application.OpenURL(www.url);
                 break;
             case RuntimePlatform.Android:
-                // Application.OpenURL("file://" + filePath);
-
-                StartCoroutine(OpenFile("content://" + filePath));
+                Debug.Log(string.Format("url : {0}", www.url));
+                StartCoroutine(OpenFile("file://" + filePath));
                 break;
         }
     }
@@ -68,67 +67,17 @@ public class FileManager : Singleton<FileManager>
 
         if (www.error != null)
         {
-            print(www.error);
+            Debug.Log(www.error);
         }
         else
         {
-            print(www.downloadHandler);
+            Debug.Log(www.downloadHandler);
         }
     }
 
     IEnumerator OpenFile(string filePath)
     {
         yield return null;
-        #region sample
-        //         AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
-        //         AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
-
-        //         AndroidJavaClass unity = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        //         AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject>("currentActivity");
-
-
-        //         AndroidJavaClass uriClass = new AndroidJavaClass("androidx.core.content.FileProvider");
-        //         AndroidJavaObject fileObject = new AndroidJavaObject("java.io.File", filePath);// Set Image Path Here
-        //         AndroidJavaObject stringObject = new AndroidJavaObject("java.lang.String", "com.myproject.project.share.fileprovider");// Set Image Path Here
-        //         AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("getUriForFile", currentActivity, stringObject, fileObject);
-
-        //         bool fileExist = fileObject.Call<bool>("exists");
-        //         if (fileExist)
-        //             intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
-
-        //         currentActivity.Call("startActivity", intentObject);
-        #endregion
-
-        #region sample
-        // AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        // AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-        // AndroidJavaObject unityContext = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
-
-        // AndroidJavaClass intentObj = new AndroidJavaClass("android.content.Intent");
-        // string ACTION_VIEW = intentObj.GetStatic<string>("ACTION_VIEW");
-        // int FLAG_ACTIVITY_NEW_TASK = intentObj.GetStatic<int>("FLAG_ACTIVITY_NEW_TASK");
-        // int FLAG_GRANT_READ_URI_PERMISSION = intentObj.GetStatic<int>("FLAG_GRANT_READ_URI_PERMISSION");
-
-        // AndroidJavaObject intent = new AndroidJavaObject("android.content.Intent", ACTION_VIEW);
-
-        // AndroidJavaObject fileObj = new AndroidJavaObject("java.io.File", filePath);
-        // AndroidJavaClass fileProvider = new AndroidJavaClass("androidx.core.content.FileProvider");
-
-        // string packageName = unityContext.Call<string>("getPackageName");
-        // string authority = packageName + ".fileprovider";
-
-        // AndroidJavaObject uri = fileProvider.CallStatic<AndroidJavaObject>("FileProvider.getUriForFile", unityContext, authority, fileObj);
-
-        // intent.Call<AndroidJavaObject>("setDataAndType", uri,
-        // "application/vnd.android.package-archive");
-        // intent.Call<AndroidJavaObject>("addFlags", FLAG_ACTIVITY_NEW_TASK);
-        // intent.Call<AndroidJavaObject>("setClassName",
-        // "com.android.packageinstaller",
-        // "com.android.packageinstaller.PackageInstallerActivity");
-
-        // intent.Call<AndroidJavaObject>("addFlags", FLAG_GRANT_READ_URI_PERMISSION);
-        #endregion
-
 
         logText.text = "";
 
@@ -136,42 +85,39 @@ public class FileManager : Singleton<FileManager>
         AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaObject context = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
 
+        AndroidJavaClass fileClass = new AndroidJavaClass("java.io.File");
+        AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
+        // AndroidJavaClass uriClass = new AndroidJavaClass("androidx.core.content.FileProvider");
+
+        string packageName = context.Call<string>("getPackageName");
+        string authority = packageName + ".fileprovider";
+        AndroidJavaObject fileObject = new AndroidJavaObject("java.io.File", filePath);
+
+        AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("parse", filePath);
+        // AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("getUriForFile", context, authority, fileObject);
+
         AndroidJavaClass intentClass = new AndroidJavaClass("android.content.Intent");
         AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
 
         intentObject.Call<AndroidJavaObject>("setAction", intentClass.GetStatic<string>("ACTION_SEND"));
         intentObject.Call<AndroidJavaObject>("setType", "application/pdf");
         intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_TITLE"), fileName);
+        int FLAG_ACTIVITY_NEW_TASK = intentObject.GetStatic<int>("FLAG_ACTIVITY_NEW_TASK");
+        intentObject.Call<AndroidJavaObject>("addFlags", FLAG_ACTIVITY_NEW_TASK);
+        int FLAG_GRANT_READ_URI_PERMISSION = intentObject.GetStatic<int>("FLAG_GRANT_READ_URI_PERMISSION");
+        intentObject.Call<AndroidJavaObject>("addFlags", FLAG_GRANT_READ_URI_PERMISSION);
+        intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
 
-        AndroidJavaClass uriClass = new AndroidJavaClass("androidx.core.content.FileProvider");
-        AndroidJavaClass fileClass = new AndroidJavaClass("java.io.File");
 
-        string packageName = context.Call<string>("getPackageName");
-        string authority = packageName + ".fileprovider";
-        AndroidJavaObject fileObject = new AndroidJavaObject("java.io.File", filePath);
-
-        // logText.text += uriClass;
-        if (uriClass == null)
-        {
-            logText.text += "uriClass is null\n";
-        }
-        else
-        {
-            logText.text += uriClass + "\n";
-        }
-
-        AndroidJavaObject uriObject = uriClass.Call<AndroidJavaObject>("getUriForFile", context, authority, fileObject);
-
-        // bool fileExist = fileObject.Call<bool>("exists");
-        // print("GeneralShare] File exist : " + fileExist);
-        // print("GeneralShare] File path : " + uriObject.Call<string>("getPath"));
-
+        // bool fileExist = uriObject.Call<bool>("exists");
+        // Debug.Log("[GeneralShare] File exist : " + fileExist);
+        // Debug.Log("[GeneralShare] File path : " + uriObject.Call<string>("getPath"));
         // if (fileExist == true)
         // {
         //     intentObject.Call<AndroidJavaObject>("putExtra", intentClass.GetStatic<string>("EXTRA_STREAM"), uriObject);
         // }
-
-        // AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, null);
-        // currentActivity.Call("startActivity", jChooser);
+        Debug.Log(string.Format("[IntentObject] intent : {0}", intentObject));
+        AndroidJavaObject jChooser = intentClass.CallStatic<AndroidJavaObject>("createChooser", intentObject, fileName);
+        currentActivity.Call("startActivity", jChooser);
     }
 }
