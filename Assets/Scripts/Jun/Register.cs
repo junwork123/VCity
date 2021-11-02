@@ -6,20 +6,17 @@ using TMPro;
 
 public class Register : MonoBehaviour
 {
-    [SerializeField]
-    TMP_InputField nameInput;
-    [SerializeField]
-    TMP_InputField idInput;
-    [SerializeField]
-    TMP_InputField pwInput;
-    [SerializeField]
-    TMP_InputField doublecheck;
-    [SerializeField]
-    TMP_Text pwCheckText;
-    [SerializeField]
-    TMP_InputField addressInput;
-    [SerializeField]
-    TMP_InputField detailedInput;
+    [SerializeField] TMP_InputField nameInput;
+    [SerializeField] TMP_InputField idInput;
+    [SerializeField] TMP_InputField pwInput;
+    [SerializeField] TMP_InputField pwCheck;
+    [SerializeField] TMP_Text pwCheckText;
+    [SerializeField] TMP_InputField addressInput;
+    [SerializeField] TMP_InputField detailedInput;
+    [SerializeField] TMP_InputField phoneNumInput;
+    [SerializeField] string characterName;
+    [SerializeField] TMP_InputField nicknameInput;
+    string Sex;
 
     UserData userData;
     string userId;
@@ -40,8 +37,12 @@ public class Register : MonoBehaviour
         if (CheckPassword()) userPw = pwInput.text; else return;
         userData.Address = addressInput.text;
         userData.DetailedAddress = detailedInput.text;
+        userData.Nickname = nicknameInput.text;
+        userData.Character = characterName;
+        userData.Sex = Sex;
         userData.Profile = "";
 
+        // TODO : 성공하면 바로 씬으로 진입하기
         NetworkManager.instance.Register(userId, userPw, userData);
     }
     public bool CheckName() // 한글인지 확인
@@ -63,7 +64,7 @@ public class Register : MonoBehaviour
     }
     public bool CheckPassword()
     {
-        if (pwInput.text == doublecheck.text)
+        if (pwInput.text == pwCheck.text)
         {
             Debug.Log("[Register] : " + "비밀번호가 일치합니다.");
             pwCheckText.alpha = 0;

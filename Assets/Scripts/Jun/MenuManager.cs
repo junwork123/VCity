@@ -5,12 +5,14 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
-    Stack<Menu> menuStack;
+    [SerializeField] Stack<Menu> menuStack;
     [SerializeField] Menu[] menus;
+    [SerializeField] GameObject mainPanel;
     private void Awake()
     {
         Instance = this;
         menuStack = new Stack<Menu>();
+        CloseAllMenus();
     }
 
     public void OpenMenu(string menuName)
@@ -48,16 +50,28 @@ public class MenuManager : MonoBehaviour
         {
             Debug.Log("[Menu] : " + "가장 위에 열린 메뉴가 아닙니다");
         }
-
+    }
+    public void CloseAllMenus()
+    {
+        mainPanel.SetActive(false);
+        for (int i = 0; i < menus.Length; i++)
+        {
+            menus[i].gameObject.SetActive(false);
+        }
+        menuStack.Clear();
     }
     private void Update()
     {
         //안드로이드인 경우
         if (Application.platform == RuntimePlatform.Android)
         {
-            if (Input.GetKey(KeyCode.Escape)) //뒤로가기 키 입력
+            if (Input.GetKeyDown(KeyCode.Escape)) //뒤로가기 키 입력
             {
-                CloseMenu(menuStack.Peek());
+                if (menuStack.Count > 0)
+                {
+                    CloseMenu(menuStack.Peek());
+                    if (menuStack.Count == 0) mainPanel.SetActive(false);
+                }
                 //처리할 내용
             }
 
