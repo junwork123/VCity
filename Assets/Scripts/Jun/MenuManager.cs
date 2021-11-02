@@ -34,9 +34,17 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(Menu menu)
     {
-        menu.Open();
-        menuStack.Push(menu);
-        return;
+        if (menuStack != null)
+        {
+            menu.Open();
+            menuStack.Push(menu);
+            return;
+        }
+        else
+        {
+            Debug.Log("[Menu] : " + "입력되지 않은 양식이 있습니다.");
+        }
+
     }
 
     public void CloseMenu(Menu menu)

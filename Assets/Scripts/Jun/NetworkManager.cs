@@ -127,7 +127,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     //DataManager.instance.CreateChannel("Region");
                     DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
                     #endregion
-                    PhotonNetwork.NickName = DataManager.instance.userCache.Name;
+                    PhotonNetwork.NickName = DataManager.instance.userCache.Nickname;
 
                     // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
                     PhotonNetwork.AutomaticallySyncScene = true;
@@ -209,6 +209,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     Debug.Log("[Network] " + _userId + "로 회원가입\n");
                     DataManager.instance.AddUser(_userData);
+                    Login(_userId, _userPw);
                 }
                 else
                     Debug.Log("[Network] " + "회원가입 실패\n");
