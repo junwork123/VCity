@@ -43,10 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910ca3cd24e25a64f93c7c385ea8651c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UserIdInputField: {fileID: 0}
-  UserPwInputField: {fileID: 0}
-  UserNameInputField: {fileID: 0}
-  roomNameInputField: {fileID: 0}
   roomListContent: {fileID: 0}
   roomListItemPrefab: {fileID: 998110447359786807, guid: 0be71690483151c418ddc8b8ed17f2bb, type: 3}
   loadingPanel: {fileID: 0}

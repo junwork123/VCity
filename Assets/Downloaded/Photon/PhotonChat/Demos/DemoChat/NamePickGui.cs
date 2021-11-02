@@ -12,7 +12,6 @@ using TMPro;
 
 namespace Photon.Chat
 {
-    [RequireComponent(typeof(ChatManager))]
     public class NamePickGui : MonoBehaviour
     {
 

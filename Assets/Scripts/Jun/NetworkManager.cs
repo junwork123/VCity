@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
+using System.Threading.Tasks;
 
 // 1. Firebase에 접속, 아이디를 확인하고, 데이터 매니저(DB)가 값을 불러올 수 있게 함.
 // 2. Photon 서버에 접속하고 서로 연결할 수 있도록 함.
@@ -162,9 +163,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         Debug.Log("[Network] " + "로그아웃 : " + "(" + user.UserId + ")");
         auth.SignOut();
     }
-    public void Register(string _userId, string _userPw, UserData _userData)
+    public IEnumerator Register(string _userId, string _userPw, UserData _userData)
     {
         // 제공되는 함수 : 이메일과 비밀번호로 회원가입 시켜 줌
+        Task task =
         auth.CreateUserWithEmailAndPasswordAsync(_userId, _userPw).ContinueWith(
             task =>
             {
@@ -206,14 +208,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                         Debug.Log("[Network] " + "User profile updated successfully.");
                     });
-
                     Debug.Log("[Network] " + _userId + "로 회원가입\n");
-                    DataManager.instance.AddUser(_userData);
-                    Login(_userId, _userPw);
+
                 }
                 else
                     Debug.Log("[Network] " + "회원가입 실패\n");
             });
+        yield return new WaitUntil(() => task.GetAwaiter().IsCompleted);
+        DataManager.instance.AddUser(user.UserId, _userData);
     }
     public FirebaseUser GetCurrentUser()
     {

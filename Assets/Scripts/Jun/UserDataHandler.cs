@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class Register : MonoBehaviour
+public class UserDataHandler : MonoBehaviour
 {
     [SerializeField] TMP_InputField nameInput;
     [SerializeField] TMP_InputField idInput;
@@ -18,13 +18,15 @@ public class Register : MonoBehaviour
     [SerializeField] TMP_InputField phoneNumInput3;
     [SerializeField] string characterName;
     [SerializeField] TMP_InputField nicknameInput;
-    string Sex;
+    [SerializeField] TMP_InputField RegiEndNum_native;
+    [SerializeField] TMP_InputField RegiEndNum_foreign;
+    //[SerializeField] Toggle pushBtn;
 
     UserData userData;
     string userId;
     string userPw;
 
-    public void SetUserData()
+    void SetUserData()
     {
         userData = new UserData();
         if (CheckName()) userData.Name = nameInput.text; else return;
@@ -42,12 +44,52 @@ public class Register : MonoBehaviour
         userData.PhoneNum = CombinePhoneNum();
         userData.Nickname = nicknameInput.text;
         userData.Character = characterName;
-        userData.Sex = Sex;
+        userData.Gender = GetGender();
+        //userData.Push = pushBtn.
         userData.Profile = "";
-
-        // TODO : 성공하면 바로 씬으로 진입하기
-        NetworkManager.instance.Register(userId, userPw, userData);
     }
+    public void LoginAsync()
+    {
+        // 3. 회원 가입이 성공했다면 로그인을 한다.
+        StartCoroutine(RegisterAsync());
+        NetworkManager.instance.Login(userId, userPw);
+    }
+    IEnumerator RegisterAsync()
+    {
+        // 1. 가입할 유저 정보를 확정한다.
+        SetUserData();
+
+        // 2. 회원 가입이 성공할 때까지 기다린다.
+        yield return StartCoroutine(NetworkManager.instance.Register(userId, userPw, userData));
+
+    }
+    string CombinePhoneNum()
+    {
+        if (phoneNumInput1.text != "" && phoneNumInput2.text != "" && phoneNumInput3.text != "")
+        {
+            return phoneNumInput1.text + "-" + phoneNumInput2.text + "-" + phoneNumInput3.text;
+        }
+        else
+            return "";
+    }
+    string GetGender()
+    {
+        int genderNum;
+        string str = "";
+        if (RegiEndNum_native != null && RegiEndNum_native.text != "")
+            str = RegiEndNum_native.text[0].ToString();
+        else if (RegiEndNum_foreign != null && RegiEndNum_foreign.text != "")
+            str = RegiEndNum_foreign.text[0].ToString();
+
+        if (int.TryParse(RegiEndNum_native.text[0].ToString(), out genderNum))
+        {
+            if (genderNum % 2 == 0) return "female";
+            else return "male";
+        }
+        return "ParseError";
+    }
+
+
     public bool CheckName() // 한글인지 확인
     {
         foreach (char c in nameInput.text.ToCharArray())
@@ -80,22 +122,13 @@ public class Register : MonoBehaviour
             return false;
         }
     }
+
     public string FindAddress() // 주소검색
     {
         return "";
     }
-
-    public string CombinePhoneNum()
+    public void SetCharacterName(string _name)
     {
-        if (phoneNumInput1.text != "" && phoneNumInput2.text != "" && phoneNumInput3.text != "")
-        {
-            return phoneNumInput1.text + "-" + phoneNumInput2.text + "-" + phoneNumInput3.text;
-        }
-        else
-            return "";
-    }
-
-    public void SetCharacterName(string _name){
         characterName = _name;
     }
 }

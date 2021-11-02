@@ -34,6 +34,9 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(Menu menu)
     {
+        if (mainPanel.activeSelf == false)
+            mainPanel.SetActive(true);
+
         if (menuStack != null)
         {
             menu.Open();

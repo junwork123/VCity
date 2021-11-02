@@ -5,6 +5,7 @@ using Firebase.Firestore;
 [FirestoreData]
 public class UserData
 {
+    [FirestoreProperty] public string UID { get; set; }
     [FirestoreProperty] public string Name { get; set; }
     [FirestoreProperty] public string Id { get; set; }
     [FirestoreProperty] public string Nickname { get; set; }
@@ -12,7 +13,7 @@ public class UserData
     [FirestoreProperty] public string DetailedAddress { get; set; }
     [FirestoreProperty] public string PhoneNum { get; set; }
     [FirestoreProperty] public bool Push { get; set; }
-    [FirestoreProperty] public string Sex { get; set; }
+    [FirestoreProperty] public string Gender { get; set; }
     [FirestoreProperty] public string Character { get; set; }
     [FirestoreProperty] public string Profile { get; set; }
 
@@ -24,6 +25,7 @@ public class UserData
 
     public UserData()
     {
+        UID = "0000";
         Name = "Name";
         Id = null;
         Nickname = "Nickname";
@@ -31,7 +33,7 @@ public class UserData
         DetailedAddress = "DetailedAddress";
         PhoneNum = "010-0000-0000";
         Push = false;
-        Sex = "male";
+        Gender = "male";
         Character = "John Doe";
         Profile = null;
         Friends = new List<string>();
@@ -41,15 +43,17 @@ public class UserData
     public Dictionary<string, object> ToDictionary()
     {
         Dictionary<string, object> result = new Dictionary<string, object>();
+
+        result["UID"] = UID;
         result["Name"] = Name;
         result["Id"] = Id;
-        result["Nickname"] = Id;
+        result["Nickname"] = Nickname;
         result["Address"] = Address;
         result["DetailedAddress"] = DetailedAddress;
-        result["PhoneNum"] = Profile;
-        result["Push"] = Profile;
-        result["Sex"] = Profile;
-        result["Character"] = Profile;
+        result["PhoneNum"] = PhoneNum;
+        result["Push"] = Push;
+        result["Gender"] = Gender;
+        result["Character"] = Character;
         result["Profile"] = Profile;
         result["Friends"] = Friends;
         result["MyChannels"] = MyChannels;
