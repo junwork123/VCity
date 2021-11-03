@@ -34,7 +34,7 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(Menu menu)
     {
-        if (mainPanel.activeSelf == false)
+        if (menuStack.Count == 0 && mainPanel.activeSelf == false)
             mainPanel.SetActive(true);
 
         if (menuStack != null)
@@ -59,6 +59,10 @@ public class MenuManager : MonoBehaviour
         else
         {
             Debug.Log("[Menu] : " + "가장 위에 열린 메뉴가 아닙니다");
+        }
+        if (menuStack.Count == 0)
+        {
+            mainPanel.gameObject.SetActive(false);
         }
     }
     public void CloseAllMenus()
