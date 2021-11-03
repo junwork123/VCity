@@ -34,8 +34,8 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(Menu menu)
     {
-        if (menuStack.Count == 0 && mainPanel.activeSelf == false)
-            mainPanel.SetActive(true);
+        // if (menuStack.Count == 0 && mainPanel.activeSelf == false && gameObject.activeSelf == true)
+        //     mainPanel.SetActive(true);
 
         if (menuStack != null)
         {

@@ -29,10 +29,10 @@ namespace Photon.Chat
             ChatManager handler = FindObjectOfType<ChatManager>();
             handler.ShowChannel(this.Channel);
 
-            PanelSelector ps = FindObjectOfType<PanelSelector>();
-            ps.CloseChatMenu(ChatMenu.ChannelBar);
-            ps.OpenChatMenu((int)ChatMenu.ChatOutput);
-            ps.OpenChatMenu((int)ChatMenu.InputBar);
+            // PanelSelector ps = FindObjectOfType<PanelSelector>();
+            // ps.CloseChatMenu(ChatMenu.ChannelBar);
+            // ps.OpenChatMenu((int)ChatMenu.ChatOutput);
+            // ps.OpenChatMenu((int)ChatMenu.InputBar);
         }
     }
 }
