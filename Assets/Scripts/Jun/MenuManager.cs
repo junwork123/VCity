@@ -47,7 +47,6 @@ public class MenuManager : MonoBehaviour
         {
             Debug.Log("[Menu] : " + "입력되지 않은 양식이 있습니다.");
         }
-
     }
 
     public void CloseMenu(Menu menu)
