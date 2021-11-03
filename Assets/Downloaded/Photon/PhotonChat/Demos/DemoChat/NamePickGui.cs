@@ -12,17 +12,14 @@ using TMPro;
 
 namespace Photon.Chat
 {
-    [RequireComponent(typeof(ChatManager))]
     public class NamePickGui : MonoBehaviour
     {
 
         string UserIdPref = "junwork123@gmail.com";
         string UserPwPref = "wnswns95";
-        string UserNamePref = "jun";
 
         public TMP_InputField idInput;
         public TMP_InputField pwInput;
-        public TMP_InputField nameInput;
 
 
         public void Start()
@@ -30,16 +27,13 @@ namespace Photon.Chat
 #if UNITY_EDITOR
             UserIdPref = "junwork123@gmail.com";
             UserPwPref = "wnswns95";
-            UserNamePref = "jun";
 #else
         UserIdPref = "sposent7@naver.com";
         UserPwPref = "wnswns95";
-        UserNamePref = "com";
 #endif
 
             this.idInput.text = UserIdPref;
             this.pwInput.text = UserPwPref;
-            this.nameInput.text = UserNamePref;
         }
 
 
@@ -49,7 +43,6 @@ namespace Photon.Chat
             this.enabled = false;
             PlayerPrefs.SetString(UserIdPref, idInput.text);
             PlayerPrefs.SetString(UserPwPref, pwInput.text);
-            PlayerPrefs.SetString(UserNamePref, nameInput.text);
         }
 
     }

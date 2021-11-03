@@ -1,5 +1,6 @@
 using System.Text;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
@@ -41,31 +42,33 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     }
     // CRUD Operation @POST
-    public async void AddUser(string _id, string _email, string _name)
+    public async void AddUser(string _UID, UserData _userData)
     {
 
         db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
         // users 콜렉션 지정
         CollectionReference usersRef = db.Collection("Users");
+        // UID와 유저 정보를 연결한 뒤,
         // 기본적인 유저 데이터 컨테이너 생성
-        userCache = new UserData(_id, _email, _name);
-        DocumentReference docRef = db.Collection("Users").Document(_id);
+        _userData.UID = _UID;
+        userCache = _userData;
+        DocumentReference docRef = db.Collection("Users").Document(userCache.UID);
         Dictionary<string, object> userData = userCache.ToDictionary();
         chatCache = new Dictionary<string, List<CustomMsg>>();
 
         await docRef.SetAsync(userData).ContinueWithOnMainThread(task =>
         {
-            Debug.Log("[Database] " + "사용자 정보를 새로 생성했습니다. : " + userCache.Email);
+            Debug.Log("[Database] " + "사용자 정보를 새로 생성했습니다. : " + userCache.UID);
         });
 
     }
     // CRUD Operation about 'users' collection @GET
-    public Task<UserData> GetUser(string _id)
+    public IEnumerator GetUser(string _id)
     {
         db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
         Debug.Log("[Database] " + "사용자 정보 불러오기 시작");
         DocumentReference document = db.Collection("Users").Document(_id);
-        document.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        Task task = document.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             DocumentSnapshot snapshot = task.Result;
             if (snapshot.Exists)
@@ -73,16 +76,15 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 Debug.Log("[Database] " + "등록된 사용자 정보가 있습니다.");
                 userCache = snapshot.ConvertTo<UserData>();
                 chatCache = new Dictionary<string, List<CustomMsg>>();
-                Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + userCache.Email);
+                Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + userCache.UID);
             }
             else
             {
                 // 유저 신규 생성 및 Region 채널을 구독 추가
                 Debug.Log("[Database] " + "사용자 정보 불러오기 실패");
             }
-            return userCache;
         });
-        return null;
+        yield return new WaitUntil(() => task.GetAwaiter().IsCompleted);
     }
     public UserData GetCurrentUser()
     {
@@ -95,7 +97,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         {
             Debug.Log("[Database] " + "사용자 정보 업데이트 요청 시작");
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
-            DocumentReference userRef = db.Collection("Users").Document(userCache.Id);
+            DocumentReference userRef = db.Collection("Users").Document(userCache.UID);
             Dictionary<string, object> userData = userCache.ToDictionary();
             await userRef.SetAsync(userData).ContinueWithOnMainThread(task =>
             {
@@ -187,8 +189,8 @@ public class DataManager : MonoBehaviour, IChatClientListener
                     userCache.MyChannels[channel.Id] = "방 이름";
 
                     // 채널 정보에 현재 유저 추가
-                    if (!channel.Members.Contains(userCache.Id))
-                        channel.Members.Add(userCache.Id);
+                    if (!channel.Members.Contains(userCache.UID))
+                        channel.Members.Add(userCache.UID);
 
                     // 유저 정보 갱신, 전체 채널 정보 갱신
                     UpdateUser();

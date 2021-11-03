@@ -166,12 +166,20 @@ namespace Photon.Chat
         {
             // 현재 메시지 갯수와 Firestore의 메시지 갯수가 같다면
             // 갱신할 것이 없으므로 종료한다.
-            List<CustomMsg> msgs = DataManager.instance.chatCache[_channelId];
-            msgs.Sort((a, b) => a.Time.CompareTo(b.Time));
-            if (msgs == null && CurrentChannelText.transform.childCount == msgs.Count)
+            List<CustomMsg> msgs;
+            if (DataManager.instance.chatCache.TryGetValue(_channelId, out msgs))
             {
-                return;
+                msgs.Sort((a, b) => a.Time.CompareTo(b.Time));
+                if (msgs == null && CurrentChannelText.transform.childCount == msgs.Count)
+                {
+                    return;
+                }
             }
+            else
+            {
+                msgs = new List<CustomMsg>();
+            }
+
 
             // 이미 메시지가 있는 상태에서
             // 현재 채널과 다른 채널이라면 메시지 내역을 비운다
@@ -197,9 +205,6 @@ namespace Photon.Chat
             {
 
             }
-
-            
-
             // foreach (var msg in msgs.OrderBy(x => x.Time))
             // {
             //     childList[i];
@@ -484,7 +489,7 @@ namespace Photon.Chat
                 this.FriendListUiItemtoInstantiate.SetActive(false);
             }
 
-            
+
             this.chatClient.SetOnlineStatus(ChatUserStatus.Online); // You can set your online state (without a mesage).
         }
 
@@ -638,7 +643,7 @@ namespace Photon.Chat
             // update text
             Debug.Log("[Chat] : " + messages.ToString());
             this.ShowChannel(this.selectedChannelId);
-            
+
             //throw new System.NotImplementedException();
         }
 
