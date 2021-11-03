@@ -123,12 +123,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
-                    DataManager.instance.GetUser(user.UserId);
-                    #region @Test용
-                    //DataManager.instance.CreateChannel("Region");
-                    DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
-                    #endregion
-                    PhotonNetwork.NickName = DataManager.instance.userCache.Nickname;
+                    StartCoroutine(DataManager.instance.GetUser(user.UserId));
+                    // Debug.Log(DataManager.instance.userCache.Nickname);
+                    // #region @Test용
+                    // //DataManager.instance.CreateChannel("Region");
+                    // DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
+                    // #endregion
+                    // Debug.Log(DataManager.instance.userCache.Nickname);
+                    // PhotonNetwork.NickName = DataManager.instance.userCache.Nickname;
 
                     // 마스터 클라이언트(방장)가 구성한 씬 환경을 방에 접속한 플레이어들과 자동 동기화한다.
                     PhotonNetwork.AutomaticallySyncScene = true;

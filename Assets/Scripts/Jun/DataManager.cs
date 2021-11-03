@@ -1,5 +1,6 @@
 using System.Text;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
@@ -62,12 +63,12 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     }
     // CRUD Operation about 'users' collection @GET
-    public Task<UserData> GetUser(string _id)
+    public IEnumerator GetUser(string _id)
     {
         db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
         Debug.Log("[Database] " + "사용자 정보 불러오기 시작");
         DocumentReference document = db.Collection("Users").Document(_id);
-        document.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+        Task task = document.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             DocumentSnapshot snapshot = task.Result;
             if (snapshot.Exists)
@@ -82,9 +83,8 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 // 유저 신규 생성 및 Region 채널을 구독 추가
                 Debug.Log("[Database] " + "사용자 정보 불러오기 실패");
             }
-            return userCache;
         });
-        return null;
+        yield return new WaitUntil(() => task.GetAwaiter().IsCompleted);
     }
     public UserData GetCurrentUser()
     {

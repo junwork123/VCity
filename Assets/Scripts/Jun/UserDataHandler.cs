@@ -26,6 +26,9 @@ public class UserDataHandler : MonoBehaviour
     string userId;
     string userPw;
 
+    [SerializeField] TMP_InputField idInput2;
+    [SerializeField] TMP_InputField pwInput2;
+
     void SetUserData()
     {
         userData = new UserData();
@@ -49,6 +52,11 @@ public class UserDataHandler : MonoBehaviour
         userData.Profile = "";
     }
     public void LoginAsync()
+    {
+
+        NetworkManager.instance.Login(idInput2.text, pwInput2.text);
+    }
+    public void LoginAsyncWithRegister()
     {
         // 3. 회원 가입이 성공했다면 로그인을 한다.
         StartCoroutine(RegisterAsync());
