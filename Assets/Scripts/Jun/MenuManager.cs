@@ -15,17 +15,14 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(string menuName)
     {
+        if (menuName.Equals("")) return;
         for (int i = 0; i < menus.Length; i++)
         {
-            if (menus[i].menuName == menuName)//string을 받아서 해당이름 가진 메뉴를 여는 스크립트
+            if (menus[i].menuName.Equals(menuName))//string을 받아서 해당이름 가진 메뉴를 여는 스크립트
             {
                 OpenMenu(menus[i]);
                 menuStack.Push(menus[i]);
                 return;
-            }
-            else if (menus[i].open)
-            {
-                CloseMenu(menus[i]);
             }
         }
     }
@@ -76,7 +73,7 @@ public class MenuManager : MonoBehaviour
         }
         menuStack.Clear();
     }
-    private void Update()
+    private void FixedUpdate()
     {
         //안드로이드인 경우
         // 뒤로가기 키로 메뉴를 종료할 수 있다.

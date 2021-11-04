@@ -228,7 +228,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     public void CreateRoom(string _roomName = "")//방만들기
     {
-        if (_roomName == "")
+        if (_roomName.Equals(""))
         {
             PhotonNetwork.CreateRoom("test", new RoomOptions { MaxPlayers = (byte)maxPlayer, IsVisible = true });//포톤 네트워크기능으로 roomNameInputField.text의 이름으로 방을 만든다.
             //MenuManager.Instance.OpenMenu("loading");//로딩창 열기

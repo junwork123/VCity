@@ -118,7 +118,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         DocumentReference channelRef = db.Collection("Channels").Document();
 
         // 지역 공지 채널일 경우 Static 변수로 저장
-        if (_channelName.Equals("Region") && REGION_CHANNEL_ID == "")
+        if (_channelName.Equals("Region") && REGION_CHANNEL_ID.Equals(""))
             REGION_CHANNEL_ID = channelRef.Id;
 
         // 멤버 리스트에 ID를 추가

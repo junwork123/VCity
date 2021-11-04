@@ -5,7 +5,7 @@ using UnityEngine;
 public class InteractionButtonEvent : MonoBehaviour
 {
     public InteractionButtonClickListener[] clickListener;
-
+    public GameObject chatManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,18 +17,20 @@ public class InteractionButtonEvent : MonoBehaviour
 
     void Interaction(InteractionType interactionType)
     {
+        MenuManager menuManager = chatManager.GetComponent<MenuManager>();
         switch (interactionType)
         {
             case InteractionType.APPLY:
                 AndroidToastManager.instance.ShowToast("APPLY");
                 UIManager.instance.ShowApplyPanel();
+                menuManager.OpenMenu("SELECT_SERVICE");
                 break;
 
             case InteractionType.LOG:
                 AndroidToastManager.instance.ShowToast("LOG");
 
                 #region 메시지 호출부
-                FindObjectOfType<Photon.Chat.PanelSelector>().OpenChatMenu((int)Photon.Chat.ChatMenu.ChannelBar);
+                menuManager.OpenMenu("SHOW_MSG");
                 #endregion
 
                 break;

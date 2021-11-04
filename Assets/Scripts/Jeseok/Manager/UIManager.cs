@@ -27,9 +27,9 @@ public class UIManager : Singleton<UIManager>
 
     public void UpdatePlayerInfo()
     {
-        typeTextUI.text = GameManager.instance.playerType;
-        nameText.text = GameManager.instance.playerName;
-        nameTextUI.text = GameManager.instance.playerName;
+        typeTextUI.text = "민원신청인";
+        nameText.text = DataManager.instance.userCache.Nickname;
+        nameTextUI.text = DataManager.instance.userCache.Nickname;
     }
 
     public void AtciveActionButton()

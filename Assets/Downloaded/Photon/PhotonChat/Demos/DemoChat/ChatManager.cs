@@ -457,6 +457,7 @@ namespace Photon.Chat
 
         public void OnConnected()
         {
+            UIManager.instance.UpdatePlayerInfo();
             UpdateRooms();
             // if (this.ChannelsToJoinOnConnect != null && this.ChannelsToJoinOnConnect.Length > 0)
             // {

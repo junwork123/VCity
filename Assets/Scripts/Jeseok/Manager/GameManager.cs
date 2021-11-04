@@ -23,17 +23,9 @@ public class GameManager : Singleton<GameManager>
     public float delayToQuitApp = 2f;
 
     bool isQuitWait;
-
-    public void SetPlayerInfo()
-    {
-        UIManager.instance.UpdatePlayerInfo();
-    }
-
     protected void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
-        SetPlayerInfo();
     }
 
     void Update()
