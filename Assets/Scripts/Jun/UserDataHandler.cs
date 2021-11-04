@@ -54,13 +54,13 @@ public class UserDataHandler : MonoBehaviour
     public void LoginAsync()
     {
 
-        NetworkManager.instance.Login(idInput2.text, pwInput2.text);
+        NetworkManager.Instance.Login(idInput2.text, pwInput2.text);
     }
     public void LoginAsyncWithRegister()
     {
         // 3. 회원 가입이 성공했다면 로그인을 한다.
         StartCoroutine(RegisterAsync());
-        NetworkManager.instance.Login(userId, userPw);
+        NetworkManager.Instance.Login(userId, userPw);
     }
     IEnumerator RegisterAsync()
     {
@@ -68,7 +68,7 @@ public class UserDataHandler : MonoBehaviour
         SetUserData();
 
         // 2. 회원 가입이 성공할 때까지 기다린다.
-        yield return StartCoroutine(NetworkManager.instance.Register(userId, userPw, userData));
+        yield return StartCoroutine(NetworkManager.Instance.Register(userId, userPw, userData));
 
     }
     string CombinePhoneNum()

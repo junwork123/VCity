@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 // 사용자 정보(이름, 프로필, 대화내역 등)을 불러오기, 저장하기를 수행
 public class DataManager : MonoBehaviour, IChatClientListener
 {
-    public static DataManager instance;
+    public static DataManager Instance;
     public static string REGION_CHANNEL_ID = "s1r8QUWh1cOxFm0RUGmV";
     FirebaseFirestore db;
     // 데이터 매니저는 싱글톤으로 존재
@@ -27,7 +27,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
     public static string TimeFormat = "[yyyy년 MM월 dd일 HH:mm:ss]";
     void Awake()
     {
-        if (instance == null) instance = new DataManager();
+        if (Instance == null) Instance = this;
         else Destroy(gameObject);
         DontDestroyOnLoad(this);
     }

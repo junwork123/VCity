@@ -42,6 +42,7 @@ namespace Photon.Chat
     /// </remarks>
     public class ChatManager : MonoBehaviour, IChatClientListener
     {
+        public static ChatManager Instance;
         public string[] ChannelsToJoinOnConnect; // set in inspector. Demo channels to join automatically.
 
         public string[] FriendsList;
@@ -80,6 +81,7 @@ namespace Photon.Chat
 
         public GameObject MyMsgFactory;
         public GameObject OpMsgFactory;
+
         public string lastMsgId = "";
 
         // private static string WelcomeText = "Welcome to chat. Type \\help to list commands.";
@@ -118,7 +120,9 @@ namespace Photon.Chat
 
         public void Start()
         {
-            DontDestroyOnLoad(this.gameObject);
+            if (Instance == null) Instance = this;
+            else Destroy(gameObject);
+            DontDestroyOnLoad(gameObject);
 
             this.StateText.text = "";
             this.StateText.gameObject.SetActive(false);
@@ -167,7 +171,7 @@ namespace Photon.Chat
             // 현재 메시지 갯수와 Firestore의 메시지 갯수가 같다면
             // 갱신할 것이 없으므로 종료한다.
             List<CustomMsg> msgs;
-            if (DataManager.instance.chatCache.TryGetValue(_channelId, out msgs))
+            if (DataManager.Instance.chatCache.TryGetValue(_channelId, out msgs))
             {
                 msgs.Sort((a, b) => a.Time.CompareTo(b.Time));
                 if (msgs == null && CurrentChannelText.transform.childCount == msgs.Count)
@@ -210,7 +214,7 @@ namespace Photon.Chat
             //     childList[i];
             // }
             // 채널 이름을 유저가 설정해놓은 채널 이름으로 변경
-            this.CurrentChannelName.text = DataManager.instance.userCache.MyChannels[_channelId];
+            this.CurrentChannelName.text = DataManager.Instance.userCache.MyChannels[_channelId];
             //this.CurrentChannelText.text = previousMsg;
             Debug.Log("[Chat] " + "메시지 불러오기 성공 : ");
 
@@ -333,7 +337,7 @@ namespace Photon.Chat
                 {
                     this.chatClient.Subscribe(tokens[1].Split(new char[] { ' ', ',' }));
 
-                    DataManager.instance.SubscribeChannel(tokens[1]);
+                    DataManager.Instance.SubscribeChannel(tokens[1]);
                 }
                 else if ((tokens[0].Equals("\\unsubscribe") || tokens[0].Equals("\\u")) && !string.IsNullOrEmpty(tokens[1]))
                 {
@@ -388,14 +392,14 @@ namespace Photon.Chat
                 {
                     this.chatClient.SendPrivateMessage(privateChatTarget, inputLine);
                     AppendMsg(new CustomMsg(UserName, time, inputLine));
-                    DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
+                    DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
 
                 }
                 else
                 {
                     this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
                     AppendMsg(new CustomMsg(UserName, time, inputLine));
-                    DataManager.instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
+                    DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
                 }
             }
         }
@@ -439,17 +443,17 @@ namespace Photon.Chat
         }
         public void UpdateRooms()
         {
-            UserData userCache = DataManager.instance.userCache;
+            UserData userCache = DataManager.Instance.userCache;
             if (userCache != null && userCache.MyChannels != null)
             {
                 if (userCache.MyChannels.Count == 0)
                 {
-                    DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
+                    DataManager.Instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
                 }
                 foreach (string channelId in userCache.MyChannels.Keys)
                 {
                     this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
-                    DataManager.instance.LoadAllMessages(channelId);
+                    DataManager.Instance.LoadAllMessages(channelId);
                 }
             }
             scroll.verticalNormalizedPosition = 0;
@@ -567,7 +571,7 @@ namespace Photon.Chat
             cbtn.gameObject.SetActive(true);
             cbtn.GetComponentInChildren<ChannelSelector>().SetChannel(channelId);
             cbtn.transform.SetParent(this.ChannelToggleToInstantiate.transform.parent, false);
-            cbtn.GetComponentInChildren<TMP_Text>().text = DataManager.instance.userCache.MyChannels[channelId];
+            cbtn.GetComponentInChildren<TMP_Text>().text = DataManager.Instance.userCache.MyChannels[channelId];
             this.channelToggles.Add(channelId, cbtn);
         }
 

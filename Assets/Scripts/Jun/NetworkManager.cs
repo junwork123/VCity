@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 // 2. Photon 서버에 접속하고 서로 연결할 수 있도록 함.
 public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
-    public static NetworkManager instance;
+    public static NetworkManager Instance;
     [SerializeField] Transform roomListContent;
     [SerializeField] GameObject roomListItemPrefab;
     public static int maxPlayer = 4;
@@ -29,8 +29,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     void Awake()
     {
-        instance = this;//메서드로 사용
-
+        Instance = this;
     }
     void Start()
     {
@@ -123,7 +122,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
-                    StartCoroutine(DataManager.instance.GetUser(user.UserId));
+                    StartCoroutine(DataManager.Instance.GetUser(user.UserId));
                     // Debug.Log(DataManager.instance.userCache.Nickname);
                     // #region @Test용
                     // //DataManager.instance.CreateChannel("Region");
@@ -217,7 +216,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     Debug.Log("[Network] " + "회원가입 실패\n");
             });
         yield return new WaitUntil(() => task.GetAwaiter().IsCompleted);
-        DataManager.instance.AddUser(user.UserId, _userData);
+        DataManager.Instance.AddUser(user.UserId, _userData);
     }
     public FirebaseUser GetCurrentUser()
     {
@@ -273,7 +272,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
 
             Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
-            chatManager.Connect(DataManager.instance.userCache.Name);
+            chatManager.Connect(DataManager.Instance.userCache.Name);
 
             SceneManager.LoadScene("PlayerControl");
             loadingPanel.SetActive(false);

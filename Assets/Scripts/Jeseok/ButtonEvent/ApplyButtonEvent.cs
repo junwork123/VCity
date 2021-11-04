@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Chat;
 public class ApplyButtonEvent : MonoBehaviour
 {
     public ApplyButtonClickListener[] clickListener;
-    public GameObject chatManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,9 +20,10 @@ public class ApplyButtonEvent : MonoBehaviour
         switch (applyType)
         {
             case ApplyType.ISSUANCE_RESIDENT_REGISTRATION:
+                
                 break;
             case ApplyType.ISSUANCE_CERTIFIED_RESIDENT_REGISTRATION:
-                chatManager.GetComponentInChildren<MenuManager>().OpenMenu();
+                ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("SELECT_SERVICE");
                 break;
             case ApplyType.COUNSEL:
                 break;
