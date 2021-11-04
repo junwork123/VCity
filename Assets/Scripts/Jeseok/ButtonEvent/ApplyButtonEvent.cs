@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class ApplyButtonEvent : MonoBehaviour
 {
     public ApplyButtonClickListener[] clickListener;
-
+    public GameObject chatManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +22,7 @@ public class ApplyButtonEvent : MonoBehaviour
             case ApplyType.ISSUANCE_RESIDENT_REGISTRATION:
                 break;
             case ApplyType.ISSUANCE_CERTIFIED_RESIDENT_REGISTRATION:
+                chatManager.GetComponentInChildren<MenuManager>().OpenMenu();
                 break;
             case ApplyType.COUNSEL:
                 break;

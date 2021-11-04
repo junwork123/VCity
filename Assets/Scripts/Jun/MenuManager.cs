@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
-    public static MenuManager Instance;
-    [SerializeField] Stack<Menu> menuStack;
     [SerializeField] Menu[] menus;
+    [SerializeField] Stack<Menu> menuStack;
     [SerializeField] GameObject mainPanel;
     private void Awake()
     {
-        Instance = this;
         menuStack = new Stack<Menu>();
         CloseAllMenus();
     }
@@ -32,37 +30,41 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void OpenMenu(Menu menu)
+    public void OpenMenu(Menu menu = null)
     {
-        // if (menuStack.Count == 0 && mainPanel.activeSelf == false && gameObject.activeSelf == true)
-        //     mainPanel.SetActive(true);
+        // 전달된 메뉴가 없다면
+        // 가장 첫번째 메뉴를 열기로 한다.
+        if (menu == null) menu = menus[0];
 
-        if (menuStack != null)
+        // 메뉴 스택이 Null이면 만들어준다.
+        if (menuStack == null) menuStack = new Stack<Menu>();
+
+        // 첫 번째 메뉴를 열게 된다면 먼저 메인 패널을 활성화한다.
+        if (mainPanel.activeSelf != true)
         {
-            menu.Open();
-            menuStack.Push(menu);
-            return;
+            mainPanel.SetActive(true);
+            Debug.Log("난 분명 열었다?");
         }
-        else
-        {
-            Debug.Log("[Menu] : " + "입력되지 않은 양식이 있습니다.");
-        }
+
+        // 메뉴를 열고 스택에 저장한다.
+        menu.Open();
+        menuStack.Push(menu);
     }
 
     public void CloseMenu(Menu menu)
     {
-        if (menuStack.Peek() == menu)
+        if (menuStack.Count > 0)
         {
-            menu.Close();
-            menuStack.Pop();
-        }
-        else
-        {
-            Debug.Log("[Menu] : " + "가장 위에 열린 메뉴가 아닙니다");
-        }
-        if (menuStack.Count == 0)
-        {
-            mainPanel.gameObject.SetActive(false);
+            if (menuStack.Peek() == menu)
+            {
+                menu.Close();
+                menuStack.Pop();
+            }
+            else
+                Debug.Log("[Menu] : " + "가장 위에 열린 메뉴가 아닙니다");
+
+            // 마지막 메뉴라면 메인 패널도 닫는다.
+            if (menuStack.Count == 0) mainPanel.gameObject.SetActive(false);
         }
     }
     public void CloseAllMenus()
@@ -77,18 +79,13 @@ public class MenuManager : MonoBehaviour
     private void Update()
     {
         //안드로이드인 경우
+        // 뒤로가기 키로 메뉴를 종료할 수 있다.
         if (Application.platform == RuntimePlatform.Android)
         {
             if (Input.GetKeyDown(KeyCode.Escape)) //뒤로가기 키 입력
             {
-                if (menuStack.Count > 0)
-                {
-                    CloseMenu(menuStack.Peek());
-                    if (menuStack.Count == 0) mainPanel.SetActive(false);
-                }
-                //처리할 내용
+                CloseMenu(menuStack.Peek());
             }
-
         }
     }
 }

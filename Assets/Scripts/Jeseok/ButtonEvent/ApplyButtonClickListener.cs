@@ -11,6 +11,6 @@ public class ApplyButtonClickListener : ButtonClickListener<ApplyType>
     {
         descSetter = GetComponent<ButtonDescSetter>();
 
-        descSetter.SetDesc(buttonType.ToString());
+        //descSetter.SetDesc(buttonType.ToString());
     }
 }
