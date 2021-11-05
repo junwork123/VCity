@@ -14,7 +14,7 @@ public class UserData
     [FirestoreProperty] public string PhoneNum { get; set; }
     [FirestoreProperty] public bool Push { get; set; }
     [FirestoreProperty] public string Gender { get; set; }
-    [FirestoreProperty] public string Character { get; set; }
+    [FirestoreProperty] public int Character { get; set; }
     [FirestoreProperty] public string Profile { get; set; }
 
     // <친구id, 채널명에 대한 Firestore 참조값>
@@ -34,7 +34,7 @@ public class UserData
         PhoneNum = "010-0000-0000";
         Push = false;
         Gender = "male";
-        Character = "man1";
+        Character = 1;
         Profile = null;
         Friends = new List<string>();
         MyChannels = new Dictionary<string, string>();
