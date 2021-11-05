@@ -1632,14 +1632,6 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: d0451e215c3f8384d8370d9b4795b3ba, type: 2}
-    - target: {fileID: 137032954528598422, guid: 7851e97aa32f5474f92b61e3e4988c1a, type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 137296020028581132, guid: 7851e97aa32f5474f92b61e3e4988c1a, type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7851e97aa32f5474f92b61e3e4988c1a, type: 3}
 --- !u!1 &1425818083

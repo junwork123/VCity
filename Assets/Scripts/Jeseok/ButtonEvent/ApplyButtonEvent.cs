@@ -26,6 +26,7 @@ public class ApplyButtonEvent : MonoBehaviour
                 Service.Instance.GetComponent<MenuManager>().OpenMenu("SELECT_SERVICE");
                 break;
             case ApplyType.COUNSEL:
+                Service.Instance.GetComponent<MenuManager>().OpenMenu("VIDEO_CALL");
                 break;
             case ApplyType.ETC:
                 break;
