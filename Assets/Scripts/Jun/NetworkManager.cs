@@ -270,10 +270,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
-
-            Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
-            chatManager.Connect(DataManager.Instance.userCache.Name);
-
             SceneManager.LoadScene("PlayerControl");
             loadingPanel.SetActive(false);
 

@@ -76,6 +76,10 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 Debug.Log("[Database] " + "등록된 사용자 정보가 있습니다.");
                 userCache = snapshot.ConvertTo<UserData>();
                 chatCache = new Dictionary<string, List<CustomMsg>>();
+
+                Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
+                chatManager.Connect(DataManager.Instance.userCache.Name);
+
                 Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + userCache.UID);
             }
             else
