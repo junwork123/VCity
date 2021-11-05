@@ -34,7 +34,7 @@ public class UserData
         PhoneNum = "010-0000-0000";
         Push = false;
         Gender = "male";
-        Character = "John Doe";
+        Character = "man1";
         Profile = null;
         Friends = new List<string>();
         MyChannels = new Dictionary<string, string>();
