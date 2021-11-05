@@ -23,7 +23,7 @@ public class ApplyButtonEvent : MonoBehaviour
                 
                 break;
             case ApplyType.ISSUANCE_CERTIFIED_RESIDENT_REGISTRATION:
-                ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("SELECT_SERVICE");
+                Service.Instance.GetComponent<MenuManager>().OpenMenu("SELECT_SERVICE");
                 break;
             case ApplyType.COUNSEL:
                 break;

@@ -448,6 +448,7 @@ namespace Photon.Chat
             {
                 if (userCache.MyChannels.Count == 0)
                 {
+                    Debug.Log("[Chat] : " + "기본 채널 구독 요청");
                     DataManager.Instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
                 }
                 foreach (string channelId in userCache.MyChannels.Keys)
@@ -456,6 +457,8 @@ namespace Photon.Chat
                     DataManager.Instance.LoadAllMessages(channelId);
                 }
             }
+            else
+                Debug.Log("[Chat] : " + "방 목록 생성에 실패했습니다.");
             scroll.verticalNormalizedPosition = 0;
         }
 
