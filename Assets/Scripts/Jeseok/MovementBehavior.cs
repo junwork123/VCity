@@ -30,19 +30,28 @@ public class MovementBehavior : MonoBehaviour
 #endif
     }
 
+#if CharacterCollider
+    private void Update()
+    {
+        if (isMove == false)
+            return;
+
+        characterController.Move(velocity * Time.deltaTime);
+        velocity = Vector3.zero;
+
+        lookDir = Quaternion.Euler(lookVector * rotateSpeed * Time.fixedDeltaTime);
+        transform.rotation *= lookDir;
+        lookVector = Vector3.zero;
+    }
+#endif
+
+
+#if Rigidbody
     private void FixedUpdate()
     {
         if (isMove == false)
             return;
-#if CharacterCollider
-        characterController.Move(transform.position + velocity * Time.deltaTime);
-        velocity = Vector3.zero;
-
-        lookDir = Quaternion.Euler(lookVector * rotateSpeed * Time.fixedDeltaTime);
-        // rigidbody.MoveRotation(rigidbody.rotation * lookDir);
-        lookVector = Vector3.zero;
-
-#else
+            
         rigidbody.MovePosition(rigidbody.position + velocity * Time.deltaTime);
         velocity = Vector3.zero;
 
@@ -51,9 +60,9 @@ public class MovementBehavior : MonoBehaviour
         lookVector = Vector3.zero;
 
         isMove = false;
+    }
 #endif
 
-    }
 
     public void Move(Vector3 dir)
     {

@@ -48,7 +48,7 @@ public class Interactionable : MonoBehaviour, IInteraction
         if (other.tag == "Player")
         {
             enable = true;
-            player = other.attachedRigidbody.gameObject;
+            player = other.gameObject;
 
             ShowInter();
 

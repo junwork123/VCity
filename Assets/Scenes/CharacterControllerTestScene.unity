@@ -667,7 +667,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205829970}
-  m_LocalRotation: {x: 0.07088902, y: -0.0000000042907735, z: 3.0493588e-10, w: 0.9974842}
+  m_LocalRotation: {x: 0.070889026, y: 0.000000004290773, z: -3.0493588e-10, w: 0.9974842}
   m_LocalPosition: {x: 0, y: 4.5, z: -10.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1110,7 +1110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361733491}
-  m_LocalRotation: {x: 0.07088902, y: -0.0000000042907735, z: 3.0493588e-10, w: 0.9974842}
+  m_LocalRotation: {x: 0.070889026, y: 0.000000004290773, z: -3.0493588e-10, w: 0.9974842}
   m_LocalPosition: {x: 0, y: 4.5, z: -10.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1491,9 +1491,9 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &775232927
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5465,6 +5465,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 744301285}
     m_Modifications:
+    - target: {fileID: 5117459593023418015, guid: 81acbb580a3d0484a94be0be7773ef03, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6134336224747922583, guid: 81acbb580a3d0484a94be0be7773ef03, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -5513,5 +5517,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerBody
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5117459593023418015, guid: 81acbb580a3d0484a94be0be7773ef03, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 81acbb580a3d0484a94be0be7773ef03, type: 3}
