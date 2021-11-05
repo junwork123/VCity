@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private MovementBehavior movementBehavior;
+    public Animator animator;
+    Rigidbody rigidbody;
 
     public KeyCode interactionKey = KeyCode.X;
 
@@ -13,6 +15,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         movementBehavior = GetComponent<MovementBehavior>();
+        rigidbody = GetComponent<Rigidbody>();
 
         GameManager.instance.SetInteractionKey(interactionKey);
     }
@@ -24,12 +27,7 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector3 moveVector = new Vector3(h, 0, v);
-
-        bool isMove = moveVector.magnitude != 0;
-        if (isMove == true)
-        {
-            Move(moveVector);
-        }
+        Move(moveVector);
 
         bool isAction = Input.GetKeyDown(interactionKey);
         if (isAction == true)
@@ -40,8 +38,17 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector3 moveVector)
     {
+        bool isMove = moveVector.magnitude != 0;
+
+        animator.SetBool("isMove", isMove);
+
+        if (isMove == false)
+            return;
+
+
         // movementBehavior.Move(moveVector);
         movementBehavior.MoveFPS(moveVector);
+
     }
 
     public void Interaction()
