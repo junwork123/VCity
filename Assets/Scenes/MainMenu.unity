@@ -988,8 +988,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1213201653}
         m_TargetAssemblyTypeName: UserDataHandler, Assembly-CSharp
-        m_MethodName: SetCharacterName
-        m_Mode: 5
+        m_MethodName: SetCharacterNum
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -13479,12 +13479,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1213201653}
         m_TargetAssemblyTypeName: UserDataHandler, Assembly-CSharp
-        m_MethodName: SetCharacterName
-        m_Mode: 5
+        m_MethodName: SetCharacterNum
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: man4
           m_BoolArgument: 0
@@ -15965,12 +15965,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1213201653}
         m_TargetAssemblyTypeName: UserDataHandler, Assembly-CSharp
-        m_MethodName: SetCharacterName
-        m_Mode: 5
+        m_MethodName: SetCharacterNum
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: man2
           m_BoolArgument: 0
@@ -18090,7 +18090,7 @@ MonoBehaviour:
   phoneNumInput1: {fileID: 734152467}
   phoneNumInput2: {fileID: 436974768}
   phoneNumInput3: {fileID: 1307104302}
-  characterName: 
+  characterNum: 0
   nicknameInput: {fileID: 78057895}
   RegiEndNum_native: {fileID: 2050381812}
   RegiEndNum_foreign: {fileID: 1701029709}
@@ -20101,12 +20101,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1213201653}
         m_TargetAssemblyTypeName: UserDataHandler, Assembly-CSharp
-        m_MethodName: SetCharacterName
-        m_Mode: 5
+        m_MethodName: SetCharacterNum
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: man3
           m_BoolArgument: 0
@@ -33206,7 +33206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2112422095
 RectTransform:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class UserDataHandler : MonoBehaviour
     [SerializeField] TMP_InputField phoneNumInput1;
     [SerializeField] TMP_InputField phoneNumInput2;
     [SerializeField] TMP_InputField phoneNumInput3;
-    [SerializeField] int characterName;
+    [SerializeField] int characterNum;
     [SerializeField] TMP_InputField nicknameInput;
     [SerializeField] TMP_InputField RegiEndNum_native;
     [SerializeField] TMP_InputField RegiEndNum_foreign;
@@ -46,7 +46,7 @@ public class UserDataHandler : MonoBehaviour
         userData.DetailedAddress = detailedInput.text;
         userData.PhoneNum = CombinePhoneNum();
         userData.Nickname = nicknameInput.text;
-        userData.Character = characterName;
+        userData.Character = characterNum;
         userData.Gender = GetGender();
         userData.Push = pushBtn.isOn;
         userData.Profile = "";
@@ -135,8 +135,8 @@ public class UserDataHandler : MonoBehaviour
     {
         return "";
     }
-    public void SetCharacterName(int _characterNum)
+    public void SetCharacterNum(int _characterNum)
     {
-        characterName = _characterNum;
+        characterNum = _characterNum;
     }
 }
