@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
         if (isMove == false)
             return;
 
-
         // movementBehavior.Move(moveVector);
         movementBehavior.MoveFPS(moveVector);
 
