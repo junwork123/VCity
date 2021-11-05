@@ -190,7 +190,7 @@ namespace Photon.Chat
             Transform[] childList = CurrentChannelText.GetComponentsInChildren<RectTransform>(true);
             if (childList != null && _channelId != selectedChannelId)
             {
-                for (int i = 1; i < childList.Length; i++)
+                for (int i = 2; i < childList.Length; i++)
                 {
                     if (childList[i] != transform)
                         Destroy(childList[i].gameObject);
@@ -569,9 +569,11 @@ namespace Photon.Chat
 
             Toggle cbtn = (Toggle)Instantiate(this.ChannelToggleToInstantiate);
             cbtn.gameObject.SetActive(true);
-            cbtn.GetComponentInChildren<ChannelSelector>().SetChannel(channelId);
+            ChannelSelector cs = cbtn.GetComponentInChildren<ChannelSelector>();
+            cs.SetChannel(channelId);
+            cs.setRoomName(DataManager.Instance.userCache.MyChannels[channelId]);
+            cs.setDate(DateTime.Now.ToString(("yyyy년 MM월 dd일"))); // TODO : 채팅방 최근 메시지 시간 가져오기
             cbtn.transform.SetParent(this.ChannelToggleToInstantiate.transform.parent, false);
-            cbtn.GetComponentInChildren<TMP_Text>().text = DataManager.Instance.userCache.MyChannels[channelId];
             this.channelToggles.Add(channelId, cbtn);
         }
 

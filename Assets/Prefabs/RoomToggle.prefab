@@ -237,6 +237,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Channel: 
+  date: {fileID: 6740116344349666759}
+  roomName: {fileID: 2142125488647046701}
 --- !u!114 &3572412964716301516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,7 +405,7 @@ GameObject:
   - component: {fileID: 2142125488647046701}
   - component: {fileID: 7129219152919588610}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: RoomName (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

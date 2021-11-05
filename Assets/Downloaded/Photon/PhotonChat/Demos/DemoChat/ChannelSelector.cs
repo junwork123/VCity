@@ -16,12 +16,23 @@ namespace Photon.Chat
     public class ChannelSelector : MonoBehaviour, IPointerClickHandler
     {
         public string Channel;
+        [SerializeField]
+        public TMP_Text date;
+        public TMP_Text roomName;
 
         public void SetChannel(string channel)
         {
             this.Channel = channel;
             TMP_Text t = this.GetComponentInChildren<TMP_Text>();
             t.text = this.Channel;
+        }
+        public void setRoomName(string roomName)
+        {
+            this.roomName.text = roomName;
+        }
+        public void setDate(string date)
+        {
+            this.date.text = date;
         }
 
         public void OnPointerClick(PointerEventData eventData)
