@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
         if (isMove == false)
             return;
 
-
         // movementBehavior.Move(moveVector);
         movementBehavior.MoveFPS(moveVector);
 
@@ -55,28 +54,4 @@ public class PlayerController : MonoBehaviour
     {
         UIButtonEventManager.instance.OnClickAction();
     }
-
-    #region DEBUG
-    private void OnGUI()
-    {
-        Event e = Event.current;
-        if (e.isKey)
-        {
-            print(e);
-        }
-        switch (e.keyCode)
-        {
-            case KeyCode.Alpha1:
-                break;
-            case KeyCode.Alpha2:
-                break;
-            case KeyCode.Alpha3:
-                break;
-            case KeyCode.Alpha4:
-                break;
-            case KeyCode.Alpha5:
-                break;
-        }
-    }
-    #endregion
 }

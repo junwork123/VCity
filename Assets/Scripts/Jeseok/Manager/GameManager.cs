@@ -11,6 +11,8 @@ public class GameManager : Singleton<GameManager>
 
     [Header("Player")]
     public GameObject player;
+    Transform playerBody;
+    PlayerModelType playerModelIndex;
     public GameObject joystickRange;
     public string playerType;
     public string playerName;
@@ -23,9 +25,13 @@ public class GameManager : Singleton<GameManager>
     public float delayToQuitApp = 2f;
 
     bool isQuitWait;
+
+
     protected void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
+        playerBody = player.transform.Find("PlayerBody");
     }
 
     void Update()
@@ -49,6 +55,15 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
+
+    public void SetPlayerModel(PlayerModelType index)
+    {
+        playerBody.GetChild((int)playerModelIndex).gameObject.SetActive(false);
+
+        playerModelIndex = index;
+        playerBody.GetChild((int)playerModelIndex).gameObject.SetActive(true);
+    }
+
 
     public void SetInteractionKey(KeyCode keyCode)
     {
