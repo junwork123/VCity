@@ -36,7 +36,8 @@ public class MovementBehavior : MonoBehaviour
         if (isMove == false)
             return;
 
-        characterController.Move(velocity * Time.deltaTime);
+        // characterController.Move(velocity * Time.deltaTime);
+        characterController.SimpleMove(velocity);
         velocity = Vector3.zero;
 
         lookDir = Quaternion.Euler(lookVector * rotateSpeed * Time.fixedDeltaTime);
