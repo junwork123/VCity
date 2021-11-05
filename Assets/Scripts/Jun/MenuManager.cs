@@ -21,7 +21,6 @@ public class MenuManager : MonoBehaviour
             if (menus[i].menuName.Equals(menuName))//string을 받아서 해당이름 가진 메뉴를 여는 스크립트
             {
                 OpenMenu(menus[i]);
-                menuStack.Push(menus[i]);
                 return;
             }
         }
@@ -40,7 +39,6 @@ public class MenuManager : MonoBehaviour
         if (mainPanel.activeSelf != true)
         {
             mainPanel.SetActive(true);
-            Debug.Log("난 분명 열었다?");
         }
 
         // 메뉴를 열고 스택에 저장한다.

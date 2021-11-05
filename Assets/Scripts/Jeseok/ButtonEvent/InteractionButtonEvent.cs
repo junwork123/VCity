@@ -26,11 +26,7 @@ public class InteractionButtonEvent : MonoBehaviour
 
             case InteractionType.LOG:
                 AndroidToastManager.instance.ShowToast("LOG");
-
-                #region 메시지 호출부
-                ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("SHOW_MSG");
-                #endregion
-
+                ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_ROOMS");
                 break;
 
             case InteractionType.HELP:
