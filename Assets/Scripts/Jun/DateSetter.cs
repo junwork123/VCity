@@ -36,6 +36,10 @@ public class DateSetter : MonoBehaviour
             dropDay.options.Add(new TMP_Dropdown.OptionData(i.ToString()));
         }
         SetDateFromNow(backdays);
+        dropMonth.onValueChanged.AddListener(delegate
+        {
+            OnMonthChanged();
+        });
     }
     public void SetDateFromNow(int days)
     {

@@ -2,7 +2,6 @@ using System.Text;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using System.IO;
 using Newtonsoft.Json;
 using Photon.Chat;
 using ExitGames.Client.Photon;
@@ -361,15 +360,6 @@ public class DataManager : MonoBehaviour, IChatClientListener
     {
 
     }
-    string ObjectToJson(object obj)
-    {
-        return JsonConvert.SerializeObject(obj);
-    }
-
-    T JsonToOject<T>(string jsonData)
-    {
-        return JsonConvert.DeserializeObject<T>(jsonData);
-    }
 
     public void OnSubscribed(string[] channels, bool[] results)
     {
@@ -399,86 +389,4 @@ public class DataManager : MonoBehaviour, IChatClientListener
     {
         //SaveAsFile<UserDataContainer>(udc, udc.Email);
     }
-
-    #region useless
-    public void SaveAsFile<T>(T data, string userId)
-    {
-        string path = Application.persistentDataPath + "/UserJson";
-
-        try
-        {
-            FileStream fileStream = new FileStream(string.Format("{0}/{1}.json", path, userId), FileMode.Create);
-            //string jsonData = JsonUtility.ToJson(data, true);
-            string jsonData = ObjectToJson(data);
-            byte[] jsonbytes = Encoding.UTF8.GetBytes(jsonData);
-            fileStream.Write(jsonbytes, 0, jsonbytes.Length);
-            fileStream.Close();
-
-
-            if (jsonData.Equals("{}"))
-            {
-                Debug.Log("json null");
-                return;
-            }
-            Debug.Log(jsonData);
-        }
-        catch (FileNotFoundException e)
-        {
-            Debug.Log("The file was not found:" + e.Message);
-        }
-        catch (DirectoryNotFoundException e)
-        {
-            Debug.Log("The directory was not found: " + e.Message);
-        }
-        catch (IOException e)
-        {
-            Debug.Log("The file could not be opened:" + e.Message);
-        }
-    }
-    public T LoadFromFile<T>(string userId)
-    {
-        string path = Application.persistentDataPath + "/UserJson";
-
-        try
-        {
-            FileStream fileStream = new FileStream(string.Format("{0}/{1}.json", path, userId), FileMode.OpenOrCreate);
-
-            byte[] jsonbytes = new byte[fileStream.Length];
-            fileStream.Read(jsonbytes, 0, jsonbytes.Length);
-            fileStream.Close();
-            string jsonData = Encoding.UTF8.GetString(jsonbytes);
-
-            if (jsonData.Equals("{}"))
-            {
-                Debug.Log("json null");
-                return default(T);
-            }
-            Debug.Log(jsonData);
-
-            T t = JsonToOject<T>(jsonData);
-            return t;
-        }
-        // 처음 접속하는 아이디일 경우
-        catch (FileNotFoundException e)
-        {
-            // FileStream fileStream = new FileStream(string.Format("{0}/{1}.json", path, userId), FileMode.Create);
-            // string jsonData = "";
-            // byte[] jsonbytes = Encoding.UTF8.GetBytes(jsonData);
-            // fileStream.Write(jsonbytes, 0, jsonbytes.Length);
-            // fileStream.Close();
-            // T t = JsonToOject<T>(jsonData);
-            Debug.Log("The file was not found and New File created:" + e.Message);
-            return default(T);
-        }
-        catch (DirectoryNotFoundException e)
-        {
-            Debug.Log("The directory was not found: " + e.Message);
-        }
-        catch (IOException e)
-        {
-            Debug.Log("The file could not be opened:" + e.Message);
-        }
-        return default(T);
-    }
-    #endregion
 }
