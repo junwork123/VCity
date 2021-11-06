@@ -31,7 +31,11 @@ public class GameManager : Singleton<GameManager>
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
+
+        UIManager.instance.UpdatePlayerInfo();
+
         playerBody = player.transform.Find("PlayerBody");
+        SetPlayerModel((PlayerModelType)DataManager.Instance.userCache.Character);
     }
 
     void Update()
