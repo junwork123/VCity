@@ -202,10 +202,8 @@ namespace Photon.Chat
             }
             // 오프라인이 메시지가 더 적은 경우
             // 다른 부분만 추가될 수 있도록 함(스타트 라인 있으니까 +1해줌)
-            if (childList.Length < msgs.Count + 1)
+            if (childList.Length < msgs.Count)
             {
-                GameObject obj = Instantiate(StartLine);
-                obj.transform.SetParent(this.CurrentChannelText.transform);
                 for (int i = childList.Length; i < msgs.Count; i++)
                 {
                     AppendMsg(msgs[i]);
