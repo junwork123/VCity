@@ -8,12 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 using Photon.Chat;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using AuthenticationValues = Photon.Chat.AuthenticationValues;
+using ExitGames.Client.Photon;
 #if PHOTON_UNITY_NETWORKING
 using Photon.Pun;
 using TMPro;
@@ -81,6 +83,8 @@ namespace Photon.Chat
 
         public GameObject MyMsgFactory;
         public GameObject OpMsgFactory;
+
+        public GameObject StartLine;
 
         public string lastMsgId = "";
 
@@ -190,16 +194,18 @@ namespace Photon.Chat
             Transform[] childList = CurrentChannelText.GetComponentsInChildren<RectTransform>(true);
             if (childList != null && _channelId != selectedChannelId)
             {
-                for (int i = 2; i < childList.Length; i++)
+                for (int i = 1; i < childList.Length; i++)
                 {
                     if (childList[i] != transform)
                         Destroy(childList[i].gameObject);
                 }
             }
             // 오프라인이 메시지가 더 적은 경우
-            // 다른 부분만 추가될 수 있도록 함
-            if (childList.Length < msgs.Count)
+            // 다른 부분만 추가될 수 있도록 함(스타트 라인 있으니까 +1해줌)
+            if (childList.Length < msgs.Count + 1)
             {
+                GameObject obj = Instantiate(StartLine);
+                obj.transform.SetParent(this.CurrentChannelText.transform);
                 for (int i = childList.Length; i < msgs.Count; i++)
                 {
                     AppendMsg(msgs[i]);
@@ -588,6 +594,11 @@ namespace Photon.Chat
 
             }
             cbtn.transform.SetParent(this.ChannelToggleToInstantiate.transform.parent, false);
+            cbtn.onValueChanged.AddListener(delegate
+            {
+                if (cbtn.isOn)
+                    ShowChannel(channelId);
+            });
             this.channelToggles.Add(channelId, cbtn);
         }
 
