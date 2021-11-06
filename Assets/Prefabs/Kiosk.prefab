@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 7968918710361976683}
   - component: {fileID: 7402256927419138772}
   m_Layer: 0
-  m_Name: Unmanned
+  m_Name: Kiosk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
