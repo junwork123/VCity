@@ -91,4 +91,9 @@ public class UIManager : Singleton<UIManager>
     {
         dialogText.text = message;
     }
+
+    public void ClosePanel(GameObject panel)
+    {
+        panel.SetActive(false);
+    }
 }

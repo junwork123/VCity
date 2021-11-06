@@ -865,6 +865,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 788103587618926384, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
+      propertyPath: m_text
+      value: "\uB9C8\uC774\uD398\uC774\uC9C0"
+      objectReference: {fileID: 0}
+    - target: {fileID: 788103588044167942, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
+      propertyPath: m_Name
+      value: MyPage Interaction Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2457556412278648610, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
+      propertyPath: m_text
+      value: "\uCC44\uD305 \uAE30\uB85D"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5134480556754932610, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
+      propertyPath: m_text
+      value: "\uC5C5\uBB34 \uC120\uD0DD"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8760895002973684233, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
+      propertyPath: m_text
+      value: "\uB098\uAC00\uAE30"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07bf842a011d3ed46937188b786f04ab, type: 3}
 --- !u!1 &1523399776112433340 stripped
