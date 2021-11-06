@@ -9,7 +9,7 @@ public class Channel
 
     [FirestoreProperty] public string Name { get; set; }
 
-    [FirestoreProperty] public string Kind { get; set; }
+    [FirestoreProperty] public int Kind { get; set; }
 
     [FirestoreProperty] public List<string> Members { get; set; }
 
@@ -19,7 +19,7 @@ public class Channel
     public Channel(string _channelId, string _channelName, List<string> _memberList)
     {
         Id = _channelId;
-        Kind = "request";
+        Kind = 0;
         Members = _memberList;
         Name = _channelName;
 

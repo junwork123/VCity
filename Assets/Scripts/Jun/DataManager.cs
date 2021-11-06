@@ -23,6 +23,8 @@ public class DataManager : MonoBehaviour, IChatClientListener
     public UserData userCache { get; set; }
     public Dictionary<string, List<CustomMsg>> chatCache;
 
+    public List<Channel> roomInfoList;
+
     public static string TimeFormat = "[yyyy년 MM월 dd일 HH:mm:ss]";
     void Awake()
     {
@@ -54,6 +56,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         DocumentReference docRef = db.Collection("Users").Document(userCache.UID);
         Dictionary<string, object> userData = userCache.ToDictionary();
         chatCache = new Dictionary<string, List<CustomMsg>>();
+        roomInfoList = new List<Channel>();
 
         await docRef.SetAsync(userData).ContinueWithOnMainThread(task =>
         {
@@ -75,6 +78,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 Debug.Log("[Database] " + "등록된 사용자 정보가 있습니다.");
                 userCache = snapshot.ConvertTo<UserData>();
                 chatCache = new Dictionary<string, List<CustomMsg>>();
+                roomInfoList = new List<Channel>();
 
                 Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
                 chatManager.Connect(DataManager.Instance.userCache.Name);
@@ -187,7 +191,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                     Debug.Log("[Database] " + "채널 가져오기 성공");
                     Channel channel = snapshot.ConvertTo<Channel>();
                     Debug.Log("[Database] " + "채널 변환 완료 : " + channel.Id);
-
+                    roomInfoList.Add(channel);
                     // 유저 정보에 현재 채널 추가
                     userCache.MyChannels[channel.Id] = "방 이름";
 

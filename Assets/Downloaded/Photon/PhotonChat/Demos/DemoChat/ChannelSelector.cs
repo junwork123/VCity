@@ -19,6 +19,7 @@ namespace Photon.Chat
         [SerializeField]
         public TMP_Text date;
         public TMP_Text roomName;
+        public Image image;
 
         public void SetChannel(string channel)
         {
@@ -34,7 +35,9 @@ namespace Photon.Chat
         {
             this.date.text = date;
         }
-
+        public void setImage(int _serviceNum){
+            image.sprite = ServiceImage.Instance.GetServiceImg(_serviceNum);
+        }
         public void OnPointerClick(PointerEventData eventData)
         {
             ChatManager handler = FindObjectOfType<ChatManager>();

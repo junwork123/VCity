@@ -575,6 +575,18 @@ namespace Photon.Chat
             cs.SetChannel(channelId);
             cs.setRoomName(DataManager.Instance.userCache.MyChannels[channelId]);
             cs.setDate(DateTime.Now.ToString(("yyyy년 MM월 dd일"))); // TODO : 채팅방 최근 메시지 시간 가져오기
+
+            // TODO : 서비스의 종류를 Channel에서 가져올 수 있도록 하자
+            foreach (var item in DataManager.Instance.roomInfoList)
+            {
+                if (item.Id == channelId)
+                {
+                    cs.setImage(item.Kind);
+                    Debug.Log(item.Kind);
+                    break;
+                }
+
+            }
             cbtn.transform.SetParent(this.ChannelToggleToInstantiate.transform.parent, false);
             this.channelToggles.Add(channelId, cbtn);
         }
