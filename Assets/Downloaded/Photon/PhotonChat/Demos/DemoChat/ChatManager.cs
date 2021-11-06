@@ -571,7 +571,7 @@ namespace Photon.Chat
 
             Toggle cbtn = (Toggle)Instantiate(this.ChannelToggleToInstantiate);
             cbtn.gameObject.SetActive(true);
-            ChannelSelector cs = cbtn.GetComponentInChildren<ChannelSelector>();
+            ChannelSelector cs = cbtn.GetComponent<ChannelSelector>();
             cs.SetChannel(channelId);
             cs.setRoomName(DataManager.Instance.userCache.MyChannels[channelId]);
             cs.setDate(DateTime.Now.ToString(("yyyy년 MM월 dd일"))); // TODO : 채팅방 최근 메시지 시간 가져오기
