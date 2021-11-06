@@ -165,13 +165,13 @@ public class Interactionable : MonoBehaviour, IInteraction
     }
     #endregion
 
-    #region Debug
-    private void OnDrawGizmos()
-    {
-        Color color = Color.cyan;
-        color.a = 0.25f;
-        Gizmos.color = color;
-        Gizmos.DrawSphere(transform.position, interactionRadius);
-    }
-    #endregion
+    // #region Debug
+    // private void OnDrawGizmos()
+    // {
+    //     Color color = Color.cyan;
+    //     color.a = 0.25f;
+    //     Gizmos.color = color;
+    //     Gizmos.DrawSphere(transform.position, interactionRadius);
+    // }
+    // #endregion
 }

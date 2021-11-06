@@ -23,6 +23,7 @@ public class UIManager : Singleton<UIManager>
         HideApplyPanel();
 
         HideDialog();
+        InactiveActionButton();
     }
 
     public void UpdatePlayerInfo()
@@ -30,8 +31,8 @@ public class UIManager : Singleton<UIManager>
         typeTextUI.text = "민원신청인";
         if (DataManager.Instance == null)
         {
-            nameText.text = "Test";
-            nameTextUI.text = "Test";
+            nameText.text = "테스트";
+            nameTextUI.text = "테스트";
         }
         else
         {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private MovementBehavior movementBehavior;
-    public Animator animator;
+    Animator animator;
     Rigidbody rigidbody;
 
     public KeyCode interactionKey = KeyCode.X;
@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         movementBehavior = GetComponent<MovementBehavior>();
+        animator = GetComponentInChildren<Animator>();
         rigidbody = GetComponent<Rigidbody>();
 
         GameManager.instance.SetInteractionKey(interactionKey);

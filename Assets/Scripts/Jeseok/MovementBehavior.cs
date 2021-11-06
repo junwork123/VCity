@@ -1,5 +1,3 @@
-#define CharacterCollider
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +10,6 @@ public class MovementBehavior : MonoBehaviour
     [SerializeField]
     private float rotateSpeed = 2f;
 
-    Rigidbody rigidbody;
     CharacterController characterController;
     Vector3 velocity;
     Quaternion lookDir;
@@ -23,14 +20,9 @@ public class MovementBehavior : MonoBehaviour
 
     private void Start()
     {
-#if CharacterCollider
         characterController = GetComponent<CharacterController>();
-#else
-        rigidbody = GetComponent<Rigidbody>();
-#endif
     }
 
-#if CharacterCollider
     private void Update()
     {
         if (isMove == false)
@@ -44,25 +36,24 @@ public class MovementBehavior : MonoBehaviour
         transform.rotation *= lookDir;
         lookVector = Vector3.zero;
     }
-#endif
 
 
-#if Rigidbody
-    private void FixedUpdate()
-    {
-        if (isMove == false)
-            return;
+// #if Rigidbody
+//     private void FixedUpdate()
+//     {
+//         if (isMove == false)
+//             return;
             
-        rigidbody.MovePosition(rigidbody.position + velocity * Time.deltaTime);
-        velocity = Vector3.zero;
+//         rigidbody.MovePosition(rigidbody.position + velocity * Time.deltaTime);
+//         velocity = Vector3.zero;
 
-        lookDir = Quaternion.Euler(lookVector * rotateSpeed * Time.fixedDeltaTime);
-        rigidbody.MoveRotation(rigidbody.rotation * lookDir);
-        lookVector = Vector3.zero;
+//         lookDir = Quaternion.Euler(lookVector * rotateSpeed * Time.fixedDeltaTime);
+//         rigidbody.MoveRotation(rigidbody.rotation * lookDir);
+//         lookVector = Vector3.zero;
 
-        isMove = false;
-    }
-#endif
+//         isMove = false;
+//     }
+// #endif
 
 
     public void Move(Vector3 dir)

@@ -22,10 +22,6 @@ public class FileManager : Singleton<FileManager>
 
     UnityWebRequest www;
 
-    // public TextMeshProUGUI filePathText;
-    // public TextMeshProUGUI logText;
-
-
 
     // Start is called before the first frame update
     void Start()
