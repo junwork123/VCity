@@ -34,21 +34,17 @@ public class VideoCall : MonoBehaviour
     IEnumerator WaitForPlay()
     {
         yield return new WaitForSeconds(delayToPlay);
-        print("WaitForPlay");
 
         otherVideo.Prepare();
         myVideo.Prepare();
-        print("Prepare");
 
         yield return new WaitUntil(() => otherVideo.isPrepared);
         yield return new WaitUntil(() => myVideo.isPrepared);
-        print("isPrepared");
 
         otherVideoPanel.texture = otherVideo.texture;
         myVideoPanel.texture = myVideo.texture;
 
         otherVideo.Play();
         myVideo.Play();
-        print("Play");
     }
 }

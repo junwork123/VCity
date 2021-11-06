@@ -35,7 +35,14 @@ public class GameManager : Singleton<GameManager>
         UIManager.instance.UpdatePlayerInfo();
 
         playerBody = player.transform.Find("PlayerBody");
-        SetPlayerModel((PlayerModelType)DataManager.Instance.userCache.Character);
+        if (DataManager.Instance == null)
+        {
+        }
+        else
+        {
+            playerModelIndex = (PlayerModelType)DataManager.Instance.userCache.Character;
+        }
+        SetPlayerModel(playerModelIndex);
     }
 
     void Update()

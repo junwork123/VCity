@@ -28,8 +28,16 @@ public class UIManager : Singleton<UIManager>
     public void UpdatePlayerInfo()
     {
         typeTextUI.text = "민원신청인";
-        nameText.text = DataManager.Instance.userCache.Nickname;
-        nameTextUI.text = DataManager.Instance.userCache.Nickname;
+        if (DataManager.Instance == null)
+        {
+            nameText.text = "Test";
+            nameTextUI.text = "Test";
+        }
+        else
+        {
+            nameText.text = DataManager.Instance.userCache.Nickname;
+            nameTextUI.text = DataManager.Instance.userCache.Nickname;
+        }
     }
 
     public void AtciveActionButton()
