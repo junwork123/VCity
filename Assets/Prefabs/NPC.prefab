@@ -765,8 +765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 0
-  _interString: Press <sprite=4> to Interact
-  interactionTextUI: {fileID: 6762193697205757453}
+  _interString: "<sprite=4> \uC744 \uB20C\uB7EC\uC8FC\uC138\uC694"
   interactionMenuUI: {fileID: 1523399776112433340}
   InteractionKeyCode: 120
   interactionRadius: 3
