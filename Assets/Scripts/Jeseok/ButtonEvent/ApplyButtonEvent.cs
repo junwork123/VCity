@@ -16,7 +16,6 @@ public class ApplyButtonEvent : MonoBehaviour
 
     void Apply(ApplyType applyType)
     {
-        print(applyType);
         switch (applyType)
         {
             case ApplyType.ISSUANCE_RESIDENT_REGISTRATION:
@@ -27,7 +26,7 @@ public class ApplyButtonEvent : MonoBehaviour
                 break;
 
             case ApplyType.COUNSEL:
-                Service.Instance.GetComponent<MenuManager>().OpenMenu("VIDEO_CALL");
+                // Service.Instance.GetComponent<MenuManager>().OpenMenu("VIDEO_CALL");
                 break;
 
             case ApplyType.ETC:
