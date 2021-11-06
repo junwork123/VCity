@@ -11,6 +11,6 @@ public class InteractionButtonClickListener : ButtonClickListener<InteractionTyp
     {
         descSetter = GetComponent<ButtonDescSetter>();
 
-        descSetter.SetDesc(buttonType.ToString());
+        // descSetter.SetDesc(buttonType.ToString());
     }
 }
