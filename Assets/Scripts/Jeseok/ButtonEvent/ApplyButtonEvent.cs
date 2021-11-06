@@ -20,14 +20,16 @@ public class ApplyButtonEvent : MonoBehaviour
         switch (applyType)
         {
             case ApplyType.ISSUANCE_RESIDENT_REGISTRATION:
-                
                 break;
+
             case ApplyType.ISSUANCE_CERTIFIED_RESIDENT_REGISTRATION:
                 Service.Instance.GetComponent<MenuManager>().OpenMenu("SELECT_SERVICE");
                 break;
+
             case ApplyType.COUNSEL:
                 Service.Instance.GetComponent<MenuManager>().OpenMenu("VIDEO_CALL");
                 break;
+
             case ApplyType.ETC:
                 break;
         }

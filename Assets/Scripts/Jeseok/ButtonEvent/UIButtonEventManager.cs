@@ -59,12 +59,12 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
 
     public void OnClickSetting()
     {
-        // AndroidToastManager.instance.ShowToast(System.Reflection.MethodBase.GetCurrentMethod().ToString());
+
     }
 
     void OnClickMessage()
     {
-        AndroidToastManager.instance.ShowToast(System.Reflection.MethodBase.GetCurrentMethod().ToString());
+
     }
 
     void OnClickMap()
