@@ -10,7 +10,6 @@ public class ButtonDescSetter : MonoBehaviour
 
     public void SetDesc(string desc)
     {
-        print(System.Reflection.MethodBase.GetCurrentMethod());
         if (textMeshProSetter == null)
             return;
 

@@ -464,10 +464,6 @@ namespace Photon.Chat
 
         public void OnConnected()
         {
-            UIManager.instance.UpdatePlayerInfo();
-            GameManager.instance.SetPlayerModel(PlayerModelType.MAN_DEFAULT);
-            // GameManager.instance.SetPlayerModel((int)DataManager.Instance.userCache.Character);
-
             UpdateRooms();
             // if (this.ChannelsToJoinOnConnect != null && this.ChannelsToJoinOnConnect.Length > 0)
             // {

@@ -48,7 +48,6 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
     {
         activeActionButton = true;
         StartCoroutine(CheckAction());
-        print("click action button");
     }
 
     // Interactionable 외부에서 Action 버튼 입력했을 때 한 프레임 이후에 해제
