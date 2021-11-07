@@ -5,6 +5,7 @@ using UnityEngine;
 public class Service : MonoBehaviour
 {
     public static Service Instance;
+    public int CharacterNum;
 
     public void Awake()
     {
@@ -14,5 +15,12 @@ public class Service : MonoBehaviour
     public void Start()
     {
         DontDestroyOnLoad(gameObject);
+    }
+    public void SetCharcterNum(int _num) { CharacterNum = _num; }
+
+    public void SetUserCharacter()
+    {
+        DataManager.Instance.userCache.Character = CharacterNum;
+        GameManager.instance.SetPlayerModel((PlayerModelType)CharacterNum);
     }
 }
