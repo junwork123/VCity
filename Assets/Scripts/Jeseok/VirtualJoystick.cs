@@ -19,6 +19,7 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
     Vector2 inputVector;
     bool isInput;
 
+    [Header("Controller")]
     public PlayerController playerController;
 
 

@@ -6,15 +6,19 @@ using TMPro;
 
 public class UIManager : Singleton<UIManager>
 {
+    [Header("Player Profile")]
     public TextMeshPro nameText;
     public TextMeshProUGUI typeTextUI;
     public TextMeshProUGUI nameTextUI;
 
+    [Space(10f)]
     public GameObject actionButton;
     public GameObject dialog;
     public TextMeshProUGUI dialogText;
+
+    [Header("Panel")]
+    public GameObject minimapPanel;
     public GameObject applyPanel;
-    public GameObject minimap;
 
 
     void Start()
@@ -53,17 +57,17 @@ public class UIManager : Singleton<UIManager>
 
     public void ShowMinimap()
     {
-        minimap.SetActive(true);
+        minimapPanel.SetActive(true);
     }
 
     public void HideMinimap()
     {
-        minimap.SetActive(false);
+        minimapPanel.SetActive(false);
     }
 
     public void ToggleMinimap()
     {
-        minimap.SetActive(!minimap.activeSelf);
+        minimapPanel.SetActive(!minimapPanel.activeSelf);
     }
 
     public void ShowApplyPanel()
