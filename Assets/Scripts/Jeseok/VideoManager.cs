@@ -10,6 +10,10 @@ public class VideoManager : Singleton<VideoManager>
     [SerializeField]
     VideoPlayer _otherVideo;
     public VideoPlayer otherVideo { get => _otherVideo; }
+    [Header("Mini")]
+    [SerializeField]
+    VideoPlayer _miniVideo;
+    public VideoPlayer miniVideo { get => _miniVideo; }
 
     [Header("My")]
     [SerializeField]
