@@ -23,6 +23,7 @@ public class VideoManager : MonoBehaviour
     [SerializeField]
     float delayToPlay = 3f;
 
+
     // Update is called once per frame
     void Update()
     {
@@ -31,7 +32,7 @@ public class VideoManager : MonoBehaviour
 
     public void StartVideoCall()
     {
-        StartCoroutine(WaitForPlay());
+        
     }
 
     public void PuaseVideoCall()
@@ -39,21 +40,20 @@ public class VideoManager : MonoBehaviour
         StartCoroutine(WaitForPause(myVideo));
     }
 
-    IEnumerator WaitForPlay()
+    public void ResumeVideoCall()
+    {
+        StartCoroutine(WaitForPlay(otherVideo, otherVideoPanel));
+        StartCoroutine(WaitForPlay(myVideo, myVideoPanel));
+    }
+
+    IEnumerator WaitForPlay(VideoPlayer videoPlayer, RawImage panel)
     {
         yield return new WaitForSeconds(delayToPlay);
 
-        otherVideo.Prepare();
-        myVideo.Prepare();
-
-        yield return new WaitUntil(() => otherVideo.isPrepared);
-        yield return new WaitUntil(() => myVideo.isPrepared);
-
-        otherVideoPanel.texture = otherVideo.texture;
-        myVideoPanel.texture = myVideo.texture;
-
-        otherVideo.Play();
-        myVideo.Play();
+        videoPlayer.Prepare();
+        yield return new WaitUntil(() => videoPlayer.isPrepared);
+        panel.texture = otherVideo.texture;
+        videoPlayer.Play();
     }
 
     IEnumerator WaitForPause(VideoPlayer videoPlayer)

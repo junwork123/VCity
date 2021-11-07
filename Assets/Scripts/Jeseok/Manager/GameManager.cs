@@ -17,6 +17,10 @@ public class GameManager : Singleton<GameManager>
     public string playerType;
     public string playerName;
 
+    [Header("Call")]
+    public bool isCamOn = true;
+    public bool isMicOn = true;
+
     [Header("Task")]
     public Transform teleportPosition;
 
@@ -74,7 +78,6 @@ public class GameManager : Singleton<GameManager>
         playerModelIndex = index;
         playerBody.GetChild((int)playerModelIndex).gameObject.SetActive(true);
     }
-
 
     public void SetInteractionKey(KeyCode keyCode)
     {

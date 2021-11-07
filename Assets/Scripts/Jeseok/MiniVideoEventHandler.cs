@@ -29,7 +29,16 @@ public class MiniVideoEventHandler : MonoBehaviour
         videoManager.PuaseVideoCall();
 
         miniVideoScreen.texture = videoManager.otherVideo.texture;
-        
-        videoManager.otherVideo.Play();
+        // videoManager.otherVideo.Play();
+    }
+
+    IEnumerator CloseMiniVideo()
+    {
+        yield return null;
+
+        videoManager.ResumeVideoCall();
+
+        miniVideoScreen.texture = null;
+
     }
 }
