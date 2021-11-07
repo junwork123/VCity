@@ -18,17 +18,23 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI dialogText;
 
     [Header("Panel")]
+    [SerializeField]
+    List<GameObject> panels;
     public GameObject minimapPanel;
     public GameObject applyPanel;
 
 
     void Start()
     {
-        HideMinimap();
-        HideApplyPanel();
+        InitPanel();
 
-        HideDialog();
         InactiveActionButton();
+    }
+
+    void InitPanel()
+    {
+        for (int i = 0; i < panels.Count; ++i)
+            panels[i].SetActive(false);
     }
 
     public void UpdatePlayerInfo()

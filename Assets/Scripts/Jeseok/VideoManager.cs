@@ -4,55 +4,34 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-public class VideoManager : MonoBehaviour
+public class VideoManager : Singleton<VideoManager>
 {
     [Header("Other")]
     [SerializeField]
     VideoPlayer _otherVideo;
     public VideoPlayer otherVideo { get => _otherVideo; }
-    [SerializeField]
-    RawImage otherVideoPanel;
 
     [Header("My")]
     [SerializeField]
-    VideoPlayer myVideo;
-    [SerializeField]
-    RawImage myVideoPanel;
+    VideoPlayer _myVideo;
+    public VideoPlayer myVideo { get => _myVideo; }
 
     [Space(10f)]
     [SerializeField]
     float delayToPlay = 3f;
 
-
-    // Update is called once per frame
-    void Update()
+    public void PalyVideo(VideoPlayer videoPlayer, RawImage rawImage)
     {
-
+        StartCoroutine(WaitForPlay(videoPlayer, rawImage));
     }
 
-    public void StartVideoCall()
-    {
-        
-    }
-
-    public void PuaseVideoCall()
-    {
-        StartCoroutine(WaitForPause(myVideo));
-    }
-
-    public void ResumeVideoCall()
-    {
-        StartCoroutine(WaitForPlay(otherVideo, otherVideoPanel));
-        StartCoroutine(WaitForPlay(myVideo, myVideoPanel));
-    }
-
-    IEnumerator WaitForPlay(VideoPlayer videoPlayer, RawImage panel)
+    IEnumerator WaitForPlay(VideoPlayer videoPlayer, RawImage rawImage)
     {
         yield return new WaitForSeconds(delayToPlay);
 
         videoPlayer.Prepare();
         yield return new WaitUntil(() => videoPlayer.isPrepared);
-        panel.texture = otherVideo.texture;
+        rawImage.texture = videoPlayer.texture;
         videoPlayer.Play();
     }
 

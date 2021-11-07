@@ -6,6 +6,11 @@ using Photon.Chat;
 public class InteractionButtonEvent : MonoBehaviour
 {
     public InteractionButtonClickListener[] clickListener;
+
+    GameObject rootObject;
+    Interactionable interactionable;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +18,9 @@ public class InteractionButtonEvent : MonoBehaviour
 
         for (int i = 0; i < clickListener.Length; ++i)
             clickListener[i].AddClickCallback(Interaction);
+
+        rootObject = transform.parent.gameObject;
+        interactionable = rootObject.GetComponent<Interactionable>();
     }
 
     void Interaction(InteractionType interactionType)
@@ -31,6 +39,8 @@ public class InteractionButtonEvent : MonoBehaviour
                 break;
 
             case InteractionType.EXIT:
+                interactionable.ShowInter();
+                interactionable.HideInteractionMenu();
                 break;
 
             case InteractionType.ETC:

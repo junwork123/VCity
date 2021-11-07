@@ -17,6 +17,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     [SerializeField]
     GameObject interactionMenuUI;
 
+    [HideInInspector]
     public KeyCode InteractionKeyCode;
     public float interactionRadius = 3f;
     SphereCollider collider;
