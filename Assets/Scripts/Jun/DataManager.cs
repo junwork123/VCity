@@ -142,7 +142,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             if (task.IsCompleted)
             {
                 string nowtime = DateTime.Now.ToString((TimeFormat));
-                channelRef.Collection("ChatContents").AddAsync(new CustomMsg("System", nowtime, "Hello, World!"));
+                channelRef.Collection("ChatContents").AddAsync(new CustomMsg("System", nowtime, "채팅 상담을 시작합니다", userCache.Character));
                 Debug.Log("[Database] " + "채널 추가 성공");
             }
             else
@@ -272,13 +272,14 @@ public class DataManager : MonoBehaviour, IChatClientListener
                         string Sender = "";
                         string Text = "";
                         string Time = "";
-
+                        int Profile = 0;
 
                         item.TryGetValue("Sender", out Sender);
                         item.TryGetValue("Text", out Text);
                         item.TryGetValue("Time", out Time);
+                        item.TryGetValue("Profile", out Profile);
                         Debug.Log(Time + " " + Sender + " : " + Text);
-                        CustomMsg msg = new CustomMsg(Sender, Time, Text);
+                        CustomMsg msg = new CustomMsg(Sender, Time, Text, Profile);
 
                         chatCache[_channelId].Add(msg);
                     }
@@ -334,7 +335,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
         return;
     }
-    
+
 
     public void DebugReturn(DebugLevel level, string message)
     {

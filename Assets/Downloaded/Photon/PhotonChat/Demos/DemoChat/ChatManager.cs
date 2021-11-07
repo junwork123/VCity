@@ -398,16 +398,16 @@ namespace Photon.Chat
                 if (doingPrivateChat)
                 {
                     this.chatClient.SendPrivateMessage(privateChatTarget, inputLine);
-                    AppendMsg(new CustomMsg(UserName, time, inputLine));
-                    DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
+                    AppendMsg(new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
+                    DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
 
                 }
                 else
                 {
                     Debug.Log(selectedChannelId);
                     this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
-                    AppendMsg(new CustomMsg(UserName, time, inputLine));
-                    DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
+                    AppendMsg(new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
+                    DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
                 }
             }
         }

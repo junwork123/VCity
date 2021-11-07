@@ -8,16 +8,17 @@ public class CustomMsg
     [FirestoreProperty] public string Sender { get; set; }
     [FirestoreProperty] public string Text { get; set; }
     [FirestoreProperty] public string Time { get; set; }
+    [FirestoreProperty] public int Profile { get; set; }
 
 
 
     public CustomMsg() { }
-    public CustomMsg(string _sender, string _datetime, string _text)
+    public CustomMsg(string _sender, string _datetime, string _text, int _characterNum)
     {
         Sender = _sender;
         Text = _text;
         Time = _datetime;
-
+        Profile = _characterNum;
     }
 
     public CustomMsg(CustomMsg _msg)
@@ -32,6 +33,7 @@ public class CustomMsg
         result["Sender"] = Sender;
         result["Text"] = Text;
         result["Time"] = Time;
+        result["Profile"] = Profile;
 
 
         return result;

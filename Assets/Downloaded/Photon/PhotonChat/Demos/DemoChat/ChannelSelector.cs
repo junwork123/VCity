@@ -36,7 +36,7 @@ namespace Photon.Chat
             this.date.text = date;
         }
         public void setImage(int _serviceNum){
-            image.sprite = ServiceImage.Instance.GetServiceImg(_serviceNum);
+            image.sprite = ImageSet.Instance.GetServiceImg(_serviceNum);
         }
         public void OnPointerClick(PointerEventData eventData)
         {

@@ -18452,7 +18452,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1213201647}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 696a5174ff5e707479b3540eb56d14b7, type: 3}
   m_Name: 
@@ -35120,7 +35120,6 @@ GameObject:
   - component: {fileID: 168328767249434561}
   - component: {fileID: 168328767249434567}
   - component: {fileID: 6814544478804082132}
-  - component: {fileID: 168328767249434565}
   m_Layer: 0
   m_Name: ChatManager
   m_TagString: Untagged
@@ -35128,34 +35127,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &168328767249434565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168328767249434564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77b4f12e0447c814ebb8983b3758f0f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  servicesImg:
-  - {fileID: 21300000, guid: fbc79c687fefa124a8be673631b40a25, type: 3}
-  - {fileID: 21300000, guid: 61efb420a448cbd44a0af6c228062b59, type: 3}
-  - {fileID: 21300000, guid: 581cf22e529198a47be8f836845d1a41, type: 3}
-  - {fileID: 21300000, guid: 65d7d0113a6c0444898f34e8be57b23b, type: 3}
-  - {fileID: 21300000, guid: 16131a234a247c64f93aa4c594068e75, type: 3}
-  - {fileID: 21300000, guid: 97ad51b3cbc050c429f9bab7553553e5, type: 3}
-  - {fileID: 21300000, guid: 6c30c3e206eeccc479ab78853d98c372, type: 3}
-  - {fileID: 21300000, guid: 30460389d65c4c649a213f1a1ba21b90, type: 3}
-  - {fileID: 21300000, guid: 08fbc97cb4bf429449fb4585a53ede10, type: 3}
-  - {fileID: 21300000, guid: 8c4b8123261263340bf6d69b777929a8, type: 3}
-  - {fileID: 21300000, guid: c3eaa525402d3764a9cc0d309b5655a6, type: 3}
-  - {fileID: 21300000, guid: c360d3eb694ce614aaaf34b78f1a53c1, type: 3}
-  - {fileID: 21300000, guid: cd75df988cddde54d9412e4d852f53f6, type: 3}
-  - {fileID: 21300000, guid: ca345c7c985935a4092d7842159bdd40, type: 3}
-  - {fileID: 21300000, guid: 62477ae05011a8e4897541d64e94cc0a, type: 3}
 --- !u!114 &168328767249434567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39236,9 +39207,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 5069876212577337876}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd1227f419475814e9d192baefc3bcea, type: 3}
+  m_Script: {fileID: 11500000, guid: 7476d2f96d5acd64d804a66cd28d4934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  servicesImg:
+  - {fileID: 21300000, guid: fbc79c687fefa124a8be673631b40a25, type: 3}
+  - {fileID: 21300000, guid: 61efb420a448cbd44a0af6c228062b59, type: 3}
+  - {fileID: 21300000, guid: 581cf22e529198a47be8f836845d1a41, type: 3}
+  - {fileID: 21300000, guid: 65d7d0113a6c0444898f34e8be57b23b, type: 3}
+  - {fileID: 21300000, guid: 16131a234a247c64f93aa4c594068e75, type: 3}
+  - {fileID: 21300000, guid: 97ad51b3cbc050c429f9bab7553553e5, type: 3}
+  - {fileID: 21300000, guid: 6c30c3e206eeccc479ab78853d98c372, type: 3}
+  - {fileID: 21300000, guid: 30460389d65c4c649a213f1a1ba21b90, type: 3}
+  - {fileID: 21300000, guid: 08fbc97cb4bf429449fb4585a53ede10, type: 3}
+  - {fileID: 21300000, guid: 8c4b8123261263340bf6d69b777929a8, type: 3}
+  - {fileID: 21300000, guid: c3eaa525402d3764a9cc0d309b5655a6, type: 3}
+  - {fileID: 21300000, guid: c360d3eb694ce614aaaf34b78f1a53c1, type: 3}
+  - {fileID: 21300000, guid: cd75df988cddde54d9412e4d852f53f6, type: 3}
+  - {fileID: 21300000, guid: ca345c7c985935a4092d7842159bdd40, type: 3}
+  - {fileID: 21300000, guid: 62477ae05011a8e4897541d64e94cc0a, type: 3}
   profileImg:
   - {fileID: 21300000, guid: e8b7acf6ca3856e47931724f19496201, type: 3}
   - {fileID: 21300000, guid: e34d13c40025dd54486ebaf435079755, type: 3}

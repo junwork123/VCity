@@ -53,15 +53,16 @@ public class UIManager : Singleton<UIManager>
             nameText.text = DataManager.Instance.userCache.Nickname;
             nameTextUI.text = DataManager.Instance.userCache.Nickname;
             MyPagenameTextUI.text = DataManager.Instance.userCache.Nickname;
-            ProfileImage profileImage;
-            if (DataManager.Instance.TryGetComponent<ProfileImage>(out profileImage))
+            ImageSet profileImage;
+            if (DataManager.Instance.TryGetComponent<ImageSet>(out profileImage))
             {
-                profile_top.sprite = profileImage.GetProfileImg(DataManager.Instance.userCache.Character);
-                profile_mypage.sprite = profileImage.GetProfileImg(DataManager.Instance.userCache.Character);
+                Sprite sprite = profileImage.GetUserProfileImg();
+                profile_top.sprite = sprite;
+                profile_mypage.sprite = sprite;
             }
         }
     }
-
+    
     public void AtciveActionButton()
     {
         actionButton.GetComponent<Button>().interactable = true;
