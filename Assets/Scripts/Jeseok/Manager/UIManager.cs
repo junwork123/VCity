@@ -9,6 +9,7 @@ public class UIManager : Singleton<UIManager>
     public TextMeshPro nameText;
     public TextMeshProUGUI typeTextUI;
     public TextMeshProUGUI nameTextUI;
+    public TextMeshProUGUI MyPagenameTextUI;
 
     public GameObject actionButton;
     public GameObject dialog;
@@ -38,6 +39,7 @@ public class UIManager : Singleton<UIManager>
         {
             nameText.text = DataManager.Instance.userCache.Nickname;
             nameTextUI.text = DataManager.Instance.userCache.Nickname;
+            MyPagenameTextUI.text = DataManager.Instance.userCache.Nickname;
         }
     }
 
