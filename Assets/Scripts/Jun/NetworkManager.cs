@@ -306,5 +306,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void OnApplicationQuit()
     {
         Logout();
+        Application.Quit();
     }
 }
