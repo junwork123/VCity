@@ -81,7 +81,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 roomInfoList = new List<Channel>();
 
                 Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
-                chatManager.Connect(DataManager.Instance.userCache.Name);
+                chatManager.Connect(DataManager.Instance.userCache.Nickname);
 
                 Debug.Log("[Database] " + "등록된 사용자 정보 불러오기 완료. : " + userCache.UID);
             }

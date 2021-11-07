@@ -204,10 +204,11 @@ namespace Photon.Chat
             // 오프라인이 메시지가 더 적은 경우
             // 다른 부분만 추가될 수 있도록 함(스타트 라인 있으니까 +1해줌)
 
-            if (childList.Length < msgs.Count + 1)
+            if (childList.Length < msgs.Count)
             {
                 for (int i = childList.Length; i < msgs.Count; i++)
                 {
+                    Debug.Log("[Chat] : " + msgs[i].Sender + " - " + msgs[i].Text);
                     AppendMsg(msgs[i]);
                 }
             } // 온라인이 메시지가 더 적은 경우(아직 보내지 못한 상태?)
@@ -430,15 +431,15 @@ namespace Photon.Chat
                 Debug.Log(message);
             }
         }
-        public void Connect(string _id)
+        public void Connect(string _nickName)
         {
-            this.UserName = _id;
+            this.UserName = _nickName;
 
             this.chatClient = new ChatClient(this);
 #if !UNITY_WEBGL
             this.chatClient.UseBackgroundWorkerForSending = true;
 #endif
-            this.chatClient.AuthValues = new AuthenticationValues(_id);
+            this.chatClient.AuthValues = new AuthenticationValues(_nickName);
             this.chatClient.ConnectUsingSettings(this.chatAppSettings);
 
             this.ChannelBtnToInstantiate.gameObject.SetActive(false);
@@ -648,29 +649,6 @@ namespace Photon.Chat
 
         public void OnGetMessages(string channelId, string[] senders, object[] messages)
         {
-
-            // string time = "";
-            // string text = "";
-            // string timeFormat = "[yyyy-MM-dd HH:mm]";
-            // for (int i = 0; i < senders.Length; i++)
-            // {
-            //     string msg = messages[i].ToString();
-            //     if (msg.Length >= DataManager.TimeFormat.Length)
-            //     {
-            //         time = msg.Substring(0, DataManager.TimeFormat.Length);
-            //         text = msg.Substring(DataManager.TimeFormat.Length);
-
-            //     }
-            //     else
-            //     {
-            //         Debug.Log("[Chat] " + "Can't Find timeFormat in received text");
-            //         time = timeFormat;
-            //         text = msg;
-            //     }
-            //     DataManager.instance.AppendMsg(channelId, new CustomMsg(senders[i], time, text));
-
-            // }
-
             // update text
             Debug.Log("[Chat] : " + messages.ToString());
             this.ShowChannel(this.selectedChannelId);
