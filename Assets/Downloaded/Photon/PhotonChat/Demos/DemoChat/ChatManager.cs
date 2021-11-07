@@ -69,12 +69,12 @@ namespace Photon.Chat
         public ScrollRect scroll;
         public RectTransform CurrentChannelText;     // set in inspector
         public TMP_Text CurrentChannelName;     // set in inspector
-        public Toggle ChannelToggleToInstantiate; // set in inspector
+        public Button ChannelBtnToInstantiate; // set in inspector
 
 
         public GameObject FriendListUiItemtoInstantiate;
 
-        private readonly Dictionary<string, Toggle> channelToggles = new Dictionary<string, Toggle>();
+        private readonly Dictionary<string, Button> channelButtons = new Dictionary<string, Button>();
 
         private readonly Dictionary<string, FriendItem> friendListItemLUT = new Dictionary<string, FriendItem>();
 
@@ -196,13 +196,15 @@ namespace Photon.Chat
             {
                 for (int i = 1; i < childList.Length; i++)
                 {
+                    // 자기 본체가 아니라면 파괴
                     if (childList[i] != transform)
                         Destroy(childList[i].gameObject);
                 }
             }
             // 오프라인이 메시지가 더 적은 경우
             // 다른 부분만 추가될 수 있도록 함(스타트 라인 있으니까 +1해줌)
-            if (childList.Length < msgs.Count)
+
+            if (childList.Length < msgs.Count + 1)
             {
                 for (int i = childList.Length; i < msgs.Count; i++)
                 {
@@ -376,7 +378,7 @@ namespace Photon.Chat
                     string[] subtokens = tokens[1].Split(new char[] { ' ', ',' }, 2);
 
                     // If we are already subscribed to the channel we directly switch to it, otherwise we subscribe to it first and then switch to it implicitly
-                    if (this.channelToggles.ContainsKey(subtokens[0]))
+                    if (this.channelButtons.ContainsKey(subtokens[0]))
                     {
                         this.ShowChannel(subtokens[0]);
                     }
@@ -439,7 +441,7 @@ namespace Photon.Chat
             this.chatClient.AuthValues = new AuthenticationValues(_id);
             this.chatClient.ConnectUsingSettings(this.chatAppSettings);
 
-            this.ChannelToggleToInstantiate.gameObject.SetActive(false);
+            this.ChannelBtnToInstantiate.gameObject.SetActive(false);
             Debug.Log("[Chat] " + "Connecting as: " + this.UserName);
             this.ConnectingLabel.SetActive(true);
 
@@ -526,7 +528,7 @@ namespace Photon.Chat
                 Debug.Log("[Chat] " + $"login sucussed in channel <{channel}>");
                 //this.chatClient.PublishMessage(channel, nowtime + "login success."); // you don't HAVE to send a msg on join but you could.
 
-                if (this.ChannelToggleToInstantiate != null)
+                if (this.ChannelBtnToInstantiate != null)
                 {
                     this.InstantiateChannelButton(channel);
 
@@ -567,13 +569,13 @@ namespace Photon.Chat
 
         private void InstantiateChannelButton(string channelId)
         {
-            if (this.channelToggles.ContainsKey(channelId))
+            if (this.channelButtons.ContainsKey(channelId))
             {
                 Debug.Log("[Chat] " + "Skipping creation for an existing channel toggle.");
                 return;
             }
 
-            Toggle cbtn = (Toggle)Instantiate(this.ChannelToggleToInstantiate);
+            Button cbtn = (Button)Instantiate(this.ChannelBtnToInstantiate);
             cbtn.gameObject.SetActive(true);
             ChannelSelector cs = cbtn.GetComponent<ChannelSelector>();
             cs.SetChannel(channelId);
@@ -591,13 +593,12 @@ namespace Photon.Chat
                 }
 
             }
-            cbtn.transform.SetParent(this.ChannelToggleToInstantiate.transform.parent, false);
-            cbtn.onValueChanged.AddListener(delegate
+            cbtn.transform.SetParent(this.ChannelBtnToInstantiate.transform.parent, false);
+            cbtn.onClick.AddListener(delegate
             {
-                if (cbtn.isOn)
-                    ShowChannel(channelId);
+                ShowChannel(channelId);
             });
-            this.channelToggles.Add(channelId, cbtn);
+            this.channelButtons.Add(channelId, cbtn);
         }
 
         private void InstantiateFriendButton(string friendId)
@@ -618,24 +619,24 @@ namespace Photon.Chat
         {
             foreach (string channelId in channels)
             {
-                if (this.channelToggles.ContainsKey(channelId))
+                if (this.channelButtons.ContainsKey(channelId))
                 {
-                    Toggle t = this.channelToggles[channelId];
+                    Button t = this.channelButtons[channelId];
                     Destroy(t.gameObject);
 
-                    this.channelToggles.Remove(channelId);
+                    this.channelButtons.Remove(channelId);
 
                     Debug.Log("[Chat] " + "Unsubscribed from channel '" + channelId + "'.");
 
                     // Showing another channel if the active channel is the one we unsubscribed from before
-                    if (channelId == this.selectedChannelId && this.channelToggles.Count > 0)
+                    if (channelId == this.selectedChannelId && this.channelButtons.Count > 0)
                     {
-                        IEnumerator<KeyValuePair<string, Toggle>> firstEntry = this.channelToggles.GetEnumerator();
+                        IEnumerator<KeyValuePair<string, Button>> firstEntry = this.channelButtons.GetEnumerator();
                         firstEntry.MoveNext();
 
                         this.ShowChannel(firstEntry.Current.Key);
 
-                        firstEntry.Current.Value.isOn = true;
+                        //firstEntry.Current.Value.isOn = true;
                     }
                 }
                 else
@@ -780,9 +781,9 @@ namespace Photon.Chat
 
             Debug.Log("[Chat] " + "ShowChannel: " + this.selectedChannelId);
 
-            foreach (KeyValuePair<string, Toggle> pair in this.channelToggles)
+            foreach (KeyValuePair<string, Button> pair in this.channelButtons)
             {
-                pair.Value.isOn = pair.Key == channelId ? true : false;
+                //pair.Value. = pair.Key == channelId ? true : false;
             }
         }
     }
