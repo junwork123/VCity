@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Service : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class Service : MonoBehaviour
     {
         DataManager.Instance.userCache.Character = CharacterNum;
         DataManager.Instance.UpdateUser();
+        UIManager.instance.UpdatePlayerInfo();
         GameManager.instance.SetPlayerModel((PlayerModelType)CharacterNum);
     }
 }

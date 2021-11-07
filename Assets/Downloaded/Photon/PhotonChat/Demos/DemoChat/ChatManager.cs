@@ -404,6 +404,7 @@ namespace Photon.Chat
                 }
                 else
                 {
+                    Debug.Log(selectedChannelId);
                     this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
                     AppendMsg(new CustomMsg(UserName, time, inputLine));
                     DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine));
@@ -650,8 +651,8 @@ namespace Photon.Chat
         public void OnGetMessages(string channelId, string[] senders, object[] messages)
         {
             // update text
-            Debug.Log("[Chat] : " + messages.ToString());
-            this.ShowChannel(this.selectedChannelId);
+            Debug.Log("[Chat] : " + channelId + " - " + messages.ToString());
+            this.ShowChannel(channelId);
 
             //throw new System.NotImplementedException();
         }

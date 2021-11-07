@@ -23,6 +23,9 @@ public class UIManager : Singleton<UIManager>
     public GameObject minimapPanel;
     public GameObject applyPanel;
 
+    public Image profile_top;
+    public Image profile_mypage;
+
 
     void Start()
     {
@@ -50,6 +53,12 @@ public class UIManager : Singleton<UIManager>
             nameText.text = DataManager.Instance.userCache.Nickname;
             nameTextUI.text = DataManager.Instance.userCache.Nickname;
             MyPagenameTextUI.text = DataManager.Instance.userCache.Nickname;
+            ProfileImage profileImage;
+            if (DataManager.Instance.TryGetComponent<ProfileImage>(out profileImage))
+            {
+                profile_top.sprite = profileImage.GetProfileImg(DataManager.Instance.userCache.Character);
+                profile_mypage.sprite = profileImage.GetProfileImg(DataManager.Instance.userCache.Character);
+            }
         }
     }
 
