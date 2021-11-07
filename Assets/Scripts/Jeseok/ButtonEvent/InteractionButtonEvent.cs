@@ -35,7 +35,7 @@ public class InteractionButtonEvent : MonoBehaviour
                 ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_ROOMS");
                 break;
 
-            case InteractionType.HELP:
+            case InteractionType.MYPAGE:
                 break;
 
             case InteractionType.EXIT:
