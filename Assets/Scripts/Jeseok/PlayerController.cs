@@ -42,10 +42,7 @@ public class PlayerController : MonoBehaviour
     public void Move(Vector3 moveVector)
     {
         bool isMove = moveVector.magnitude != 0;
-        print(isMove);
-
         animator.SetBool("isMove", isMove);
-
         if (isMove == false)
             return;
 
