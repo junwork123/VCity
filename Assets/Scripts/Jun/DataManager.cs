@@ -334,6 +334,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
         return;
     }
+    
 
     public void DebugReturn(DebugLevel level, string message)
     {

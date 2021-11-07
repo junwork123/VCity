@@ -46,6 +46,8 @@ public class MenuManager : MonoBehaviour
         menuStack.Push(menu);
     }
 
+    public void OpenMenuSelf
+
     public void CloseMenu(Menu menu)
     {
         if (menuStack.Count > 0)
