@@ -648,7 +648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 0
-  _interString: "<sprite=4> \uC744 \uB20C\uB7EC\uC8FC\uC138\uC694"
+  _interString: "<sprite name=action> \uC744 \uB20C\uB7EC\uC8FC\uC138\uC694"
   interactionMenuUI: {fileID: 3220252119157975408}
   InteractionKeyCode: 120
   interactionRadius: 3
