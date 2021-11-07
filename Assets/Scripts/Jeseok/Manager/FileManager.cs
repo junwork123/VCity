@@ -45,6 +45,9 @@ public class FileManager : Singleton<FileManager>
         string sourcePath = string.Format("{0}/{1}", streamingPath, fileName);
         string filepath = string.Format("{0}/{1}", dataPath, fileName);
         StartCoroutine(DownloadFile(sourcePath, filepath));
+
+
+        image.sprite = Resources.Load<Sprite>(loadFileName);
     }
 
     // Update is called once per frame
@@ -90,7 +93,7 @@ public class FileManager : Singleton<FileManager>
         }
     }
 
-    IEnumerator OpenFile(string filePath)
+    IEnumerator OpenFile(string fileName)
     {
         yield return null;
         #region backup
@@ -137,6 +140,5 @@ public class FileManager : Singleton<FileManager>
         // currentActivity.Call("startActivity", jChooser);
         #endregion
 
-        image.sprite = Resources.Load<Sprite>(loadFileName);
     }
 }
