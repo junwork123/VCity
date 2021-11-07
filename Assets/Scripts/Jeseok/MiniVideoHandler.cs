@@ -6,25 +6,20 @@ using UnityEngine.Video;
 
 public class MiniVideoHandler : MonoBehaviour
 {
+    [Header("Mini")]
     [SerializeField]
     RawImage miniVideoScreen;
 
     // Start is called before the first frame update
     void OnEnable()
     {
-        VideoPlayer otehrVideo = VideoManager.instance.otherVideo;
+        VideoPlayer miniVideo = VideoManager.instance.miniVideo;
 
-        VideoManager.instance.PalyVideo(otehrVideo, miniVideoScreen);
+        VideoManager.instance.PalyVideo(miniVideo, miniVideoScreen);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     private void OnDisable()
     {
-        VideoManager.instance.otherVideo.Stop();
-        VideoManager.instance.myVideo.Stop();
+        VideoManager.instance.miniVideo.Stop();
     }
 }
