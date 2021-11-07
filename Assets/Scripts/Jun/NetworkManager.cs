@@ -26,6 +26,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     Firebase.DependencyStatus dependencyStatus;
 
     public GameObject loadingPanel;
+    private bool isQuitWait;
 
     void Awake()
     {
@@ -91,7 +92,25 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     private void Update()
     {
+        // 취소 버튼 두번 눌렀을 경우 게임 종료
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isQuitWait == false)
+            {
+                AndroidToastManager.instance.ShowToast("한번 더 누르시면 종료됩니다.");
+                StartCoroutine(CheckQuitApplication());
+                isQuitWait = true;
+            }
+            else
+            {
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#else
+                    Application.Quit();
+#endif
+            }
 
+        }
     }
     void getRoomList()
     {
@@ -161,8 +180,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     public void Logout()
     {
-        Debug.Log("[Network] " + "로그아웃 : " + "(" + user.UserId + ")");
         auth.SignOut();
+        Debug.Log("[Network] " + "로그아웃 : " + "(" + user.UserId + ")");
     }
     public IEnumerator Register(string _userId, string _userPw, UserData _userData)
     {
@@ -305,7 +324,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
     public void OnApplicationQuit()
     {
-        Logout();
+        //Logout();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
         Application.Quit();
+#endif
+    }
+    IEnumerator CheckQuitApplication()
+    {
+        yield return new WaitForSeconds(2.0f);
+        isQuitWait = false;
     }
 }
