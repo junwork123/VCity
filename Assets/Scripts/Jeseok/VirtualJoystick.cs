@@ -47,7 +47,8 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         }
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         DisableJoystick();
     }
 
@@ -87,6 +88,7 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
 
     void DisableJoystick()
     {
+        playerController.Move(Vector3.zero);
         joystick.SetActive(false);
     }
 

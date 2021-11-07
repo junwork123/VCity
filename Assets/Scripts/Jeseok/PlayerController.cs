@@ -25,10 +25,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Move
+#if UNITY_EDITOR
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector3 moveVector = new Vector3(h, 0, v);
         Move(moveVector);
+#endif
 
         bool isAction = Input.GetKeyDown(interactionKey);
         if (isAction == true)
@@ -40,6 +42,7 @@ public class PlayerController : MonoBehaviour
     public void Move(Vector3 moveVector)
     {
         bool isMove = moveVector.magnitude != 0;
+        print(isMove);
 
         animator.SetBool("isMove", isMove);
 
