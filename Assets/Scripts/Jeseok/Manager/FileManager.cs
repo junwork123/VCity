@@ -10,9 +10,12 @@ using UnityEngine.UI;
 
 public class FileManager : Singleton<FileManager>
 {
+#if UNITY_ANDROID && !UNITY_EDITOR
     AndroidJavaClass unityPlayer;
     AndroidJavaObject currentActivity;
     AndroidJavaObject context;
+#endif
+
 
     string streamingPath, dataPath;
     public string fileName;
@@ -35,8 +38,6 @@ public class FileManager : Singleton<FileManager>
         context = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
 #endif
 
-
-
         streamingPath = Application.streamingAssetsPath;
         dataPath = Application.persistentDataPath;
         // file:// + dataPath + fileName
@@ -44,7 +45,7 @@ public class FileManager : Singleton<FileManager>
         // TODO 
         string sourcePath = string.Format("{0}/{1}", streamingPath, fileName);
         string filepath = string.Format("{0}/{1}", dataPath, fileName);
-        StartCoroutine(DownloadFile(sourcePath, filepath));
+        // StartCoroutine(DownloadFile(sourcePath, filepath));
 
 
         image.sprite = Resources.Load<Sprite>(loadFileName);
