@@ -193,7 +193,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                     Debug.Log("[Database] " + "채널 변환 완료 : " + channel.Id);
                     roomInfoList.Add(channel);
                     // 유저 정보에 현재 채널 추가
-                    userCache.MyChannels[channel.Id] = "방 이름";
+                    userCache.MyChannels[channel.Id] = "민원상담 " + DateTime.Now.ToString(("(yyyy-MM-dd)")) + ")";
 
                     // 채널 정보에 현재 유저 추가
                     if (!channel.Members.Contains(userCache.UID))
