@@ -33319,7 +33319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48caa72710147fc4f9389b0b5ec6137d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Channel: 
+  channelId: 
   date: {fileID: 1228225811}
   roomName: {fileID: 1280965452}
   image: {fileID: 1738488274}
@@ -35145,7 +35145,7 @@ MonoBehaviour:
   - Joe
   - Jane
   - Bob
-  HistoryLengthToFetch: 0
+  HistoryLengthToFetch: 3
   ConnectingLabel: {fileID: 168328768079527024}
   ChatOutputPanel: {fileID: 168328767124612029}
   InputFieldChat: {fileID: 7429146792392268428}
@@ -39305,7 +39305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48caa72710147fc4f9389b0b5ec6137d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Channel: 
+  channelId: 
   date: {fileID: 7130605720150394490}
   roomName: {fileID: 2505953910589812112}
   image: {fileID: 0}

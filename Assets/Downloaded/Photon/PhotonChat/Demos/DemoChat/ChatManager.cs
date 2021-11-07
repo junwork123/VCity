@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -178,10 +179,10 @@ namespace Photon.Chat
             if (DataManager.Instance.chatCache.TryGetValue(_channelId, out msgs))
             {
                 msgs.Sort((a, b) => a.Time.CompareTo(b.Time));
-                if (msgs == null && CurrentChannelText.transform.childCount == msgs.Count)
-                {
-                    return;
-                }
+                // if (msgs == null && CurrentChannelText.transform.childCount == msgs.Count)
+                // {
+                //     return;
+                // }
             }
             else
             {
@@ -191,38 +192,32 @@ namespace Photon.Chat
 
             // 이미 메시지가 있는 상태에서
             // 현재 채널과 다른 채널이라면 메시지 내역을 비운다
-            Transform[] childList = CurrentChannelText.GetComponentsInChildren<RectTransform>(true);
-            if (childList != null && _channelId != selectedChannelId)
-            {
-                for (int i = 1; i < childList.Length; i++)
-                {
-                    // 자기 본체가 아니라면 파괴
-                    if (childList[i] != transform)
-                        Destroy(childList[i].gameObject);
-                }
-            }
+            MsgFactory[] childList = CurrentChannelText.GetComponentsInChildren<MsgFactory>();
+            // if (_channelId != selectedChannelId)
+            // {
+            //     for (int i = 1; i < childList.Length; i++)
+            //     {
+            //         // 자기 본체가 아니라면 파괴
+            //         if (childList[i] != CurrentChannelText.transform)
+            //             Destroy(childList[i].gameObject);
+            //     }
+            // }
             // 오프라인이 메시지가 더 적은 경우
             // 다른 부분만 추가될 수 있도록 함(스타트 라인 있으니까 +1해줌)
 
-            if (childList.Length < msgs.Count)
+            for (int i = 0; i < childList.Length; i++)
             {
-                for (int i = childList.Length; i < msgs.Count; i++)
-                {
-                    Debug.Log("[Chat] : " + msgs[i].Sender + " - " + msgs[i].Text);
-                    AppendMsg(msgs[i]);
-                }
-            } // 온라인이 메시지가 더 적은 경우(아직 보내지 못한 상태?)
-            else
-            {
-
+                // 자기 본체가 아니라면 파괴
+                Destroy(childList[i].gameObject);
             }
-            // foreach (var msg in msgs.OrderBy(x => x.Time))
-            // {
-            //     childList[i];
-            // }
+            for (int i = 0; i < msgs.Count; i++)
+            {
+                AppendMsg(msgs[i]);
+            }
             // 채널 이름을 유저가 설정해놓은 채널 이름으로 변경
-            this.CurrentChannelName.text = DataManager.Instance.userCache.MyChannels[_channelId];
-            //this.CurrentChannelText.text = previousMsg;
+            if (this.CurrentChannelName.text != DataManager.Instance.userCache.MyChannels[_channelId])
+                this.CurrentChannelName.text = DataManager.Instance.userCache.MyChannels[_channelId];
+
             Debug.Log("[Chat] " + "메시지 불러오기 성공 : ");
 
         }
@@ -317,7 +312,7 @@ namespace Photon.Chat
                 string[] tokens = inputLine.Split(new char[] { ' ' }, 2);
                 if (tokens[0].Equals("\\help"))
                 {
-                    this.PostHelpToCurrentChannel();
+                    //this.PostHelpToCurrentChannel();
                 }
                 if (tokens[0].Equals("\\state"))
                 {
@@ -405,16 +400,13 @@ namespace Photon.Chat
                 else
                 {
                     Debug.Log(selectedChannelId);
-                    this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
+                    //this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
+                    this.chatClient.PublishMessage(DataManager.REGION_CHANNEL_ID, inputLine);
                     AppendMsg(new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
-                    DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
+                    //DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
+                    DataManager.Instance.AppendMsg(DataManager.REGION_CHANNEL_ID, new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
                 }
             }
-        }
-
-        public void PostHelpToCurrentChannel()
-        {
-            //this.CurrentChannelText.text += HelpText;
         }
 
         public void DebugReturn(ExitGames.Client.Photon.DebugLevel level, string message)
@@ -449,7 +441,7 @@ namespace Photon.Chat
 
 
         }
-        public void UpdateRooms()
+        public void UpdateRoomList()
         {
             UserData userCache = DataManager.Instance.userCache;
             if (userCache != null && userCache.MyChannels != null)
@@ -461,8 +453,9 @@ namespace Photon.Chat
                 }
                 foreach (string channelId in userCache.MyChannels.Keys)
                 {
+                    Debug.Log("[Chat] : " + "채널 " + channelId + "구독 완료");
                     this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
-                    DataManager.Instance.LoadAllMessages(channelId);
+                    StartCoroutine(DataManager.Instance.LoadAllMessages(channelId));
                 }
             }
             else
@@ -472,7 +465,8 @@ namespace Photon.Chat
 
         public void OnConnected()
         {
-            UpdateRooms();
+
+            UpdateRoomList();
             // if (this.ChannelsToJoinOnConnect != null && this.ChannelsToJoinOnConnect.Length > 0)
             // {
             //     this.chatClient.Subscribe(this.ChannelsToJoinOnConnect, this.HistoryLengthToFetch);
@@ -580,7 +574,7 @@ namespace Photon.Chat
             Button cbtn = (Button)Instantiate(this.ChannelBtnToInstantiate);
             cbtn.gameObject.SetActive(true);
             ChannelSelector cs = cbtn.GetComponent<ChannelSelector>();
-            cs.SetChannel(channelId);
+            cs.SetChannelId(channelId);
             cs.setRoomName(DataManager.Instance.userCache.MyChannels[channelId]);
             cs.setDate(DateTime.Now.ToString(("yyyy년 MM월 dd일"))); // TODO : 채팅방 최근 메시지 시간 가져오기
 
@@ -596,10 +590,6 @@ namespace Photon.Chat
 
             }
             cbtn.transform.SetParent(this.ChannelBtnToInstantiate.transform.parent, false);
-            cbtn.onClick.AddListener(delegate
-            {
-                ShowChannel(channelId);
-            });
             this.channelButtons.Add(channelId, cbtn);
         }
 
@@ -650,11 +640,12 @@ namespace Photon.Chat
 
         public void OnGetMessages(string channelId, string[] senders, object[] messages)
         {
-            // update text
-            Debug.Log("[Chat] : " + channelId + " - " + messages.ToString());
-            this.ShowChannel(channelId);
-
-            //throw new System.NotImplementedException();
+            if (this.selectedChannelId.Equals(channelId))
+            {
+                // update text
+                Debug.Log("[Chat] : " + channelId + " - " + messages.ToString());
+                StartCoroutine(Wrapper(channelId));
+            }
         }
 
         public void OnPrivateMessage(string sender, object message, string channelId)
@@ -736,7 +727,11 @@ namespace Photon.Chat
                 channel.Add("Bot", msg, 0); //TODO: how to use msgID?
             }
         }
-
+        public IEnumerator Wrapper(string _channelId)
+        {
+            yield return StartCoroutine(DataManager.Instance.LoadAllMessages(_channelId));
+            ShowChannel(_channelId);
+        }
 
 
         public void ShowChannel(string channelId)

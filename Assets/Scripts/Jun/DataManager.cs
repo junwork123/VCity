@@ -246,7 +246,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
         return null;
     }
-    public async void LoadAllMessages(string _channelId)
+    public IEnumerator LoadAllMessages(string _channelId)
     {
         if (userCache != null && userCache.MyChannels != null)
         {
@@ -259,7 +259,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             // 사용자가 해당 채널에 속해있다면
             // 채널 정보를 캐시에 저장한다
             CollectionReference channelRef = db.Collection("Channels").Document(_channelId).Collection("ChatContents");
-            await channelRef.GetSnapshotAsync().ContinueWith(task =>
+            Task task = channelRef.GetSnapshotAsync().ContinueWith(task =>
             {
 
                 if (task.IsCompleted)
@@ -291,6 +291,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
                 }
             });
+            yield return new WaitUntil(() => task.GetAwaiter().IsCompleted);
         }
     }
     public async void UpdateChannel(Channel _channel)

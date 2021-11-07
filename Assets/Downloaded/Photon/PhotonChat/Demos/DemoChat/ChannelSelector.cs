@@ -15,17 +15,15 @@ namespace Photon.Chat
 {
     public class ChannelSelector : MonoBehaviour, IPointerClickHandler
     {
-        public string Channel;
+        public string channelId;
         [SerializeField]
         public TMP_Text date;
         public TMP_Text roomName;
         public Image image;
 
-        public void SetChannel(string channel)
+        public void SetChannelId(string _channelId)  
         {
-            this.Channel = channel;
-            TMP_Text t = this.GetComponentInChildren<TMP_Text>();
-            t.text = this.Channel;
+            this.channelId = _channelId;
         }
         public void setRoomName(string roomName)
         {
@@ -35,13 +33,14 @@ namespace Photon.Chat
         {
             this.date.text = date;
         }
-        public void setImage(int _serviceNum){
+        public void setImage(int _serviceNum)
+        {
             image.sprite = ImageSet.Instance.GetServiceImg(_serviceNum);
         }
         public void OnPointerClick(PointerEventData eventData)
         {
             ChatManager handler = FindObjectOfType<ChatManager>();
-            handler.ShowChannel(this.Channel);
+            handler.ShowChannel(this.channelId);
 
             // PanelSelector ps = FindObjectOfType<PanelSelector>();
             // ps.CloseChatMenu(ChatMenu.ChannelBar);
