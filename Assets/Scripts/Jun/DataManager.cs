@@ -305,7 +305,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             Debug.Log("[Database] " + "채널 업데이트 요청 시작");
             await channelRef.UpdateAsync(channelData).ContinueWithOnMainThread(task =>
             {
-                Debug.Log("[Database] " + "사용자 정보 업데이트 성공");
+                Debug.Log("[Database] " + "채널 업데이트 성공");
             });
         }
         else
