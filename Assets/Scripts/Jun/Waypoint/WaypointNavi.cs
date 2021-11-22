@@ -14,7 +14,7 @@ public class WaypointNavi : MonoBehaviour
 
     private void Awake()
     {
-        direction = Mathf.RoundToInt(Random.Range(0, 1));
+        direction = Random.Range(0, 2);
         controller = GetComponent<CharacterNavigationController>();
     }
     void Start()
