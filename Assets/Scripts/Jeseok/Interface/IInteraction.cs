@@ -10,7 +10,7 @@ public interface IInteraction
     /// <summary>
     /// 상호작용 종류(NPC, UNMANNED, ...).
     /// </summary>
-    ObjectType objectType { get; set; }
+    NPCType objectType { get; set; }
     /// <summary>
     /// 플레이어가 이 오브젝트를 사용할 수 있는지 여부.
     /// </summary>

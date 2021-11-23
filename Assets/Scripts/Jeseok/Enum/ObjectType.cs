@@ -1,6 +1,7 @@
-public enum ObjectType
+public enum NPCType
 {
-    ETC,
-    NPC,
-    UNMANNED,
+    LIFE,
+    STUDY,
+    JOB,
+    
 }

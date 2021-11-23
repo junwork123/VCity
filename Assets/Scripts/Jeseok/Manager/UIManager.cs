@@ -21,7 +21,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField]
     List<GameObject> panels;
     public GameObject minimapPanel;
-    public GameObject applyPanel;
+    public List<GameObject> applyPanel;
 
     public Image profile_top;
     public Image profile_mypage;
@@ -29,12 +29,12 @@ public class UIManager : Singleton<UIManager>
 
     void Start()
     {
-        InitPanel();
+        InitPanelState();
 
         InactiveActionButton();
     }
 
-    void InitPanel()
+    void InitPanelState()
     {
         for (int i = 0; i < panels.Count; ++i)
             panels[i].SetActive(false);
@@ -88,14 +88,14 @@ public class UIManager : Singleton<UIManager>
         minimapPanel.SetActive(!minimapPanel.activeSelf);
     }
 
-    public void ShowApplyPanel()
+    public void ShowApplyPanel(NPCType type)
     {
-        applyPanel.SetActive(true);
+        applyPanel[(int)type].SetActive(true);
     }
 
-    public void HideApplyPanel()
+    public void HideApplyPanel(NPCType type)
     {
-        applyPanel.SetActive(false);
+        applyPanel[(int)type].SetActive(false);
     }
 
     public void ShowDialog()

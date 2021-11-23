@@ -11,10 +11,10 @@ public enum ApplyType
     // 상담
     COUNSEL,
 
-    // 졸업 증명서
-    ISSUANCE_CERTIFICATE_GRADUATION,
     // 재학 증명서
     ISSUANCE_CERTIFICATE_ENROLLMENT,
+    // 졸업 증명서
+    ISSUANCE_CERTIFICATE_GRADUATION,
     // 휴학 증명서
     ISSUANCE_CERIFICATE_LEAVEOFABSENCE,
     // 납입 증명서

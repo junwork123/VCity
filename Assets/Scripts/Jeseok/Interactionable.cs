@@ -3,8 +3,8 @@ using UnityEngine;
 public class Interactionable : MonoBehaviour, IInteraction
 {
     [SerializeField]
-    ObjectType _objectType;
-    public ObjectType objectType { get => _objectType; set => _objectType = value; }
+    NPCType _objectType;
+    public NPCType objectType { get => _objectType; set => _objectType = value; }
     public bool enable { get; set; }
     [SerializeField]
     string _interString;
@@ -27,6 +27,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     // Start is called before the first frame update
     void Start()
     {
+        gameObject.name = string.Format("{0} NPC", objectType.ToString());
         InteractionKeyCode = GameManager.instance.InteractionKeyCode;
 
         collider = GetComponent<SphereCollider>();
@@ -105,8 +106,7 @@ public class Interactionable : MonoBehaviour, IInteraction
         UIButtonEventManager.instance.activeActionButton = false;
 
 
-        // 상호작용하는 동안 조이스틱 비활성화
-        GameManager.instance.joystickRange.SetActive(isOpenInteractionMenu);
+
 
         #region Close Task Menu
         /// 이미 열려있는 Task 메뉴를 닫음
@@ -114,6 +114,9 @@ public class Interactionable : MonoBehaviour, IInteraction
         {
             ShowInter();
             HideInteractionMenu();
+
+            // 상호작용 종료 후 조이스틱 활성화
+            GameManager.instance.joystickRange.SetActive(true);
         }
         #endregion
         #region Open Task Menu
@@ -124,6 +127,9 @@ public class Interactionable : MonoBehaviour, IInteraction
 
             EndInter();
             ShowInteractionMenu();
+
+            // 상호작용하는 동안 조이스틱 비활성화
+            GameManager.instance.joystickRange.SetActive(false);
         }
         #endregion
 
@@ -144,8 +150,8 @@ public class Interactionable : MonoBehaviour, IInteraction
         interactionMenuUI.SetActive(false);
         isOpenInteractionMenu = false;
 
-        if (UIManager.instance.applyPanel.activeSelf == true)
-            UIManager.instance.HideApplyPanel();
+        if (UIManager.instance.applyPanel[(int)objectType].activeSelf == true)
+            UIManager.instance.HideApplyPanel(objectType);
     }
 
     #region Outline

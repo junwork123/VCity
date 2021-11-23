@@ -21,8 +21,8 @@ public class GameManager : Singleton<GameManager>
     public bool isCamOn = true;
     public bool isMicOn = true;
 
-    [Header("Task")]
-    public Transform teleportPosition;
+    // [Header("Task")]
+    // public Transform teleportPosition;
 
     [Header("System")]
     // 취소버튼 대기시간
@@ -84,10 +84,10 @@ public class GameManager : Singleton<GameManager>
         InteractionKeyCode = keyCode;
     }
 
-    public void TeleportPlayer()
-    {
-        player.transform.position = teleportPosition.position;
-    }
+    // public void TeleportPlayer()
+    // {
+    //     player.transform.position = teleportPosition.position;
+    // }
 
     IEnumerator CheckQuitApplication()
     {
