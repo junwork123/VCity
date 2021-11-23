@@ -1,7 +1,14 @@
 public enum UIButtonType
 {
+    NONE,
+
     ACTION,
-    SETTING, 
+    
+
+    QR_CHECKIN,
+    NOTICE,
+
+    SETTING,
     MESSAGE,
     MAP,
     CAM,

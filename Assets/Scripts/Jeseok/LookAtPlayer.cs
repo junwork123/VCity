@@ -42,7 +42,7 @@ public class LookAtPlayer : MonoBehaviour
         if (other.tag == "Player")
         {
             // lookDir = defaultDir;
-            lookDir = Quaternion.identity;
+            lookDir = defaultDir;
         }
     }
 

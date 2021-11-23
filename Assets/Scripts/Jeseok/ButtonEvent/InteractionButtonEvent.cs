@@ -28,7 +28,7 @@ public class InteractionButtonEvent : MonoBehaviour
         switch (interactionType)
         {
             case InteractionType.APPLY:
-                UIManager.instance.ShowApplyPanel();
+                UIManager.instance.ShowApplyPanel(interactionable.objectType);
                 break;
 
             case InteractionType.LOG:
@@ -41,6 +41,7 @@ public class InteractionButtonEvent : MonoBehaviour
             case InteractionType.EXIT:
                 interactionable.ShowInter();
                 interactionable.HideInteractionMenu();
+                GameManager.instance.joystickRange.SetActive(true);
                 break;
 
             case InteractionType.ETC:

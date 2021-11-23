@@ -26,20 +26,9 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
             case UIButtonType.ACTION:
                 OnClickAction();
                 break;
-            case UIButtonType.SETTING:
-                OnClickSetting();
-                break;
-            case UIButtonType.MESSAGE:
-                OnClickMessage();
-                break;
-            case UIButtonType.MAP:
-                OnClickMap();
-                break;
-            case UIButtonType.CAM:
-                OnClickMic();
-                break;
-            case UIButtonType.MIC:
-                OnClickCam();
+
+            case UIButtonType.QR_CHECKIN:
+                OnClickQRCheckIn();
                 break;
         }
     }
@@ -57,27 +46,7 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
         activeActionButton = false;
     }
 
-    public void OnClickSetting()
-    {
-
-    }
-
-    void OnClickMessage()
-    {
-
-    }
-
-    void OnClickMap()
-    {
-        UIManager.instance.ToggleMinimap();
-    }
-
-    void OnClickMic()
-    {
-
-    }
-
-    void OnClickCam()
+    public void OnClickQRCheckIn()
     {
 
     }
