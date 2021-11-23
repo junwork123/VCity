@@ -75,23 +75,28 @@ public class TestHome : MonoBehaviour
 
     public void onJoinButtonClicked()
     {
+        id = DataManager.Instance.videoCallInfo["id"];
+        roomName = DataManager.Instance.videoCallInfo["roomName"];
+        token = DataManager.Instance.videoCallInfo["token"];
+
+
+        StartVideoCall();
+    }
+    public void StartVideoCall()
+    {
         // create app if nonexistent
         if (ReferenceEquals(app, null))
         {
             app = new TestHelloUnityVideo(); // create app
-            id = DataManager.Instance.videoCallInfo["id"];
-            roomName = DataManager.Instance.videoCallInfo["roomName"];
-            token = DataManager.Instance.videoCallInfo["token"];
             app.loadEngine(id); // load engine
+            app.join(roomName, token);
+            //app.SetScreenSize(1280, 720);
+            app.myScreen = myScreen;
+            app.opScreen = opScreen;
+            app.opScreenMini = opScreenMini;
+            app.onSceneHelloVideoLoaded(); // call this after scene is loaded
+            Debug.Log("영상 통화가 준비되었습니다");
         }
-
-        // join channel and jump to next scene
-        app.join(roomName, token);
-        app.myScreen = myScreen;
-        app.opScreen = opScreen;
-        app.opScreenMini = opScreenMini;
-        app.onSceneHelloVideoLoaded(); // call this after scene is loaded
-        Debug.Log("영상 통화가 준비되었습니다");
     }
 
     public void onLeaveButtonClicked()
@@ -118,6 +123,7 @@ public class TestHome : MonoBehaviour
         if (!ReferenceEquals(app, null))
         {
             app.EnableVideo(paused);
+            StartVideoCall();
         }
     }
 
@@ -126,6 +132,22 @@ public class TestHome : MonoBehaviour
         if (!ReferenceEquals(app, null))
         {
             app.unloadEngine();
+        }
+    }
+    private void OnDisable()
+    {
+        if (!ReferenceEquals(app, null))
+        {
+            app.leave(); // leave channel
+            app.unloadEngine(); // delete engine
+            app = null; // delete app
+        }
+    }
+    private void OnEnable()
+    {
+        if (!ReferenceEquals(app, null))
+        {
+            StartVideoCall();
         }
     }
 }

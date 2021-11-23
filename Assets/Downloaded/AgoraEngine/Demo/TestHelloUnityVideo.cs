@@ -182,10 +182,26 @@ public class TestHelloUnityVideo
         }
     }
 
-    public void onShowMiniScreen()
+    public void SetScreenSize(int w, int h)
     {
-        VideoSurface videoSurface = opScreen.GetComponent<VideoSurface>();
-        //opScreenMini.AddComponent<VideoSurface>(videoSurface);
+        // Create a VideoEncoderConfiguration instance. See the descriptions of the parameters in API Reference.
+        VideoEncoderConfiguration config = new VideoEncoderConfiguration();
+        // Sets the video resolution.
+        config.dimensions.width = w;
+        config.dimensions.height = h;
+        // Sets the video frame rate.
+        config.minFrameRate = 15;
+        config.frameRate = FRAME_RATE.FRAME_RATE_FPS_30;
+        // Sets the video encoding bitrate (Kbps).
+        config.bitrate = 2260;
+        config.minBitrate = 1200;
+        config.minFrameRate = 1200;
+        // Sets the adaptive orientation mode. See the description in API Reference.
+        config.orientationMode = ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT;
+        // Sets the video encoding degradation preference under limited bandwidth. MIANTAIN_QUALITY means to degrade the frame rate to maintain the video quality.
+        config.degradationPreference = DEGRADATION_PREFERENCE.MAINTAIN_FRAMERATE;
+        // Sets the video encoder configuration.
+        mRtcEngine.SetVideoEncoderConfiguration(config);
     }
 
     // public VideoSurface makePlaneSurface(string goName)
