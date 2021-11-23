@@ -13,18 +13,22 @@ public class VideoHandler : MonoBehaviour
     [SerializeField]
     RawImage myVideoScreen;
 
+    public TestHome testHome;
+
     private void OnEnable()
     {
-        VideoPlayer otehrVideo = VideoManager.instance.otherVideo;
-        VideoPlayer myVideo = VideoManager.instance.myVideo;
+        // VideoPlayer otehrVideo = VideoManager.instance.otherVideo;
+        // VideoPlayer myVideo = VideoManager.instance.myVideo;
 
-        VideoManager.instance.PalyVideo(otehrVideo, otherVideoScreen);
-        VideoManager.instance.PalyVideo(myVideo, myVideoScreen);
+        // VideoManager.instance.PlayVideo(otehrVideo, otherVideoScreen);
+        // VideoManager.instance.PlayVideo(myVideo, myVideoScreen);
+        testHome.onJoinButtonClicked();
     }
 
     private void OnDisable()
     {
-        VideoManager.instance.otherVideo.Stop();
-        VideoManager.instance.myVideo.Stop();
+        // VideoManager.instance.otherVideo.Stop();
+        // VideoManager.instance.myVideo.Stop();
+        testHome.OnApplicationQuit();
     }
 }
