@@ -134,20 +134,20 @@ public class TestHome : MonoBehaviour
             app.unloadEngine();
         }
     }
-    private void OnDisable()
-    {
-        if (!ReferenceEquals(app, null))
-        {
-            app.leave(); // leave channel
-            app.unloadEngine(); // delete engine
-            app = null; // delete app
-        }
-    }
-    private void OnEnable()
-    {
-        if (!ReferenceEquals(app, null))
-        {
-            StartVideoCall();
-        }
-    }
+    // private void OnDisable()
+    // {
+    //     if (!ReferenceEquals(app, null))
+    //     {
+    //         app.leave(); // leave channel
+    //         app.unloadEngine(); // delete engine
+    //         app = null; // delete app
+    //     }
+    // }
+    // private void OnEnable()
+    // {
+    //     if (!ReferenceEquals(app, null))
+    //     {
+    //         StartVideoCall();
+    //     }
+    // }
 }

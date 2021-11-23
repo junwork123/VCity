@@ -289,7 +289,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
         else
         {
-            SceneManager.LoadScene("PlayerControl");
+            SceneManager.LoadScene(1);
             loadingPanel.SetActive(false);
 
             Debug.Log("[Network] " + "룸에 입장!");
