@@ -15,13 +15,9 @@ public class TestHelloUnityVideo
 
     // instance of agora engine
     private IRtcEngine mRtcEngine;
-    GameObject myScreen;
-    GameObject opScreen;
-
-    uint myUid;
-
-    public void SetMyScreen(GameObject go) { myScreen = go; }
-    public void SetOpScreen(GameObject go) { opScreen = go; }
+    public GameObject myScreen { get; set; }
+    public GameObject opScreen { get; set; }
+    public GameObject opScreenMini { get; set; }
     // load agora engine
     public void loadEngine(string appId)
     {
@@ -160,24 +156,36 @@ public class TestHelloUnityVideo
         Debug.Log("onUserJoined: uid = " + uid + " elapsed = " + elapsed);
         // this is called in main thread
 
-        if (!ReferenceEquals(opScreen, null))
-        {
-            return; // reuse
-        }
 
         // create a GameObject and assign to this new user
         //VideoSurface videoSurface = makeImageSurface(uid);
-
         opScreen.AddComponent<VideoSurface>();
         VideoSurface videoSurface = opScreen.GetComponent<VideoSurface>();
         if (!ReferenceEquals(videoSurface, null))
         {
+            Debug.Log("opScreen's Surface is Null");
             // configure videoSurface
             opScreen.name = uid.ToString();
             videoSurface.SetForUser(uid);
             videoSurface.SetEnable(true);
             videoSurface.SetVideoSurfaceType(AgoraVideoSurfaceType.RawImage);
         }
+        opScreenMini.AddComponent<VideoSurface>();
+        VideoSurface videoSurface2 = opScreenMini.GetComponent<VideoSurface>();
+        if (!ReferenceEquals(videoSurface, null))
+        {
+            // configure videoSurface
+            opScreenMini.name = uid.ToString();
+            videoSurface2.SetForUser(uid);
+            videoSurface2.SetEnable(true);
+            videoSurface2.SetVideoSurfaceType(AgoraVideoSurfaceType.RawImage);
+        }
+    }
+
+    public void onShowMiniScreen()
+    {
+        VideoSurface videoSurface = opScreen.GetComponent<VideoSurface>();
+        //opScreenMini.AddComponent<VideoSurface>(videoSurface);
     }
 
     // public VideoSurface makePlaneSurface(string goName)

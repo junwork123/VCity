@@ -26,6 +26,7 @@ public class TestHome : MonoBehaviour
 
     public GameObject myScreen;
     public GameObject opScreen;
+    public GameObject opScreenMini;
 
     void Awake()
     {
@@ -86,9 +87,9 @@ public class TestHome : MonoBehaviour
 
         // join channel and jump to next scene
         app.join(roomName, token);
-
-        app.SetMyScreen(myScreen);
-        app.SetOpScreen(opScreen);
+        app.myScreen = myScreen;
+        app.opScreen = opScreen;
+        app.opScreenMini = opScreenMini;
         app.onSceneHelloVideoLoaded(); // call this after scene is loaded
         Debug.Log("영상 통화가 준비되었습니다");
     }
