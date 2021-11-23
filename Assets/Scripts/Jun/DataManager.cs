@@ -80,7 +80,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
                 userCache = snapshot.ConvertTo<UserData>();
                 chatCache = new Dictionary<string, List<CustomMsg>>();
                 roomInfoList = new List<Channel>();
-
+                StartCoroutine(GetVideoCallInfo());
                 Photon.Chat.ChatManager chatManager = FindObjectOfType<Photon.Chat.ChatManager>();
                 chatManager.Connect(DataManager.Instance.userCache.Nickname);
 

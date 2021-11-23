@@ -40,7 +40,7 @@ public class TestHome : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(CheckAppId());
+        //StartCoroutine(CheckAppId());
     }
 
     void Update()
@@ -78,6 +78,9 @@ public class TestHome : MonoBehaviour
         if (ReferenceEquals(app, null))
         {
             app = new TestHelloUnityVideo(); // create app
+            id = DataManager.Instance.videoCallInfo["id"];
+            roomName = DataManager.Instance.videoCallInfo["roomName"];
+            token = DataManager.Instance.videoCallInfo["token"];
             app.loadEngine(id); // load engine
         }
 

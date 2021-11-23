@@ -19,7 +19,7 @@ public class TestHelloUnityVideo
     GameObject opScreen;
 
     uint myUid;
-    
+
     public void SetMyScreen(GameObject go) { myScreen = go; }
     public void SetOpScreen(GameObject go) { opScreen = go; }
     // load agora engine
@@ -69,8 +69,7 @@ public class TestHelloUnityVideo
         */
 
         /*  This API Accepts AppID with token; by default omiting info and use 0 as the local user id */
-        myUid = (uint)DataManager.Instance.userCache.GetHashCode();
-        mRtcEngine.JoinChannelByKey(channelKey: token, channelName: channel, uid: myUid);
+        mRtcEngine.JoinChannelByKey(channelKey: token, channelName: channel);
     }
 
     public string getSdkVersion()
@@ -161,21 +160,20 @@ public class TestHelloUnityVideo
         Debug.Log("onUserJoined: uid = " + uid + " elapsed = " + elapsed);
         // this is called in main thread
 
-        // find a game object to render video stream from 'uid'
-        GameObject go;
-        if (uid == myUid) go = myScreen;
-        else go = opScreen;
-
-        if (!ReferenceEquals(go, null))
+        if (!ReferenceEquals(opScreen, null))
         {
             return; // reuse
         }
 
         // create a GameObject and assign to this new user
-        VideoSurface videoSurface = makeImageSurface(uid);
+        //VideoSurface videoSurface = makeImageSurface(uid);
+
+        opScreen.AddComponent<VideoSurface>();
+        VideoSurface videoSurface = opScreen.GetComponent<VideoSurface>();
         if (!ReferenceEquals(videoSurface, null))
         {
             // configure videoSurface
+            opScreen.name = uid.ToString();
             videoSurface.SetForUser(uid);
             videoSurface.SetEnable(true);
             videoSurface.SetVideoSurfaceType(AgoraVideoSurfaceType.RawImage);
@@ -204,21 +202,21 @@ public class TestHelloUnityVideo
     // }
 
     private const float Offset = 100;
-    public VideoSurface makeImageSurface(uint uid)
-    {
-        GameObject go;
-        if (uid == myUid) go = myScreen;
-        else go = opScreen;
+    // public VideoSurface makeImageSurface(uint uid)
+    // {
+    //     GameObject go;
+    //     if (uid == myUid) go = myScreen;
+    //     else go = opScreen;
 
-        go.name = uid.ToString();
-        // to be renderered onto
-        go.AddComponent<RawImage>();
-        // make the object draggable
-        go.AddComponent<UIElementDragger>();
-        // configure videoSurface
-        VideoSurface videoSurface = go.AddComponent<VideoSurface>();
-        return videoSurface;
-    }
+    //     go.name = uid.ToString();
+    //     // to be renderered onto
+    //     go.AddComponent<RawImage>();
+    //     // make the object draggable
+    //     go.AddComponent<UIElementDragger>();
+    //     // configure videoSurface
+    //     VideoSurface videoSurface = go.AddComponent<VideoSurface>();
+    //     return videoSurface;
+    // }
     // When remote user is offline, this delegate will be called. Typically
     // delete the GameObject for this user
     private void onUserOffline(uint uid, USER_OFFLINE_REASON reason)
