@@ -10,7 +10,6 @@ public class Channel
     [FirestoreProperty] public string Name { get; set; }
 
     [FirestoreProperty] public int Kind { get; set; }
-
     [FirestoreProperty] public List<string> Members { get; set; }
 
 

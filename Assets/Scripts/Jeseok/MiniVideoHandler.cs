@@ -15,7 +15,7 @@ public class MiniVideoHandler : MonoBehaviour
     {
         VideoPlayer miniVideo = VideoManager.instance.miniVideo;
 
-        VideoManager.instance.PalyVideo(miniVideo, miniVideoScreen);
+        VideoManager.instance.PlayVideo(miniVideo, miniVideoScreen);
     }
 
     private void OnDisable()

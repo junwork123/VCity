@@ -24,7 +24,7 @@ public class VideoManager : Singleton<VideoManager>
     [SerializeField]
     float delayToPlay = 3f;
 
-    public void PalyVideo(VideoPlayer videoPlayer, RawImage rawImage)
+    public void PlayVideo(VideoPlayer videoPlayer, RawImage rawImage)
     {
         StartCoroutine(WaitForPlay(videoPlayer, rawImage));
     }

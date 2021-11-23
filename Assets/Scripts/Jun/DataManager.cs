@@ -18,6 +18,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager Instance;
     public static string REGION_CHANNEL_ID = "s1r8QUWh1cOxFm0RUGmV";
+    public Dictionary<string, string> videoCallInfo;
     FirebaseFirestore db;
     // 데이터 매니저는 싱글톤으로 존재
     public UserData userCache { get; set; }
@@ -336,7 +337,29 @@ public class DataManager : MonoBehaviour, IChatClientListener
         }
         return;
     }
+    public IEnumerator GetVideoCallInfo()
+    {
 
+        db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
+        DocumentReference tokenRef = db.Collection("VideoCall").Document("Token");
+        Task task = tokenRef.GetSnapshotAsync().ContinueWith(task =>
+        {
+            DocumentSnapshot snapshot = task.Result;
+            videoCallInfo = new Dictionary<string, string>();
+            string id, roomName, token;
+            snapshot.TryGetValue<string>(nameof(id), out id);
+            snapshot.TryGetValue<string>(nameof(roomName), out roomName);
+            snapshot.TryGetValue<string>(nameof(token), out token);
+            videoCallInfo[nameof(id)] = id;
+            videoCallInfo[nameof(roomName)] = roomName;
+            videoCallInfo[nameof(token)] = token;
+            Debug.Log("[Video] id : " + videoCallInfo[nameof(id)]);
+            Debug.Log("[Video] roomName : " + videoCallInfo[nameof(roomName)]);
+            Debug.Log("[Video] Token : " + videoCallInfo[nameof(token)]);
+        });
+
+        yield return new WaitUntil(() => task.IsCompleted == true);
+    }
 
     public void DebugReturn(DebugLevel level, string message)
     {
