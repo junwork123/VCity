@@ -18,7 +18,7 @@ public class ApplyButtonEvent : MonoBehaviour
     {
         switch (applyType)
         {
-            case ApplyType.ISSUANCE_RESIDENT_REGISTRATION:
+            case ApplyType.ISSUANCE_REGISTRATION_CARD:
                 break;
 
             case ApplyType.ISSUANCE_CERTIFIED_RESIDENT_REGISTRATION:
