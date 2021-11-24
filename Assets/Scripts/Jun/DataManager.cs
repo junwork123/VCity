@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager Instance;
-    public static string REGION_CHANNEL_ID = "s1r8QUWh1cOxFm0RUGmV";
+    public static string REGION_CHANNEL_ID = "3yxIU5G3AZx4IN0iRPSH";
     public Dictionary<string, string> videoCallInfo;
     FirebaseFirestore db;
     // 데이터 매니저는 싱글톤으로 존재
@@ -193,12 +193,15 @@ public class DataManager : MonoBehaviour, IChatClientListener
                     Channel channel = snapshot.ConvertTo<Channel>();
                     Debug.Log("[Database] " + "채널 변환 완료 : " + channel.Id);
                     roomInfoList.Add(channel);
-                    // 유저 정보에 현재 채널 추가
-                    userCache.MyChannels[channel.Id] = "민원상담 " + DateTime.Now.ToString(("(yyyy-MM-dd)")) + ")";
 
                     // 채널 정보에 현재 유저 추가
                     if (!channel.Members.Contains(userCache.UID))
                         channel.Members.Add(userCache.UID);
+
+                    // 유저 정보에 현재 채널 추가
+                    // 공지사항인 경우는 제목을 따로 설정하지 않는다
+                    if (channel.Id != REGION_CHANNEL_ID)
+                        userCache.MyChannels[channel.Id] = "민원상담 " + DateTime.Now.ToString(("(yyyy-MM-dd)")) + ")";
 
                     // 유저 정보 갱신, 전체 채널 정보 갱신
                     UpdateUser();
@@ -336,6 +339,27 @@ public class DataManager : MonoBehaviour, IChatClientListener
             });
         }
         return;
+    }
+    public void SendMsg(string _channelName, string Sender, string text)
+    {
+        db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
+        // 채널 생성(id는 firebase에서 생성받음) 
+        CollectionReference channelRef = db.Collection("Channels").Document(_channelName).Collection("ChatContents");
+
+        // firestore에 저장요청
+        string nowtime = DateTime.Now.ToString((TimeFormat));
+        CustomMsg msg = new CustomMsg(Sender, nowtime, text, 4);
+        channelRef.AddAsync(msg).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted)
+            {
+                Debug.Log("[Database] " + "메시지 전송 성공");
+            }
+            else
+            {
+                Debug.Log("[Database] " + "메시지 전송 실패");
+            }
+        });
     }
     public IEnumerator GetVideoCallInfo()
     {
