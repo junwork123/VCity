@@ -110,6 +110,24 @@ public class TestHome : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void OnBackButtonClicked()
+    {
+        RectTransform myRect = myScreen.GetComponent<RectTransform>();
+        myRect.position = new Vector3(-500, 500, 0);
+
+        RectTransform opRect = opScreen.GetComponent<RectTransform>();
+        RectTransformExtensions.SetAnchor(opRect, AnchorPresets.MiddleCenter, 480, 320, 1);
+    }
+
+    public void OnMiniScreenTouched()
+    {
+        RectTransform myRect = myScreen.GetComponent<RectTransform>();
+        myRect.position = new Vector3(0, -325, 0);
+
+        RectTransform opRect = opScreen.GetComponent<RectTransform>();
+        RectTransformExtensions.SetAnchor(opRect, AnchorPresets.StretchAll);
+    }
+
     public void OnFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         if (!ReferenceEquals(app, null))
