@@ -31,6 +31,7 @@ public class VideoManager : Singleton<VideoManager>
     [SerializeField] GameObject myScreen;
     [SerializeField] GameObject opScreen;
 
+    Vector2 PORTRAIT_SCALE = new Vector2(320, 480);
     void Awake()
     {
 #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
@@ -51,6 +52,8 @@ public class VideoManager : Singleton<VideoManager>
         screenPanel.GetComponent<agora_utilities.UIElementDragger>().enabled = false;
         screenPanel.gameObject.SetActive(false);
         bottomPanel.gameObject.SetActive(false);
+        RectTransform myRect = myScreen.GetComponent<RectTransform>();
+        myRect.sizeDelta = PORTRAIT_SCALE;
     }
 
     void Update()
@@ -128,7 +131,7 @@ public class VideoManager : Singleton<VideoManager>
         myRect.position = new Vector3(-500, 500, 0);
 
         RectTransformExtensions.SetAnchor(screenPanel, AnchorPresets.MiddleCenter);
-        screenPanel.sizeDelta = new Vector2(480, 320);
+        screenPanel.sizeDelta = PORTRAIT_SCALE;
 
         screenPanel.GetComponent<ScreenTouchHandler>().enabled = true;
         screenPanel.GetComponent<agora_utilities.UIElementDragger>().enabled = true;
