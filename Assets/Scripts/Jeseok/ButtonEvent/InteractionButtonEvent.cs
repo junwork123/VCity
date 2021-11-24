@@ -36,6 +36,7 @@ public class InteractionButtonEvent : MonoBehaviour
                 break;
 
             case InteractionType.MYPAGE:
+                
                 break;
 
             case InteractionType.EXIT:
