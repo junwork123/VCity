@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Chat;
 
 public class UIButtonEventManager : Singleton<UIButtonEventManager>
 {
@@ -30,6 +31,9 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
             case UIButtonType.QR_CHECKIN:
                 OnClickQRCheckIn();
                 break;
+            case UIButtonType.NOTICE:
+                OnClickNotice();
+                break;
         }
     }
 
@@ -49,5 +53,8 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
     public void OnClickQRCheckIn()
     {
 
+    }
+    public void OnClickNotice(){
+        ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_NOTICE");
     }
 }

@@ -212,6 +212,10 @@ namespace Photon.Chat
             }
             for (int i = 0; i < msgs.Count; i++)
             {
+                // // 하이퍼링크를 포함하고 있다면
+                // if(msgs[i].Text.Length > 
+
+                // }
                 AppendMsg(msgs[i]);
             }
             // 채널 이름을 유저가 설정해놓은 채널 이름으로 변경
@@ -446,7 +450,10 @@ namespace Photon.Chat
             UserData userCache = DataManager.Instance.userCache;
             if (userCache != null && userCache.MyChannels != null)
             {
-                if (userCache.MyChannels.Count == 0)
+                // 기본 채널(공지사항)을 구독하고 있지 않다면 
+                // 구독한다
+                string REGION_CHANNEL;
+                if (!userCache.MyChannels.TryGetValue(DataManager.REGION_CHANNEL_ID, out REGION_CHANNEL))
                 {
                     Debug.Log("[Chat] : " + "기본 채널 구독 요청");
                     DataManager.Instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);

@@ -141,9 +141,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     // 로그인 성공 시
                     // 닉네임을 설정하고 자동 동기화 옵션을 켠 뒤 접속한다.
+                    
                     StartCoroutine(DataManager.Instance.GetUser(user.UserId));
                     // Debug.Log(DataManager.instance.userCache.Nickname);
                     // #region @Test용
+                    //DataManager.Instance.SendMsg(DataManager.REGION_CHANNEL_ID, "알리미", "");
+                    //DataManager.Instance.SendMsg(DataManager.REGION_CHANNEL_ID, "알리미", "");
                     // //DataManager.instance.CreateChannel("Region");
                     // DataManager.instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
                     // #endregion
