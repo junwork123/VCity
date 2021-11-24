@@ -54,7 +54,9 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
     {
 
     }
-    public void OnClickNotice(){
+    public void OnClickNotice()
+    {
+        ChatManager.Instance.ShowNotice();
         ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_NOTICE");
     }
 }

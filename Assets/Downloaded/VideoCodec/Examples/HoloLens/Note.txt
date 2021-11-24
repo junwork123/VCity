@@ -1,4 +1,0 @@
-Need to import MRTK：
-https://github.com/Microsoft/MixedRealityToolkit-Unity
-Or refer to this project:
-https://github.com/ShanguUncle/UnityChatHololens

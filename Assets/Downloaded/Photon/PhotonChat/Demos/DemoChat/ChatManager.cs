@@ -68,7 +68,7 @@ namespace Photon.Chat
         public TMP_InputField InputFieldChat;   // set in inspector
 
         public ScrollRect scroll;
-        public RectTransform CurrentChannelText;     // set in inspector
+        public RectTransform CurrentChannelContents;     // set in inspector
         public TMP_Text CurrentChannelName;     // set in inspector
         public Button ChannelBtnToInstantiate; // set in inspector
 
@@ -82,12 +82,12 @@ namespace Photon.Chat
         public bool ShowState = true;
         public Text StateText; // set in inspector
 
-        public GameObject MyMsgFactory;
-        public GameObject OpMsgFactory;
 
-        public GameObject StartLine;
+        [SerializeField] GameObject myMsgFactory;
+        [SerializeField] GameObject opMsgFactory;
+        [SerializeField] GameObject noticeMsgFactory;
+        [SerializeField] RectTransform noticeContents;
 
-        public string lastMsgId = "";
 
         // private static string WelcomeText = "Welcome to chat. Type \\help to list commands.";
         private static string HelpText = "\n    -- HELP --\n" +
@@ -192,7 +192,7 @@ namespace Photon.Chat
 
             // 이미 메시지가 있는 상태에서
             // 현재 채널과 다른 채널이라면 메시지 내역을 비운다
-            MsgFactory[] childList = CurrentChannelText.GetComponentsInChildren<MsgFactory>();
+            MsgFactory[] childList = CurrentChannelContents.GetComponentsInChildren<MsgFactory>();
             // if (_channelId != selectedChannelId)
             // {
             //     for (int i = 1; i < childList.Length; i++)
@@ -230,14 +230,14 @@ namespace Photon.Chat
             GameObject mBox = null;
             if (_msg.Sender == this.UserName)
             {
-                mBox = Instantiate(MyMsgFactory);
+                mBox = Instantiate(myMsgFactory);
             }
             else
             {
-                mBox = Instantiate(OpMsgFactory);
+                mBox = Instantiate(opMsgFactory);
             }
             mBox.GetComponent<MsgFactory>().SetMsg(_msg);
-            mBox.transform.SetParent(this.CurrentChannelText.transform);
+            mBox.transform.SetParent(this.CurrentChannelContents.transform);
         }
         public void Update()
         {
@@ -445,7 +445,7 @@ namespace Photon.Chat
 
 
         }
-        public void UpdateRoomList()
+        public IEnumerator UpdateRoomList()
         {
             UserData userCache = DataManager.Instance.userCache;
             if (userCache != null && userCache.MyChannels != null)
@@ -462,7 +462,7 @@ namespace Photon.Chat
                 {
                     Debug.Log("[Chat] : " + "채널 " + channelId + "구독 완료");
                     this.chatClient.Subscribe(channelId, this.HistoryLengthToFetch);
-                    StartCoroutine(DataManager.Instance.LoadAllMessages(channelId));
+                    yield return StartCoroutine(DataManager.Instance.LoadAllMessages(channelId));
                 }
             }
             else
@@ -473,7 +473,7 @@ namespace Photon.Chat
         public void OnConnected()
         {
 
-            UpdateRoomList();
+            StartCoroutine(UpdateRoomList());
             // if (this.ChannelsToJoinOnConnect != null && this.ChannelsToJoinOnConnect.Length > 0)
             // {
             //     this.chatClient.Subscribe(this.ChannelsToJoinOnConnect, this.HistoryLengthToFetch);
@@ -533,8 +533,9 @@ namespace Photon.Chat
 
                 if (this.ChannelBtnToInstantiate != null)
                 {
-                    this.InstantiateChannelButton(channel);
-
+                    // 기본 채널인 공지사항은 따로 출력한다.
+                    if (channel != DataManager.REGION_CHANNEL_ID)
+                        this.InstantiateChannelButton(channel);
                 }
             }
 
@@ -740,7 +741,22 @@ namespace Photon.Chat
             ShowChannel(_channelId);
         }
 
+        public void ShowNotice()
+        {
+            // 메시지 추가하는 장소 바꾸기
+            RectTransform rect = CurrentChannelContents;
+            CurrentChannelContents = noticeContents;
 
+            // 메시지 형식 바꾸기
+            GameObject go = opMsgFactory;
+            opMsgFactory = noticeMsgFactory;
+
+            ShowChannel(DataManager.REGION_CHANNEL_ID);
+
+            // 원래대로 복원
+            CurrentChannelContents = rect;
+            opMsgFactory = go;
+        }
         public void ShowChannel(string channelId)
         {
             if (string.IsNullOrEmpty(channelId))
