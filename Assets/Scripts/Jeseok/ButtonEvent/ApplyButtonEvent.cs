@@ -26,10 +26,23 @@ public class ApplyButtonEvent : MonoBehaviour
                 break;
 
             case ApplyType.COUNSEL:
-                // Service.Instance.GetComponent<MenuManager>().OpenMenu("VIDEO_CALL");
+                UIManager.instance.OpenPanel("COUNSEL_SELECT_PANEL");
+                UIManager.instance.ClosePanel("LIFE_APPLY_PANEL");
                 break;
 
-            case ApplyType.ETC:
+            // COUNSEL SELECT
+            case ApplyType.VIDEOCALL_COUNSEL_APPLY:
+                UIManager.instance.OpenPanel("VIDEOCALL_WAIT_PANEL");
+                UIManager.instance.ClosePanel("COUNSEL_SELECT_PANEL");
+                break;
+
+            case ApplyType.CHAT_COUNSEL_APPLY:
+                UIManager.instance.OpenPanel("CHAT_WAIT_PANEL");
+                UIManager.instance.ClosePanel("COUNSEL_SELECT_PANEL");
+                break;
+
+            case ApplyType.NONE:
+                print("Not Set Button Event");
                 break;
         }
     }

@@ -22,7 +22,7 @@ public class UIManager : Singleton<UIManager>
 
     [Header("Panel")]
     [SerializeField]
-    List<GameObject> panels;
+    List<UIPanel> panels;
     public GameObject minimapPanel;
     public List<GameObject> applyPanel;
 
@@ -39,7 +39,7 @@ public class UIManager : Singleton<UIManager>
     void InitPanelState()
     {
         for (int i = 0; i < panels.Count; ++i)
-            panels[i].SetActive(false);
+            panels[i].gameObject.SetActive(false);
     }
 
     public void UpdatePlayerInfo()
@@ -100,8 +100,9 @@ public class UIManager : Singleton<UIManager>
         applyPanel[(int)type].SetActive(false);
     }
 
-    public void ShowDialog()
+    public void ShowDialog(string message)
     {
+        SetDialogMessage(message);
         dialog.SetActive(true);
     }
 
@@ -129,9 +130,33 @@ public class UIManager : Singleton<UIManager>
             panel.SetActive(true);
     }
 
+    public void OpenPanel(string name)
+    {
+        for (int i = 0; i < panels.Count; ++i)
+        {
+            if (panels[i].panelName == name)
+            {
+                OpenPanel(panels[i].gameObject);
+                return;
+            }
+        }
+    }
+
     public void ClosePanel(GameObject panel)
     {
         panel.SetActive(false);
+    }
+
+    public void ClosePanel(string name)
+    {
+        for (int i = 0; i < panels.Count; ++i)
+        {
+            if (panels[i].panelName == name)
+            {
+                ClosePanel(panels[i].gameObject);
+                return;
+            }
+        }
     }
 
     public void OpenServiceMenu(string menu)

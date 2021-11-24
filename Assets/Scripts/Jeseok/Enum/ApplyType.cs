@@ -1,6 +1,6 @@
 public enum ApplyType
 {
-    ETC,
+    NONE,
     
     // 주민 등록증
     ISSUANCE_REGISTRATION_CARD,
@@ -28,5 +28,8 @@ public enum ApplyType
     ISSUACNE_CERTIFICATE_HEALTH,
     // 고용보험 이력
     ISSUANCE_EMPLOYMENT_ISURANCE_HISTORY,
+
+    VIDEOCALL_COUNSEL_APPLY,
+    CHAT_COUNSEL_APPLY,
 
 }

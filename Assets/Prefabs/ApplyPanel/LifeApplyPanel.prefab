@@ -528,6 +528,7 @@ GameObject:
   - component: {fileID: 4870233584429456032}
   - component: {fileID: 1112870075317858840}
   - component: {fileID: 1070714250760248096}
+  - component: {fileID: 3424130672945504909}
   m_Layer: 5
   m_Name: LifeApplyPanel
   m_TagString: Untagged
@@ -621,6 +622,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickListener: []
+--- !u!114 &3424130672945504909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4870233584429456034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a70c902e94a48934a8968aace48886ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelName: LIFE_APPLY_PANEL
 --- !u!1 &4870233585017192538
 GameObject:
   m_ObjectHideFlags: 0

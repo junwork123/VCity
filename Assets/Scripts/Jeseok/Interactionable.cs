@@ -76,8 +76,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     #region Interaciton
     public void ShowInter()
     {
-        UIManager.instance.SetDialogMessage(interString);
-        UIManager.instance.ShowDialog();
+        UIManager.instance.ShowDialog(interString);
 
         SetOutline();
     }
