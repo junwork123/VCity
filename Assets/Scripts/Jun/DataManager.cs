@@ -202,7 +202,8 @@ public class DataManager : MonoBehaviour, IChatClientListener
                     // 공지사항인 경우는 제목을 따로 설정하지 않는다
                     if (channel.Id != REGION_CHANNEL_ID)
                         userCache.MyChannels[channel.Id] = "민원상담 " + DateTime.Now.ToString(("(yyyy-MM-dd)")) + ")";
-
+                    else
+                        userCache.MyChannels[channel.Id] = "공지사항";
                     // 유저 정보 갱신, 전체 채널 정보 갱신
                     UpdateUser();
                     UpdateChannel(channel);
