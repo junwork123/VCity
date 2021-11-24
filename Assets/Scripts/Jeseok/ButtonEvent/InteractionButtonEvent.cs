@@ -36,7 +36,7 @@ public class InteractionButtonEvent : MonoBehaviour
                 break;
 
             case InteractionType.MYPAGE:
-                
+                UIManager.instance.OpenServiceMenu("DISPLAY_MYPAGE");
                 break;
 
             case InteractionType.EXIT:

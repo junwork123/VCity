@@ -12,6 +12,9 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI nameTextUI;
     public TextMeshProUGUI MyPagenameTextUI;
 
+    public Image profile_top;
+    public Image profile_mypage;
+
     [Space(10f)]
     public GameObject actionButton;
     public GameObject dialog;
@@ -23,8 +26,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject minimapPanel;
     public List<GameObject> applyPanel;
 
-    public Image profile_top;
-    public Image profile_mypage;
+    public MenuManager serviceMenuManager;
 
 
     void Start()
@@ -130,5 +132,10 @@ public class UIManager : Singleton<UIManager>
     public void ClosePanel(GameObject panel)
     {
         panel.SetActive(false);
+    }
+
+    public void OpenServiceMenu(string menu)
+    {
+        serviceMenuManager.OpenMenu(menu);
     }
 }
