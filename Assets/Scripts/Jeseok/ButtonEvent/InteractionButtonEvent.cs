@@ -31,14 +31,6 @@ public class InteractionButtonEvent : MonoBehaviour
                 UIManager.instance.ShowApplyPanel(interactionable.objectType);
                 break;
 
-            case InteractionType.LOG:
-                ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_ROOMS");
-                break;
-
-            case InteractionType.MYPAGE:
-                UIManager.instance.OpenServiceMenu("DISPLAY_MYPAGE");
-                break;
-
             case InteractionType.EXIT:
                 interactionable.ShowInter();
                 interactionable.HideInteractionMenu();
