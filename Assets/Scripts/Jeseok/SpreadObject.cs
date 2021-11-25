@@ -10,6 +10,7 @@ public class SpreadObject : MonoBehaviour
     public List<Transform> childTransforms;
 
     public float radiusRange = 1.5f;
+    public float offsetY = 0f;
     [Range(-90, 90)]
     public float centerAxis = 0f;
     float angle;
@@ -25,7 +26,7 @@ public class SpreadObject : MonoBehaviour
         }
     }
 
-    void Start()
+    void OnEnable()
     {
         InitPosition();
         Spread();
@@ -55,6 +56,7 @@ public class SpreadObject : MonoBehaviour
             // centerAxis 만큼 추가로 이동
             childTransforms[i].transform.RotateAround(transform.position, transform.forward, (count - 1) * angle * 0.5f + centerAxis - (angle * i));
             childTransforms[i].transform.localEulerAngles = Vector3.zero;
+            childTransforms[i].transform.localPosition += Vector3.up * offsetY;
         }
     }
 }
