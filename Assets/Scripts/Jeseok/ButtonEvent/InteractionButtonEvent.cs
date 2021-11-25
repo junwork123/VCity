@@ -14,7 +14,7 @@ public class InteractionButtonEvent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        clickListener = GetComponentsInChildren<InteractionButtonClickListener>();
+        clickListener = GetComponentsInChildren<InteractionButtonClickListener>(true);
 
         for (int i = 0; i < clickListener.Length; ++i)
             clickListener[i].AddClickCallback(Interaction);
@@ -28,7 +28,7 @@ public class InteractionButtonEvent : MonoBehaviour
         switch (interactionType)
         {
             case InteractionType.APPLY:
-                UIManager.instance.ShowApplyPanel(interactionable.objectType);
+                UIManager.instance.OpenApplyPanel(interactionable.objectType);
                 break;
 
             case InteractionType.EXIT:

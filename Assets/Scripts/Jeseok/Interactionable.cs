@@ -76,14 +76,14 @@ public class Interactionable : MonoBehaviour, IInteraction
     #region Interaciton
     public void ShowInter()
     {
-        UIManager.instance.ShowDialog(interString);
+        UIManager.instance.OpenDialog(interString);
 
         // SetOutline();
     }
 
     public void EndInter()
     {
-        UIManager.instance.HideDialog();
+        UIManager.instance.CloseDialog();
 
         // UnsetOutline();
         HideInteractionMenu();
@@ -107,20 +107,21 @@ public class Interactionable : MonoBehaviour, IInteraction
 
 
 
-        #region Close Task Menu
-        /// 이미 열려있는 Task 메뉴를 닫음
-        if (isOpenInteractionMenu == true)
-        {
-            ShowInter();
-            HideInteractionMenu();
+        /// InteractionMenuCanvas에서 Panel을 열고 닫도록 변경
+        // #region Close Task Menu
+        // /// 이미 열려있는 Task 메뉴를 닫음
+        // if (isOpenInteractionMenu == true)
+        // {
+        //     ShowInter();
+        //     HideInteractionMenu();
 
-            // 상호작용 종료 후 조이스틱 활성화
-            GameManager.instance.joystickRange.SetActive(true);
-        }
-        #endregion
+        //     // 상호작용 종료 후 조이스틱 활성화
+        //     GameManager.instance.joystickRange.SetActive(true);
+        // }
+        // #endregion
         #region Open Task Menu
-        else
-        {
+        // else
+        // {
             // 상호작용할 때 플레이어가 오브젝트를 바라봄
             player.transform.forward = transform.position - player.transform.position;
 
@@ -129,7 +130,7 @@ public class Interactionable : MonoBehaviour, IInteraction
 
             // 상호작용하는 동안 조이스틱 비활성화
             GameManager.instance.joystickRange.SetActive(false);
-        }
+        // }
         #endregion
 
     }
@@ -140,17 +141,21 @@ public class Interactionable : MonoBehaviour, IInteraction
     /// </summary>
     public void ShowInteractionMenu()
     {
-        interactionMenuUI.SetActive(true);
+        // interactionMenuUI.SetActive(true);
         isOpenInteractionMenu = true;
+
+        UIManager.instance.OpenApplyPanel(objectType);
     }
 
     public void HideInteractionMenu()
     {
-        interactionMenuUI.SetActive(false);
-        isOpenInteractionMenu = false;
+        // interactionMenuUI.SetActive(false);
+        // isOpenInteractionMenu = false;
 
-        if (UIManager.instance.applyPanel[(int)objectType].activeSelf == true)
-            UIManager.instance.HideApplyPanel(objectType);
+        // if (UIManager.instance.applyPanel[(int)objectType].activeSelf == true)
+        //     UIManager.instance.HideApplyPanel(objectType);
+
+        UIManager.instance.CloseApplyPanel(objectType);
     }
 
     #region Outline

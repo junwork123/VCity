@@ -90,26 +90,30 @@ public class UIManager : Singleton<UIManager>
         minimapPanel.SetActive(!minimapPanel.activeSelf);
     }
 
-    public void ShowApplyPanel(NPCType type)
+    public void OpenApplyPanel(NPCType type)
     {
         applyPanel[(int)type].SetActive(true);
     }
 
-    public void HideApplyPanel(NPCType type)
+    public void CloseApplyPanel(NPCType type)
     {
         applyPanel[(int)type].SetActive(false);
     }
 
-    public void ShowDialog(string message)
+    public void OpenDialog(string message)
     {
         SetDialogMessage(message);
         dialog.SetActive(true);
     }
 
-    public void HideDialog()
+    public void CloseDialog()
     {
         dialog.SetActive(false);
-        SetDialogMessage("");
+    }
+
+    public void OpenExistDialog()
+    {
+        dialog.SetActive(true);
     }
 
     public void SetDialogMessage(string message)

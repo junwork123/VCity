@@ -13,4 +13,6 @@ public enum UIButtonType
     MAP,
     CAM,
     MIC,
+
+    BACK_APPLY_PANEL,
 }
