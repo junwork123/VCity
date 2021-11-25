@@ -19,7 +19,9 @@ public class PedestrianSpawner : MonoBehaviour
         Vector3 pos = new Vector3(transform.position.x, 0, transform.position.z);
         obj.transform.position = pos;
         obj.transform.SetParent(this.transform);
+        obj.GetComponent<WaypointNavi>().street = street;
         obj.GetComponent<WaypointNavi>().currentWaypoint = childs[idx];
+        obj.GetComponent<WaypointNavi>().controller.SetDestination(childs[idx].transform.position);
 
         StartCoroutine(Spawn());
     }
@@ -34,7 +36,9 @@ public class PedestrianSpawner : MonoBehaviour
             Vector3 pos = new Vector3(childs[idx].transform.position.x, 0, childs[idx].transform.position.z);
             obj.transform.position = pos;
             obj.transform.SetParent(this.transform);
+            obj.GetComponent<WaypointNavi>().street = street;
             obj.GetComponent<WaypointNavi>().currentWaypoint = childs[idx];
+            obj.GetComponent<WaypointNavi>().controller.SetDestination(childs[idx].transform.position);
             yield return new WaitForEndOfFrame();
             count++;
         }

@@ -20,7 +20,7 @@ public class ApplyButtonEvent : MonoBehaviour
         {
             #region LIFE
             case ApplyType.ISSUANCE_CERTIFIED_RESIDENT_REGISTRATION:
-                Service.Instance.GetComponent<MenuManager>().OpenMenu("REQUEST_INFO");
+                ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_ROOMS");
                 break;
 
             case ApplyType.ISSUANCE_REGISTRATION_CARD:

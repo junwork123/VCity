@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WaypointNavi : MonoBehaviour
 {
-    CharacterNavigationController controller;
+    public CharacterNavigationController controller;
     public Waypoint currentWaypoint;
     public Waypoint dst;
 
@@ -19,7 +19,7 @@ public class WaypointNavi : MonoBehaviour
     }
     void Start()
     {
-        controller.SetDestination(currentWaypoint.transform.position);
+
         //path = street.GetShorestPath(currentWaypoint, dst);
     }
 
@@ -48,13 +48,12 @@ public class WaypointNavi : MonoBehaviour
         if (controller.reachedDestination)
         {
             bool shouldBranch = false;
-            if(currentWaypoint == null)
-                currentWaypoint = street.src;
-                
-            if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0)
+            if (currentWaypoint == null)
             {
-                shouldBranch = Random.Range(0f, 1f) <= currentWaypoint.branchRatio ? true : false;
+                currentWaypoint = street.ways[Random.Range(0, street.ways.Count)];
             }
+            if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0)
+                shouldBranch = Random.Range(0f, 1f) <= currentWaypoint.branchRatio ? true : false;
 
             if (shouldBranch)
             {
@@ -84,8 +83,7 @@ public class WaypointNavi : MonoBehaviour
                     }
                 }
 
-                controller.SetDestination(currentWaypoint.GetPosition());
-
+                controller.SetDestination(currentWaypoint.transform.position);
             }
         }
     }

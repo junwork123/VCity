@@ -7,7 +7,7 @@ public class Street : MonoBehaviour
 {
     // 도로명 주소 데이터 객체
     public string streetName;
-    Dictionary<string, Waypoint> dict;
+    public List<Waypoint> ways;
     // Start is called before the first frame update
 
     public Waypoint src;
@@ -16,14 +16,11 @@ public class Street : MonoBehaviour
 
     void Start()
     {
-        dict = new Dictionary<string, Waypoint>();
-        // 자식들의 도로에 GUID를 생성시켜준다.
-        int i = 0;
+        ways = new List<Waypoint>();
+
         foreach (Waypoint item in GetComponentsInChildren<Waypoint>())
         {
-            //item.uid = System.Guid.NewGuid().ToString();
-            item.uid = "way" + i++;
-            dict[item.uid] = item;
+            ways.Add(item);
         }
 
     }
