@@ -26,7 +26,7 @@ public class RequestChat : MonoBehaviour
         yield return StartCoroutine(DataManager.Instance.CreateChannel(channelName));
         yield return StartCoroutine(DataManager.Instance.SubscribeChannel(DataManager.Instance.lastCreatedChannel));
         yield return StartCoroutine(ChatManager.Instance.UpdateRoomList());
-        ChatManager.Instance.ShowChannel(channelName);
+        ChatManager.Instance.ShowChannel(DataManager.Instance.lastCreatedChannel);
         ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_MSGS");
         loadingPanel.SetActive(false);
     }

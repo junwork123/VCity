@@ -119,6 +119,11 @@ public class VideoManager : Singleton<VideoManager>
             screenPanel.gameObject.SetActive(false);
             bottomPanel.gameObject.SetActive(false);
             frontPanel.gameObject.SetActive(false);
+
+            Destroy(opScreen.GetComponent<RawImage>());
+            Destroy(myScreen.GetComponent<RawImage>());
+            opScreen.AddComponent<RawImage>();
+            myScreen.AddComponent<RawImage>();
         }
 
     }

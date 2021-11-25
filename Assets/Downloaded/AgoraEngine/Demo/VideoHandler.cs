@@ -186,7 +186,7 @@ public class VideoHandler
         config.minBitrate = 1200;
         config.minFrameRate = 1200;
         // Sets the adaptive orientation mode. See the description in API Reference.
-        config.orientationMode = ORIENTATION_MODE.ORIENTATION_MODE_FIXED_PORTRAIT;
+        config.orientationMode = ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE;
         // Sets the video encoding degradation preference under limited bandwidth. MIANTAIN_QUALITY means to degrade the frame rate to maintain the video quality.
         config.degradationPreference = DEGRADATION_PREFERENCE.MAINTAIN_FRAMERATE;
         // Sets the video encoder configuration.

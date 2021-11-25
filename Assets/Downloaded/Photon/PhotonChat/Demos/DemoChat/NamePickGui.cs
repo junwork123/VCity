@@ -28,15 +28,18 @@ namespace Photon.Chat
             UserIdPref = "junwork123@gmail.com";
             UserPwPref = "wnswns95";
 #else
+        DestroySelf();
         UserIdPref = "sposent7@naver.com";
         UserPwPref = "wnswns95";
 #endif
-
             this.idInput.text = UserIdPref;
             this.pwInput.text = UserPwPref;
         }
 
-
+        void DestroySelf()
+        {
+            Destroy(this);
+        }
         // new UI will fire "EndEdit" event also when loosing focus. So check "enter" key and only then StartChat.
         public void EndEditOnEnter()
         {

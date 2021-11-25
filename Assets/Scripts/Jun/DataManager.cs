@@ -319,7 +319,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
             CollectionReference msgRef = db.Collection("Channels").Document(_channelId).Collection("ChatContents");
 
-            Debug.Log("[Database] " + "메시지 추가 시작" + msgRef.Id);
+            Debug.Log("[Database] " + "메시지 추가 시작" + _channelId);
             await msgRef.AddAsync(_msg.ToDictionary()).ContinueWith(task =>
             {
                 if (task.IsCompleted)
