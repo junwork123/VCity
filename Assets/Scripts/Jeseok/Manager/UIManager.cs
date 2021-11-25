@@ -123,14 +123,13 @@ public class UIManager : Singleton<UIManager>
 
     public void OpenPanel(GameObject panel)
     {
-        Service service;
-        if (panel.TryGetComponent<Service>(out service))
-        {
-            Photon.Chat.ChatManager.Instance.ShowChannel(DataManager.REGION_CHANNEL_ID);
-            Photon.Chat.ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_MSGS");
-            return;
-        }
-        else
+        // Service service;
+        // if (panel.TryGetComponent<Service>(out service))
+        // {
+        //     Photon.Chat.ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_");
+        //     return;
+        // }
+        // else
             panel.SetActive(true);
     }
 

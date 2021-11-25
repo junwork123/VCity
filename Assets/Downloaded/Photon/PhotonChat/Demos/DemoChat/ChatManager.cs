@@ -343,7 +343,7 @@ namespace Photon.Chat
                 {
                     this.chatClient.Subscribe(tokens[1].Split(new char[] { ' ', ',' }));
 
-                    DataManager.Instance.SubscribeChannel(tokens[1]);
+                    StartCoroutine(DataManager.Instance.SubscribeChannel(tokens[1]));
                 }
                 else if ((tokens[0].Equals("\\unsubscribe") || tokens[0].Equals("\\u")) && !string.IsNullOrEmpty(tokens[1]))
                 {
@@ -456,7 +456,7 @@ namespace Photon.Chat
                 if (!userCache.MyChannels.TryGetValue(DataManager.REGION_CHANNEL_ID, out REGION_CHANNEL))
                 {
                     Debug.Log("[Chat] : " + "기본 채널 구독 요청");
-                    DataManager.Instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID);
+                    StartCoroutine(DataManager.Instance.SubscribeChannel(DataManager.REGION_CHANNEL_ID));
                 }
                 foreach (string channelId in userCache.MyChannels.Keys)
                 {

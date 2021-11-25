@@ -5,16 +5,17 @@ using UnityEngine;
 public class UIPanel : MonoBehaviour
 {
     public string panelName;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
+
 }

@@ -20,7 +20,7 @@ public class ApplyButtonEvent : MonoBehaviour
         {
             #region LIFE
             case ApplyType.ISSUANCE_CERTIFIED_RESIDENT_REGISTRATION:
-                ChatManager.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_ROOMS");
+                Service.Instance.GetComponent<MenuManager>().OpenMenu("REQUEST_RESIDENT_INFO");
                 break;
 
             case ApplyType.ISSUANCE_REGISTRATION_CARD:
@@ -53,10 +53,18 @@ public class ApplyButtonEvent : MonoBehaviour
             #endregion
 
             #region JOB
-            case ApplyType.TECHNICAL_QUALIFICATION:
             case ApplyType.EMPLOYMENT_SPECIAL_LECTURE:
+                Application.OpenURL("https://url.kr/9tm382");
+                break;
+            case ApplyType.TECHNICAL_QUALIFICATION:
+                Application.OpenURL("https://url.kr/zo1msb");
+                break;
             case ApplyType.ISSUANCE_EMPLOYMENT_ISURANCE_HISTORY:
+                Application.OpenURL("https://url.kr/3fvzqx");
+                break;
+
             case ApplyType.ISSUACNE_CERTIFICATE_HEALTH:
+                Application.OpenURL("https://url.kr/8f5wpu");
                 break;
             #endregion
 

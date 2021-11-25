@@ -18,7 +18,10 @@ public class DataManager : MonoBehaviour, IChatClientListener
 {
     public static DataManager Instance;
     public static string REGION_CHANNEL_ID = "3yxIU5G3AZx4IN0iRPSH";
+    public static string COUNSELLER_ID = "L3Lhns3PyyVZb0gBGTKcCKzgscw2";
     public Dictionary<string, string> videoCallInfo;
+
+    public string lastCreatedChannel = "";
     FirebaseFirestore db;
     // 데이터 매니저는 싱글톤으로 존재
     public UserData userCache { get; set; }
@@ -120,7 +123,7 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
     }
     // CRUD Operation @PUT
-    public async void CreateChannel(string _channelName)
+    public IEnumerator CreateChannel(string _channelName)
     {
         db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
         // 채널 생성(id는 firebase에서 생성받음) 
@@ -139,10 +142,11 @@ public class DataManager : MonoBehaviour, IChatClientListener
         Dictionary<string, object> channelData = channel.ToDictionary();
 
         // firestore에 저장요청
-        await channelRef.SetAsync(channelData).ContinueWithOnMainThread(task =>
+        Task task = channelRef.SetAsync(channelData).ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted)
-            {
+            {   
+                lastCreatedChannel = channelRef.Id;
                 string nowtime = DateTime.Now.ToString((TimeFormat));
                 channelRef.Collection("ChatContents").AddAsync(new CustomMsg("System", nowtime, "채팅 상담을 시작합니다", userCache.Character));
                 Debug.Log("[Database] " + "채널 추가 성공");
@@ -154,21 +158,9 @@ public class DataManager : MonoBehaviour, IChatClientListener
 
 
         });
-
-        // Batch를 통해 한번에 처리
-        // Channel 콜렉션에 문서 PUT + 사용자 정보에 UPDATE
-        // WriteBatch batch = db.StartBatch();
-        // batch.Set(channelRef, channelData);
-        // batch.Update(userRef, userData);
-        // batch.CommitAsync().ContinueWithOnMainThread(task =>
-        // {
-        //     if (task.IsCompleted)
-        //         Debug.Log("[Database] " + "채널 추가 성공");
-        //     else if (task.IsFaulted)
-        //         Debug.Log("[Database] " + "채널 추가 실패");
-        // });
+        yield return new WaitUntil(() => task.IsCompleted);
     }
-    public async void SubscribeChannel(string _channelId)
+    public IEnumerator SubscribeChannel(string _channelId)
     {
         if (userCache != null && userCache.MyChannels != null)
         {
@@ -176,14 +168,14 @@ public class DataManager : MonoBehaviour, IChatClientListener
             if (userCache.MyChannels.ContainsKey(_channelId))
             {
                 Debug.Log("[Database] " + "이미 채널을 구독하고 있습니다 : " + userCache.MyChannels[_channelId]);
-                return;
+                yield break;
             }
-
+            Debug.Log("!!!!!!!!!!!!!구독시작!!!!!!!!!!!!");
             // 채널 가져오기 요청
             db = FirebaseFirestore.GetInstance(Firebase.FirebaseApp.DefaultInstance);
             Debug.Log("[Database] " + "채널 가져오기 요청 시작");
             DocumentReference channelRef = db.Collection("Channels").Document(_channelId);
-            await channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
+            Task task = channelRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
             {
 
                 DocumentSnapshot snapshot = task.Result;
@@ -199,6 +191,8 @@ public class DataManager : MonoBehaviour, IChatClientListener
                     if (!channel.Members.Contains(userCache.UID))
                         channel.Members.Add(userCache.UID);
 
+                    if (!channel.Members.Contains(COUNSELLER_ID))
+                        channel.Members.Add(COUNSELLER_ID);
                     // 유저 정보에 현재 채널 추가
                     // 공지사항인 경우는 제목을 따로 설정하지 않는다
                     if (channel.Id != REGION_CHANNEL_ID)
@@ -209,14 +203,13 @@ public class DataManager : MonoBehaviour, IChatClientListener
                     UpdateUser();
                     UpdateChannel(channel);
                     Debug.Log("[Database] " + "채널 구독 완료 : " + channel.Id);
-                    return snapshot;
                 }
                 else
                 {
                     Debug.Log("[Database] " + "채널 가져오기 실패");
-                    return null;
                 }
             });
+            yield return new WaitUntil(() => task.IsCompleted);
         }
     }
     // CRUD Operation @GET
