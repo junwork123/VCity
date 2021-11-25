@@ -48,6 +48,9 @@ public class WaypointNavi : MonoBehaviour
         if (controller.reachedDestination)
         {
             bool shouldBranch = false;
+            if(currentWaypoint == null)
+                currentWaypoint = street.src;
+                
             if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0)
             {
                 shouldBranch = Random.Range(0f, 1f) <= currentWaypoint.branchRatio ? true : false;
