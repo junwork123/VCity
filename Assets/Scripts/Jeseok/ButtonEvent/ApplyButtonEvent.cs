@@ -8,7 +8,7 @@ public class ApplyButtonEvent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        clickListener = GetComponentsInChildren<ApplyButtonClickListener>();
+        clickListener = GetComponentsInChildren<ApplyButtonClickListener>(true);
 
         for (int i = 0; i < clickListener.Length; ++i)
             clickListener[i].AddClickCallback(Apply);

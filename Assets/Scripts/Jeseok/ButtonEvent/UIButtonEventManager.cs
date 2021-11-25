@@ -14,10 +14,12 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
 
     void Start()
     {
-        clickListener = GetComponentsInChildren<UIButtonClickListener>();
+        clickListener = GetComponentsInChildren<UIButtonClickListener>(true);
 
         for (int i = 0; i < clickListener.Length; ++i)
+        {
             clickListener[i].AddClickCallback(UIEvent);
+        }
     }
 
     void UIEvent(UIButtonType uIButtonType)
@@ -33,6 +35,11 @@ public class UIButtonEventManager : Singleton<UIButtonEventManager>
                 break;
             case UIButtonType.NOTICE:
                 OnClickNotice();
+                break;
+
+            case UIButtonType.BACK_APPLY_PANEL:
+                GameManager.instance.joystickRange.SetActive(true);
+                UIManager.instance.OpenExistDialog();
                 break;
         }
     }
