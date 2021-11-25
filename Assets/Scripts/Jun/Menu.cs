@@ -12,6 +12,7 @@ public class Menu : MonoBehaviour
     public void Open()
     {
         open = true;
+        gameObject.transform.SetAsLastSibling();
         gameObject.SetActive(true);//특정 메뉴 켜지기
     }
 

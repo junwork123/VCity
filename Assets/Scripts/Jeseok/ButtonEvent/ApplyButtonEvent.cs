@@ -66,7 +66,7 @@ public class ApplyButtonEvent : MonoBehaviour
                 break;
 
             case ApplyType.MY_PAGE:
-                UIManager.instance.OpenServiceMenu("DISPLAY_MYPAGE");
+                Service.Instance.GetComponent<MenuManager>().OpenMenu("DISPLAY_MYPAGE");
                 break;
             #endregion
 
