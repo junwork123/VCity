@@ -78,14 +78,14 @@ public class Interactionable : MonoBehaviour, IInteraction
     {
         UIManager.instance.ShowDialog(interString);
 
-        SetOutline();
+        // SetOutline();
     }
 
     public void EndInter()
     {
         UIManager.instance.HideDialog();
 
-        UnsetOutline();
+        // UnsetOutline();
         HideInteractionMenu();
     }
 
@@ -158,6 +158,7 @@ public class Interactionable : MonoBehaviour, IInteraction
     {
         outline.OutlineMode = Outline.Mode.OutlineVisible;
         outline.OutlineColor = Color.yellow;
+        SetOutline();
     }
 
     void SetOutline()
