@@ -405,10 +405,10 @@ namespace Photon.Chat
                 {
                     Debug.Log(selectedChannelId);
                     //this.chatClient.PublishMessage(this.selectedChannelId, inputLine);
-                    this.chatClient.PublishMessage(DataManager.REGION_CHANNEL_ID, inputLine);
+                    this.chatClient.PublishMessage(selectedChannelId, inputLine);
                     AppendMsg(new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
                     //DataManager.Instance.AppendMsg(this.selectedChannelId, new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
-                    DataManager.Instance.AppendMsg(DataManager.REGION_CHANNEL_ID, new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
+                    DataManager.Instance.AppendMsg(selectedChannelId, new CustomMsg(UserName, time, inputLine, DataManager.Instance.userCache.Character));
                 }
             }
         }
@@ -444,6 +444,15 @@ namespace Photon.Chat
             this.ConnectingLabel.SetActive(true);
 
 
+        }
+        public void UpdateRoomListWrapper2()
+        {
+            StartCoroutine(UpdateRoomListWrapper());
+        }
+        public IEnumerator UpdateRoomListWrapper()
+        {
+            yield return StartCoroutine(DataManager.Instance.GetMyChannels(DataManager.Instance.userCache.UID));
+            StartCoroutine(UpdateRoomList());
         }
         public IEnumerator UpdateRoomList()
         {
@@ -750,6 +759,7 @@ namespace Photon.Chat
             // 메시지 형식 바꾸기
             GameObject go = opMsgFactory;
             opMsgFactory = noticeMsgFactory;
+            selectedChannelId = DataManager.REGION_CHANNEL_ID;
 
             ShowChannel(DataManager.REGION_CHANNEL_ID);
 

@@ -22,7 +22,7 @@ public class Service : MonoBehaviour
     public void SetUserCharacter()
     {
         DataManager.Instance.userCache.Character = CharacterNum;
-        DataManager.Instance.UpdateUser();
+        DataManager.Instance.UpdateUser(DataManager.Instance.userCache, DataManager.Instance.userCache.UID);
         UIManager.instance.UpdatePlayerInfo();
         GameManager.instance.SetPlayerModel((PlayerModelType)CharacterNum);
     }
